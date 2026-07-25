@@ -2,6 +2,7 @@ package com.eduhub.service;
 
 import java.time.LocalDateTime;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import com.eduhub.entity.ApprovalStatus;
 import com.eduhub.entity.Role;
 import com.eduhub.entity.Status;
 import com.eduhub.entity.User;
+import com.eduhub.jwt.JwtUtil;
 import com.eduhub.repository.RoleRepository;
 import com.eduhub.repository.UserRepository;
 
@@ -19,62 +21,132 @@ import com.eduhub.repository.UserRepository;
 @Service
 public class AuthServiceImpl implements AuthService {
 
-	 private final PasswordEncoder passwordEncoder;
-	 private final UserRepository userRepository;
-	 private final RoleRepository roleRepository;
 
-	    public AuthServiceImpl(UserRepository userRepository,
-	                           RoleRepository roleRepository,
-	                           PasswordEncoder passwordEncoder) {
-	    	
-	        this.userRepository = userRepository;
-	        this.roleRepository = roleRepository;
-	        this.passwordEncoder = passwordEncoder;
-	    }
+    @Autowired
+    private UserRepository userRepository;
 
-	    @Override
-	    public String register(RegisterRequest request) {
 
-	        // Check email already exists
-	        if (userRepository.existsByEmail(request.getEmail())) {
-	            return "Email already exists";
-	        }
+    @Autowired
+    private RoleRepository roleRepository;
 
-	        // Find role
-	        Role role = roleRepository.findByRoleName(request.getRole().toUpperCase())
-	                .orElseThrow(() -> new RuntimeException("Role not found"));
 
-	        User user = new User();
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-	        user.setName(request.getName());
-	        user.setEmail(request.getEmail());
 
-	        // Plain password (Temporary)
-	        user.setPassword(
-	        	    passwordEncoder.encode(request.getPassword())
-	        	);
+    @Autowired
+    private JwtUtil jwtUtil;
 
-	        user.setRole(role);
-	        user.setStatus(Status.ACTIVE);
 
-	        if (role.getRoleName().equalsIgnoreCase("INSTITUTE")) {
-	            user.setApprovalStatus(ApprovalStatus.PENDING);
-	        } else {
-	            user.setApprovalStatus(ApprovalStatus.APPROVED);
-	        }
 
-	        user.setCreatedAt(LocalDateTime.now());
+    @Override
+    public String register(RegisterRequest registerRequest) {
 
-	        userRepository.save(user);
 
-	        return "Registration Successful";
-	    }
+        // Email check
+        if(userRepository.existsByEmail(registerRequest.getEmail())) {
 
-	    @Override
-	    public LoginResponse login(LoginRequest request) {
+            return "Email already exists";
+        }
 
-	        
-	        return null;
-	    }
+
+
+        // Role fetch
+        Role role = roleRepository
+                .findByRoleName(registerRequest.getRole())
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+
+
+
+        // Create User
+        User user = new User();
+
+
+        user.setName(registerRequest.getName());
+
+        user.setEmail(registerRequest.getEmail());
+
+
+        // Password Encrypt
+        user.setPassword(
+                passwordEncoder.encode(registerRequest.getPassword())
+        );
+
+
+        user.setRole(role);
+
+
+        user.setStatus(Status.ACTIVE);
+
+
+        user.setApprovalStatus(ApprovalStatus.PENDING);
+
+
+        user.setCreatedAt(LocalDateTime.now());
+
+
+
+        // Save User
+        userRepository.save(user);
+
+
+
+        return "User Registered Successfully";
+    }
+
+
+
+
+
+    @Override
+    public LoginResponse login(LoginRequest loginRequest) {
+
+
+        User user = userRepository
+                .findByEmail(loginRequest.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+
+
+        // Password Check
+        if(!passwordEncoder.matches(
+                loginRequest.getPassword(),
+                user.getPassword())) {
+
+
+            throw new RuntimeException("Invalid Password");
+        }
+
+
+
+
+        // Generate JWT Token with Role
+        String token = jwtUtil.generateToken(
+                user.getEmail(),
+                user.getRole().getRoleName()
+        );
+
+
+
+
+
+        // Response
+        LoginResponse response = new LoginResponse();
+
+
+        response.setUserId(user.getUserId());
+
+        response.setName(user.getName());
+
+        response.setEmail(user.getEmail());
+
+        response.setRole(user.getRole().getRoleName());
+
+        response.setToken(token);
+
+
+
+        return response;
+    }
 
 }
