@@ -1,0 +1,290 @@
+.eduhub-home {
+  color: #16161f;
+}
+
+/* Hero */
+.eduhub-hero {
+  background: #f4f2fd;
+}
+
+.eduhub-eyebrow-badge {
+  display: inline-block;
+  background: #e9e3ff;
+  color: #6d4cf0;
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+}
+
+.eduhub-hero-title {
+  font-size: 2.75rem;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.eduhub-text-accent {
+  color: #6d4cf0;
+}
+
+.eduhub-hero-sub {
+  color: #55555f;
+  font-size: 1.05rem;
+  max-width: 480px;
+}
+
+.eduhub-btn-solid {
+  background: #6d4cf0;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.eduhub-btn-solid:hover {
+  background: #5b3ce0;
+  color: #fff;
+}
+
+.eduhub-btn-outline {
+  border: 1px solid #6d4cf0;
+  color: #6d4cf0;
+  font-weight: 600;
+  border-radius: 8px;
+  background: transparent;
+}
+
+.eduhub-btn-outline:hover {
+  background: #f4f1ff;
+  color: #6d4cf0;
+}
+
+/* Search bar */
+.eduhub-search-bar {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #e4e1f0;
+  border-radius: 12px;
+  padding: 0.4rem 0.5rem 0.4rem 1rem;
+  max-width: 560px;
+  box-shadow: 0 4px 14px rgba(109, 76, 240, 0.06);
+}
+
+.eduhub-search-icon {
+  color: #9b93b0;
+  display: flex;
+  align-items: center;
+  margin-right: 0.5rem;
+}
+
+.eduhub-search-input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 0.95rem;
+  background: transparent;
+}
+
+.eduhub-search-btn {
+  padding: 0.5rem 1.2rem;
+}
+
+.eduhub-tag-pill {
+  background: #e9e3ff;
+  color: #6d4cf0;
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 0.3rem 0.85rem;
+}
+
+.eduhub-tag-pill:hover {
+  background: #d9cfff;
+}
+
+/* Hero card */
+.eduhub-hero-card {
+  background: linear-gradient(135deg, #6d4cf0, #3a2fd6);
+  border-radius: 20px;
+  padding: 1.75rem;
+}
+
+.eduhub-hero-card-inner {
+  background: #fff;
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  color: #16161f;
+}
+
+.eduhub-badge-live {
+  background: #dcf7e3;
+  color: #1a9c4a;
+  font-weight: 600;
+}
+
+.eduhub-progress {
+  height: 8px;
+  background: #eee9ff;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.eduhub-progress-fill {
+  height: 100%;
+  background: #6d4cf0;
+}
+
+.eduhub-hero-card-meta {
+  color: #7c7c88;
+  font-size: 0.85rem;
+}
+
+.eduhub-mini-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #6d4cf0;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eduhub-mini-avatar-lg {
+  width: 40px;
+  height: 40px;
+  font-size: 0.85rem;
+}
+
+/* Stats + alt sections */
+.eduhub-stats {
+  background: #f7f7fa;
+}
+
+.eduhub-stat-number {
+  font-size: 1.9rem;
+  font-weight: 800;
+}
+
+.eduhub-stat-label {
+  color: #7c7c88;
+  font-size: 0.9rem;
+}
+
+.eduhub-section-eyebrow {
+  color: #6d4cf0;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.eduhub-section-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.eduhub-link-accent {
+  color: #6d4cf0;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Course cards */
+.eduhub-course-card {
+  background: #fff;
+  border: 1px solid #eef0f4;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.eduhub-course-thumb{
+    height:130px;
+    border-radius:12px 12px 0 0;
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+.eduhub-course-tag {
+  background: #f0edff;
+  color: #6d4cf0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.15rem 0.6rem;
+  border-radius: 6px;
+}
+
+.eduhub-course-institute {
+  color: #7c7c88;
+  font-size: 0.85rem;
+}
+
+.eduhub-course-rating {
+  color: #e8a13a;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.eduhub-institute-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 1.25rem 1rem;
+}
+
+/* Built for panels */
+.eduhub-feature-panel {
+  background: #f4f2fd;
+  border-radius: 16px;
+  padding: 1.75rem;
+}
+
+.eduhub-feature-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+/* Testimonials */
+.eduhub-testimonial-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 1.5rem;
+  border: 1px solid #eef0f4;
+}
+
+.eduhub-stars {
+  color: #e8a13a;
+}
+
+/* FAQ */
+.eduhub-faq-item {
+  border-bottom: 1px solid #eef0f4;
+}
+
+.eduhub-faq-question {
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 1rem 0;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.eduhub-faq-answer {
+  padding-bottom: 1rem;
+  color: #55555f;
+  font-size: 0.95rem;
+}

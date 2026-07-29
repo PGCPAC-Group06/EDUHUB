@@ -46,17 +46,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
         // Check Bearer Token
-        if(authHeader != null && authHeader.startsWith("Bearer ")) {
-
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
 
             token = authHeader.substring(7);
 
+            if (jwtUtil.validateToken(token)) {
 
-            email = jwtUtil.extractEmail(token);
+                email = jwtUtil.extractEmail(token);
+                role = jwtUtil.extractRole(token);
 
+            } else {
 
-            role = jwtUtil.extractRole(token);
-
+                System.out.println("Invalid or Expired JWT Token");
+            }
         }
 
 

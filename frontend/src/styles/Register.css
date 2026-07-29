@@ -1,0 +1,279 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+.register-page{
+  display:flex;
+  min-height:100vh;
+}
+
+.register-left{
+  width:50%;
+  background:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:50px;
+}
+
+.register-box{
+  width:100%;
+  max-width:470px;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  margin-bottom:35px;
+}
+
+.logo-icon{
+  width:45px;
+  height:45px;
+  border-radius:12px;
+  background:#5B46E8;
+  color:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:22px;
+  font-weight:700;
+  margin-right:12px;
+}
+
+.logo h2{
+  font-size:32px;
+  font-weight:700;
+  color:#111827;
+}
+
+.register-box h1{
+  font-size:42px;
+  font-weight:700;
+  margin-bottom:8px;
+  color:#111827;
+}
+
+.subtitle{
+  color:#6B7280;
+  margin-bottom:30px;
+}
+
+.form-group{
+  margin-bottom:18px;
+}
+
+.form-group label{
+  display:block;
+  font-weight:600;
+  margin-bottom:8px;
+  color:#111827;
+}
+
+.form-group input,
+.form-group select{
+  width:100%;
+  height:55px;
+  border:1px solid #D9DCEB;
+  border-radius:12px;
+  padding:0 15px;
+  outline:none;
+  font-size:15px;
+  transition:.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus{
+  border-color:#5B46E8;
+  box-shadow:0 0 0 3px rgba(91,70,232,.15);
+}
+
+.double-input{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.password-box{
+  position:relative;
+}
+
+.password-box input{
+  padding-right:50px;
+}
+
+.eye{
+  position:absolute;
+  right:18px;
+  top:50%;
+  transform:translateY(-50%);
+  cursor:pointer;
+  color:#777;
+}
+
+.register-btn{
+  width:100%;
+  height:55px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(90deg,#5B46E8,#7C3AED);
+  color:#fff;
+  font-size:17px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.3s;
+  margin-top:10px;
+}
+
+.register-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 25px rgba(91,70,232,.25);
+}
+
+.login-link{
+  text-align:center;
+  margin-top:22px;
+  color:#6B7280;
+}
+
+.login-link a{
+  margin-left:6px;
+  color:#5B46E8;
+  text-decoration:none;
+  font-weight:700;
+}
+
+.login-link a:hover{
+  text-decoration:underline;
+}
+
+/* RIGHT PANEL */
+
+.register-right{
+  width:50%;
+  background:linear-gradient(180deg,#5B46E8,#7C3AED);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+  overflow:hidden;
+}
+
+.register-right::before{
+  content:"";
+  position:absolute;
+  width:280px;
+  height:280px;
+  background:rgba(255,255,255,.08);
+  border-radius:50%;
+  top:-80px;
+  left:-80px;
+}
+
+.register-right::after{
+  content:"";
+  position:absolute;
+  width:220px;
+  height:220px;
+  background:rgba(255,255,255,.08);
+  border-radius:50%;
+  bottom:-70px;
+  right:-70px;
+}
+
+.welcome-card{
+  width:420px;
+  background:#fff;
+  border-radius:22px;
+  padding:35px;
+  box-shadow:0 20px 40px rgba(0,0,0,.15);
+}
+
+.welcome-card h2{
+  color:#111827;
+  margin-bottom:18px;
+  font-size:30px;
+}
+
+.welcome-card p{
+  color:#6B7280;
+  line-height:1.7;
+}
+
+.progress-bars{
+  display:flex;
+  gap:10px;
+  margin-top:35px;
+  align-items:flex-end;
+}
+
+.progress-bars div{
+  width:55px;
+  background:#E4E7FA;
+  border-radius:8px;
+}
+
+.progress-bars div:nth-child(1){
+  height:40px;
+}
+
+.progress-bars div:nth-child(2){
+  height:70px;
+}
+
+.progress-bars div:nth-child(3){
+  height:95px;
+}
+
+.progress-bars div:nth-child(4){
+  height:60px;
+}
+
+.progress-bars div:nth-child(5){
+  height:75px;
+}
+
+.progress-bars .active{
+  background:#5B46E8;
+}
+
+.alert{
+  border-radius:12px;
+  margin-bottom:20px;
+}
+
+@media(max-width:992px){
+
+.register-page{
+  flex-direction:column;
+}
+
+.register-left{
+  width:100%;
+  padding:35px 20px;
+}
+
+.register-right{
+  display:none;
+}
+
+.register-box{
+  max-width:100%;
+}
+
+.double-input{
+  grid-template-columns:1fr;
+}
+
+.register-box h1{
+  font-size:34px;
+}
+
+.logo h2{
+  font-size:28px;
+}
+
+}

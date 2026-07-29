@@ -2,7 +2,6 @@ package com.eduhub.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,26 +17,26 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/auth")
 public class AuthController {
     
-	 private final AuthService authService;
+    private final AuthService authService;
 
-	    public AuthController(AuthService authService) {
-	        this.authService = authService;
-	    }
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
 
-	    @PostMapping("/register")
-	    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request) {
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
 
-	        String message = authService.register(request);
+        String message = authService.register(request);
 
-	        return new ResponseEntity<>(message, HttpStatus.CREATED);
-	    }
+        return new ResponseEntity<>(message, HttpStatus.CREATED);
+    }
 
-	    @PostMapping("/login")
-	    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(
+            @Valid @RequestBody LoginRequest request) {
 
-	        LoginResponse response = authService.login(request);
+        LoginResponse response = authService.login(request);
 
-	        return ResponseEntity.ok(response);
-	    }
-	    
+        return ResponseEntity.ok(response);
+    }
 }

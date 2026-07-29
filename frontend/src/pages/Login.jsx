@@ -3,155 +3,160 @@ import { useDispatch } from "react-redux";
 import { loginSuccess } from "../redux/authSlice";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../services/api";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import "../styles/Login.css";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setErrorMessage("");
-    setLoading(true);
 
     try {
-      const response = await api.post("/auth/login", {
+      const response = await api.post("/api/auth/login", {
         email,
         password,
       });
 
-      const userData = response.data; // { userId, name, email, role, token }
+      const userData = response.data;
+
+      setErrorMessage("");
+
+      if (rememberMe) {
+        localStorage.setItem("user", JSON.stringify(userData));
+      } else {
+        sessionStorage.setItem("user", JSON.stringify(userData));
+      }
 
       dispatch(loginSuccess(userData));
 
-      const normalizedRole = (userData.role || "").toLowerCase();
+      const userRole = (
+        userData.user?.role ||
+        userData.role ||
+        ""
+      ).toLowerCase();
 
-      if (normalizedRole === "student") {
+      if (userRole === "student") {
         navigate("/student-dashboard");
-      } else if (normalizedRole === "institute") {
+      } else if (userRole === "institute") {
         navigate("/institute-dashboard");
-      } else if (normalizedRole === "admin") {
+      } else if (userRole === "admin") {
         navigate("/admin-dashboard");
-      } else {
-        navigate("/");
       }
     } catch (error) {
-      console.error("Login Error:", error);
-      const serverError = error.response?.data;
-      if (typeof serverError === "string") {
-        setErrorMessage(serverError);
-      } else if (serverError?.message) {
-        setErrorMessage(serverError.message);
-      } else {
-        setErrorMessage("Login failed. Please check your credentials.");
-      }
-    } finally {
-      setLoading(false);
+      const msg =
+        error.response?.data?.message ||
+        (typeof error.response?.data === "string"
+          ? error.response.data
+          : "Login failed");
+      setErrorMessage(msg);
     }
   };
 
   return (
-    <div
-      className="d-flex justify-content-center align-items-center"
-      style={{
-        minHeight: "100vh",
-        background:
-          "linear-gradient(rgba(31,41,55,0.75), rgba(31,41,55,0.75)), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071') center/cover",
-      }}
-    >
-      <div
-        className="card shadow-lg border-0 p-4"
-        style={{
-          width: "420px",
-          borderRadius: "18px",
-          backgroundColor: "rgba(255,255,255,0.96)",
-        }}
-      >
-        {/* Header */}
-        <div className="text-center mb-4">
-          <h2 className="fw-bold mb-2" style={{ color: "#1f2937" }}>
-            EduHub
-          </h2>
-          <p className="mb-0" style={{ color: "#6b7280" }}>
-            Multi Institute Course Platform
+    <div className="login-page">
+      {/* LEFT */}
+
+      <div className="login-left">
+        <div className="login-box">
+          <div className="logo">
+            <div className="logo-icon">E</div>
+            <h2>EduHub</h2>
+          </div>
+
+          <h1>Welcome back</h1>
+
+          <p className="subtitle">
+            Log in to continue your learning journey.
           </p>
+
+          {errorMessage && (
+            <div className="alert alert-danger">{errorMessage}</div>
+          )}
+
+          <form onSubmit={handleLogin}>
+            <div className="form-group">
+              <label>Email address</label>
+
+              <input
+                type="email"
+                placeholder="name@gmail.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Password</label>
+
+              <div className="password-box">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+
+                <span
+                  className="eye"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
+            </div>
+
+            <div className="options">
+              <label className="remember">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={() => setRememberMe(!rememberMe)}
+                />
+                Remember me
+              </label>
+
+              <Link to="/forgot-password" className="forgot">
+                Forgot password?
+              </Link>
+            </div>
+
+            <button className="login-btn" type="submit">
+              Log In
+            </button>
+          </form>
+
+          <div className="signup">
+            Don't have an account?
+            <Link to="/register">Sign up free</Link>
+          </div>
         </div>
+      </div>
 
-        <h4 className="text-center mb-4" style={{ color: "#1f2937" }}>
-          Login
-        </h4>
+      {/* RIGHT */}
 
-        {errorMessage && (
-          <div className="alert alert-danger text-center py-2 mb-3">
-            {errorMessage}
-          </div>
-        )}
+      <div className="login-right">
+        <div className="goal-card">
+          <h4>Weekly goal</h4>
 
-        <form onSubmit={handleLogin}>
-          <div className="mb-3">
-            <label className="form-label fw-semibold" style={{ color: "#374151" }}>
-              Email
-            </label>
-            <input
-              type="email"
-              className="form-control"
-              placeholder="Enter Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              style={{
-                padding: "10px 14px",
-                borderRadius: "10px",
-              }}
-              required
-            />
+          <div className="bars">
+            <div></div>
+            <div></div>
+            <div className="active"></div>
+            <div></div>
+            <div></div>
           </div>
 
-          <div className="mb-4">
-            <label className="form-label fw-semibold" style={{ color: "#374151" }}>
-              Password
-            </label>
-            <input
-              type="password"
-              className="form-control"
-              placeholder="Enter Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={{
-                padding: "10px 14px",
-                borderRadius: "10px",
-              }}
-              required
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="btn w-100 mb-3"
-            style={{
-              backgroundColor: "#d89b2b",
-              color: "white",
-              border: "none",
-              padding: "10px",
-              fontWeight: "600",
-              borderRadius: "10px",
-            }}
-          >
-            {loading ? "Logging in..." : "Login"}
-          </button>
-        </form>
-
-        <div className="text-center mt-2">
-          <span style={{ color: "#6b7280", fontSize: "14px" }}>
-            Don't have an account?{" "}
-          </span>
-          <Link to="/register" style={{ color: "#d89b2b", textDecoration: "none", fontWeight: "600", fontSize: "14px" }}>
-            Register here
-          </Link>
+          <p>You're 22% ahead of your weekly learning goal.</p>
         </div>
       </div>
     </div>

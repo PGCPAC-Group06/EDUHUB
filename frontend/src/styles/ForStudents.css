@@ -1,0 +1,186 @@
+/* ---------- HERO SECTION ---------- */
+.hero-section {
+  padding: 3rem 0;
+  background: linear-gradient(135deg, #eef0ff 0%, #f5f3ff 100%);
+}
+
+.hero-eyebrow {
+  color: #6d28d9;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.hero-title {
+  color: #111827;
+}
+
+.hero-subtitle {
+  max-width: 480px;
+}
+
+.btn-gradient-primary {
+  background: linear-gradient(90deg, #7c3aed 0%, #4f46e5 100%);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+}
+
+.btn-gradient-primary:hover {
+  color: #fff;
+  opacity: 0.9;
+}
+
+.btn-white-outline {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  color: #111827;
+}
+
+.btn-white-outline:hover {
+  background: #f9fafb;
+}
+
+.hero-card-wrapper {
+  max-width: 420px;
+  border-radius: 16px;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-card-inner {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 12px;
+}
+
+.hero-progress {
+  height: 6px;
+  border-radius: 4px;
+}
+
+.hero-progress-bar {
+  background: linear-gradient(90deg, #7c3aed, #4f46e5);
+}
+
+/* ---------- FEATURES SECTION ---------- */
+.features-section {
+  padding: 3rem 0;
+  background: #f3f4f6;
+}
+
+.section-eyebrow {
+  color: #7c3aed;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.feature-card {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #eef0f2;
+}
+
+.feature-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.icon-purple {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+
+.icon-blue {
+  background: #dbeafe;
+  color: #3b82f6;
+}
+
+.icon-orange {
+  background: #ffedd5;
+  color: #f97316;
+}
+
+.icon-red {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+.icon-green {
+  background: #dcfce7;
+  color: #22c55e;
+}
+
+/* ---------- DASHBOARD SECTION ---------- */
+.dashboard-section {
+  padding: 3rem 0;
+  background: #fff;
+}
+
+.dashboard-card {
+  max-width: 960px;
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+}
+
+.stat-box {
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+}
+
+.stat-purple {
+  color: #7c3aed;
+}
+
+.stat-green {
+  color: #16a34a;
+}
+
+.stat-blue {
+  color: #2563eb;
+}
+
+.course-box {
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+}
+
+.course-banner {
+  height: 60px;
+  border-radius: 8px;
+}
+
+.course-grad-1 {
+  background: linear-gradient(90deg, #7c3aed 0%, #4338ca 100%);
+}
+
+.course-grad-2 {
+  background: linear-gradient(90deg, #2563eb 0%, #4338ca 100%);
+}
+
+.course-progress {
+  height: 6px;
+  border-radius: 4px;
+}
+
+.course-progress-bar {
+  background: #7c3aed;
+}
+.btn-gradient-primary {
+  background: linear-gradient(90deg, #7c3aed 0%, #4f46e5 100%);
+  border: none;
+  border-radius: 8px;
+  color: #fff !important;
+}

@@ -1,34 +1,38 @@
 import axios from "axios";
 
-export const AUTH_BASE_URL = import.meta.env.VITE_AUTH_API_URL || "http://localhost:8080/api";
-export const INSTITUTE_BASE_URL = import.meta.env.VITE_INSTITUTE_API_URL || "http://localhost:8081/api";
-export const COURSE_BASE_URL = import.meta.env.VITE_COURSE_API_URL || "http://localhost:8082/api";
+const API_BASE_URL = "http://localhost:8080";
 
-const createServiceApi = (baseURL) => {
-  const instance = axios.create({
-    baseURL,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
-  instance.interceptors.request.use(
-    (config) => {
-      const token = localStorage.getItem("eduhub_token") || localStorage.getItem("token");
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+// Interceptor to attach JWT token to every outgoing request
+api.interceptors.request.use(
+  (config) => {
+    let token = null;
+
+    const savedUser =
+      localStorage.getItem("user") || sessionStorage.getItem("user");
+
+    if (savedUser) {
+      try {
+        const parsed = JSON.parse(savedUser);
+        token = parsed.token;
+      } catch (e) {
+        console.error("Error parsing saved user token", e);
       }
-      return config;
-    },
-    (error) => Promise.reject(error)
-  );
+    }
 
-  return instance;
-};
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
 
-export const authApi = createServiceApi(AUTH_BASE_URL);
-export const instituteApi = createServiceApi(INSTITUTE_BASE_URL);
-export const courseApi = createServiceApi(COURSE_BASE_URL);
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
-// Default fallback export for legacy imports
-export default authApi;
+export default api;
