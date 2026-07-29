@@ -1,135 +1,66 @@
-// import { Link } from "react-router-dom";
-
-// function Navbar() {
-//   return (
-//     <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-4">
-//       <div className="container-fluid">
-//         {/* Logo / Brand */}
-//         <Link className="navbar-brand fw-bold fs-3" to="/">
-//           EduHub
-//         </Link>
-
-//         {/* Mobile Toggle Button */}
-//         <button
-//           className="navbar-toggler"
-//           type="button"
-//           data-bs-toggle="collapse"
-//           data-bs-target="#navbarContent"
-//         >
-//           <span className="navbar-toggler-icon"></span>
-//         </button>
-
-//         {/* Navbar Content */}
-//         <div className="collapse navbar-collapse" id="navbarContent">
-          
-//           {/* Left Menu */}
-//           <ul className="navbar-nav me-auto mb-2 mb-lg-0 ms-4">
-//             <li className="nav-item">
-//               <Link className="nav-link" to="/">Home</Link>
-//             </li>
-
-//             <li className="nav-item">
-//               <Link className="nav-link" to="/courses">Courses</Link>
-//             </li>
-//           </ul>
-
-//           {/* Right Side Buttons */}
-//           <div className="d-flex gap-2">
-//             <Link to="/login" className="btn btn-outline-light">
-//               Login
-//             </Link>
-
-//             <Link to="/register" className="btn btn-primary">
-//               Register
-//             </Link>
-//           </div>
-//         </div>
-//       </div>
-//     </nav>
-//   );
-// }
-
-// export default Navbar;
-
-
-
 import { Link } from "react-router-dom";
+import "../styles/Navbar.css";
 
 function Navbar() {
   return (
-    <nav
-      className="navbar navbar-expand-lg px-4 py-3 shadow-sm"
-      style={{ backgroundColor: "white" }}
-    >
-      <div className="container-fluid">
-        {/* Logo / Brand */}
-        <Link
-          className="navbar-brand fw-bold fs-3"
-          to="/"
-          style={{ color: "#1f2937" }}
-        >
-          EduHub
+    <nav className="navbar navbar-expand-lg eduhub-navbar sticky-top">
+      <div className="container-fluid px-4 px-lg-5 py-2">
+        {/* Brand */}
+        <Link to="/" className="navbar-brand d-flex align-items-center gap-2">
+          <span className="eduhub-logo-badge">E</span>
+          <span className="eduhub-brand-text">EduHub</span>
         </Link>
 
-        {/* Mobile Toggle Button */}
         <button
           className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
-          data-bs-target="#navbarContent"
+          data-bs-target="#eduhubNavContent"
+          aria-controls="eduhubNavContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        {/* Navbar Content */}
-        <div className="collapse navbar-collapse" id="navbarContent">
-          {/* Center Menu */}
-          <ul className="navbar-nav mx-auto mb-2 mb-lg-0 gap-3">
+        <div className="collapse navbar-collapse" id="eduhubNavContent">
+          {/* Center links */}
+          <ul className="navbar-nav mx-lg-auto gap-lg-4 mt-3 mt-lg-0">
             <li className="nav-item">
-              <Link
-                className="nav-link fw-semibold"
-                to="/"
-                style={{ color: "#d89b2b" }}
-              >
+              <Link to="/" className="nav-link eduhub-nav-link">
                 Home
               </Link>
             </li>
-
             <li className="nav-item">
-              <Link
-                className="nav-link fw-semibold"
-                to="/courses"
-                style={{ color: "#374151" }}
-              >
-                Courses
+              <Link to="/explore-courses" className="nav-link eduhub-nav-link">
+                Explore courses
               </Link>
             </li>
+            <li className="nav-item">
+              <Link to="/for-institutes" className="nav-link eduhub-nav-link">
+                For institutes
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/for-students" className="nav-link eduhub-nav-link">
+                For students
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/about" className="nav-link eduhub-nav-link">
+                About
+              </Link>
+            </li>
+            
           </ul>
 
-          {/* Right Side Buttons */}
-          <div className="d-flex gap-3">
-            <Link
-              to="/login"
-              className="btn px-4"
-              style={{
-                border: "1px solid #d1d5db",
-                color: "#111827",
-                backgroundColor: "white",
-              }}
-            >
-              Login
+          {/* Right side buttons */}
+          <div className="d-flex gap-2 mt-3 mt-lg-0">
+            <Link to="/login" className="eduhub-btn-outline">
+              Log in
             </Link>
-
-            <Link
-              to="/register"
-              className="btn px-4"
-              style={{
-                backgroundColor: "#d89b2b",
-                color: "white",
-                border: "none",
-              }}
-            >
-              Register
+            <Link to="/register" className="eduhub-btn-solid">
+              Get started
             </Link>
           </div>
         </div>
