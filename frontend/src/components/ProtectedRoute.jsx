@@ -10,8 +10,8 @@ function ProtectedRoute({ children, allowedRole }) {
   }
 
   // Role mismatch
-  if (allowedRole && role !== allowedRole) {
-    return <Navigate to="/login" />;
+  if (allowedRole && role?.toLowerCase() !== allowedRole?.toLowerCase()) {
+    return <Navigate to="/login" replace />;
   }
 
   return children;

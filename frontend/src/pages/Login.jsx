@@ -18,6 +18,7 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setErrorMessage("");
 
     try {
       const response = await api.post("/api/auth/login", {
@@ -27,35 +28,43 @@ function Login() {
 
       const userData = response.data;
 
-      setErrorMessage("");
+      // Extract exact role returned from MySQL database via backend API
+      let rawRole = userData.user?.role || userData.role || "";
+      let finalRole = String(rawRole).toLowerCase().replace(/^role_/, "").trim();
+
+      const formattedUserData = {
+        user: {
+          user_id: userData.user?.userId || userData.userId || userData.user_id,
+          name: userData.user?.name || userData.name,
+          email: userData.user?.email || userData.email,
+          role: finalRole,
+        },
+        token: userData.token,
+      };
 
       if (rememberMe) {
-        localStorage.setItem("user", JSON.stringify(userData));
+        localStorage.setItem("user", JSON.stringify(formattedUserData));
       } else {
-        sessionStorage.setItem("user", JSON.stringify(userData));
+        sessionStorage.setItem("user", JSON.stringify(formattedUserData));
       }
 
-      dispatch(loginSuccess(userData));
+      dispatch(loginSuccess(formattedUserData));
 
-      const userRole = (
-        userData.user?.role ||
-        userData.role ||
-        ""
-      ).toLowerCase();
-
-      if (userRole === "student") {
-        navigate("/student-dashboard");
-      } else if (userRole === "institute") {
+      // Navigate dynamically based on role from database
+      if (finalRole === "institute") {
         navigate("/institute-dashboard");
-      } else if (userRole === "admin") {
+      } else if (finalRole === "admin") {
         navigate("/admin-dashboard");
+      } else {
+        navigate("/student-dashboard");
       }
     } catch (error) {
+      console.error("Login error:", error);
       const msg =
         error.response?.data?.message ||
         (typeof error.response?.data === "string"
           ? error.response.data
-          : "Login failed");
+          : "Login failed. Please check your email and password.");
       setErrorMessage(msg);
     }
   };
