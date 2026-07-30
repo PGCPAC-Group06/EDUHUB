@@ -11,6 +11,9 @@ function AppContent() {
     "/login",
     "/register",
     "/forgot-password",
+    "/student-dashboard",
+    "/institute-dashboard",
+    "/admin-dashboard",
   ].includes(location.pathname);
 
   return (
