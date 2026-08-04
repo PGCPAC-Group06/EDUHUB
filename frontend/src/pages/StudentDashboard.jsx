@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { logout } from "../redux/authSlice";
 import { studentService } from "../services/studentService";
 import "../styles/StudentDashboard.css";
@@ -40,6 +40,7 @@ import {
 function StudentDashboard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Redux / Auth (Dynamically retrieved per logged in user)
   const authState = useSelector((state) => state.auth.user);
@@ -88,6 +89,15 @@ function StudentDashboard() {
   const [selectedCourseForMaterials, setSelectedCourseForMaterials] = useState(null);
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
+
+  // Form & Checkout States
+  const [paymentMethod, setPaymentMethod] = useState("Credit Card / Debit Card");
+  const [reviewRating, setReviewRating] = useState(5);
+  const [reviewComment, setReviewComment] = useState("");
+
+  const isEnrolled = (courseId) => {
+    return enrollments.some((e) => e.course_id === courseId || e.course?.course_id === courseId);
+  };
   const [editProfileForm, setEditProfileForm] = useState({
     name: "",
     mobile: "",
@@ -159,16 +169,54 @@ function StudentDashboard() {
       console.warn("Profile fetch fallback");
     }
 
+    let loadedCatalog = [];
     try {
-      const summary = await studentService.getDashboardSummary();
-      const loadedEnrollments = (summary && summary.enrollments && summary.enrollments.length > 0)
-        ? summary.enrollments
-        : await studentService.getEnrolledCourses();
-      setEnrollments(loadedEnrollments || []);
-      setActivities((summary && summary.activities) || []);
+      const rawCatalog = await studentService.getBrowseCatalog();
+      if (Array.isArray(rawCatalog)) {
+        loadedCatalog = rawCatalog.map((c) => ({
+          ...c,
+          course_id: c.course_id || c.courseId,
+          title: c.title,
+          description: c.description,
+          price: Number(c.price || 0),
+          duration: c.duration || "Self-paced",
+          institute_name: c.institute_name || c.instituteName || "Tech Elevate Academy",
+          category_name: c.category_name || c.categoryName || "Web Development",
+          rating: c.rating || 4.8,
+          reviews_count: c.reviews_count || 42,
+          thumbnail: c.thumbnail || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&q=80",
+        }));
+        setCatalogCourses(loadedCatalog);
+      }
     } catch (e) {
-      const fallbackEnrollments = await studentService.getEnrolledCourses();
-      setEnrollments(fallbackEnrollments);
+      console.warn("Catalog fetch fallback");
+    }
+
+    try {
+      const rawEnrollments = await studentService.getEnrolledCourses();
+      if (Array.isArray(rawEnrollments)) {
+        const enriched = rawEnrollments.map((item) => {
+          const cId = item.courseId || item.course_id;
+          const foundCourse = loadedCatalog.find((c) => (c.course_id || c.courseId) === cId) || item.course || {};
+          return {
+            ...item,
+            enrollment_id: item.enrollmentId || item.enrollment_id || item.id,
+            student_user_id: item.studentUserId || item.student_user_id,
+            course_id: cId,
+            status: item.status || "active",
+            progress: item.progress || 0,
+            course: {
+              title: foundCourse.title || "Course #" + cId,
+              description: foundCourse.description || "",
+              image: foundCourse.thumbnail || foundCourse.image || "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?auto=format&fit=crop&w=200&q=80",
+              institute_name: foundCourse.institute_name || "Tech Elevate Academy",
+            }
+          };
+        });
+        setEnrollments(enriched);
+      }
+    } catch (e) {
+      console.warn("Enrollments fetch fallback", e);
     }
 
     try {
@@ -176,13 +224,6 @@ function StudentDashboard() {
       setCertificates((certsData && certsData.length > 0) ? certsData : []);
     } catch (e) {
       console.warn("Certs fetch fallback");
-    }
-
-    try {
-      const catalogData = await studentService.getBrowseCatalog();
-      setCatalogCourses(catalogData || []);
-    } catch (e) {
-      console.warn("Catalog fetch fallback");
     }
 
     try {
@@ -199,6 +240,18 @@ function StudentDashboard() {
   useEffect(() => {
     fetchFilteredCatalog();
   }, [selectedCategory, searchQuery, priceFilter]);
+
+  useEffect(() => {
+    if (location.state?.enrollCourseId && catalogCourses.length > 0) {
+      const targetCourse = catalogCourses.find(
+        (c) => (c.course_id || c.id) === location.state.enrollCourseId
+      );
+      if (targetCourse) {
+        setActiveSection("browse");
+        setSelectedCourseForEnroll(targetCourse);
+      }
+    }
+  }, [location.state, catalogCourses]);
 
   const fetchFilteredCatalog = async () => {
     setCoursePage(1); // Reset page on filter change
@@ -265,6 +318,7 @@ function StudentDashboard() {
         enrollmentId: selectedCourseForReview.enrollment_id,
         rating: reviewRating,
         comment: reviewComment,
+        studentUserId: authUser?.user_id || profile.user_id,
       });
 
       showToast("Thank you! Review submitted successfully.", "success");
@@ -803,12 +857,21 @@ function StudentDashboard() {
                             </div>
 
                             <div className="d-flex gap-2">
-                              <button
-                                className="sd-btn-enroll flex-grow-1"
-                                onClick={() => setSelectedCourseForEnroll(course)}
-                              >
-                                Enroll Now
-                              </button>
+                              {isEnrolled(course.course_id) ? (
+                                <button
+                                  className="sd-btn-outline flex-grow-1 bg-success-subtle text-success border-success fw-bold"
+                                  onClick={() => setActiveSection("courses")}
+                                >
+                                  Enrolled ✓
+                                </button>
+                              ) : (
+                                <button
+                                  className="sd-btn-enroll flex-grow-1"
+                                  onClick={() => setSelectedCourseForEnroll(course)}
+                                >
+                                  Enroll Now
+                                </button>
+                              )}
                               <button
                                 className="sd-btn-outline"
                                 onClick={() => {
@@ -1182,16 +1245,28 @@ function StudentDashboard() {
               </div>
             )}
 
-            <button
-              className="sd-btn-resume w-100 mt-2"
-              onClick={() => {
-                const c = selectedCourseDetail;
-                setSelectedCourseDetail(null);
-                setSelectedCourseForEnroll(c);
-              }}
-            >
-              Enroll Now for ₹{selectedCourseDetail.price}
-            </button>
+            {isEnrolled(selectedCourseDetail.course_id) ? (
+              <button
+                className="sd-btn-outline w-100 mt-2 bg-success-subtle text-success border-success fw-bold py-2.5"
+                onClick={() => {
+                  setSelectedCourseDetail(null);
+                  setActiveSection("courses");
+                }}
+              >
+                Enrolled ✓ (View in My Courses)
+              </button>
+            ) : (
+              <button
+                className="sd-btn-resume w-100 mt-2"
+                onClick={() => {
+                  const c = selectedCourseDetail;
+                  setSelectedCourseDetail(null);
+                  setSelectedCourseForEnroll(c);
+                }}
+              >
+                Enroll Now for ₹{selectedCourseDetail.price}
+              </button>
+            )}
           </div>
         </div>
       )}

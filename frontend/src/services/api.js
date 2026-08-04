@@ -1,14 +1,15 @@
 const API_BASE_URL = "http://localhost:8080";
 
 function getToken() {
-  const savedUser =
-    localStorage.getItem("user") || sessionStorage.getItem("user");
+  const directToken = localStorage.getItem("token") || sessionStorage.getItem("token");
+  if (directToken && !directToken.startsWith("{")) return directToken;
 
+  const savedUser = localStorage.getItem("user") || sessionStorage.getItem("user");
   if (!savedUser) return null;
 
   try {
     const parsed = JSON.parse(savedUser);
-    return parsed.token || null;
+    return parsed.token || parsed.jwtToken || parsed.accessToken || parsed.user?.token || null;
   } catch (e) {
     console.error("Error parsing saved user token", e);
     return null;
@@ -16,7 +17,19 @@ function getToken() {
 }
 
 function buildUrl(url, params) {
-  const fullUrl = url.startsWith("http") ? url : `${API_BASE_URL}${url}`;
+  let fullUrl = url;
+  if (!url.startsWith("http")) {
+    let baseUrl = "http://localhost:8080";
+    if (
+      url.startsWith("/api/enrollments") ||
+      url.startsWith("/api/payments") ||
+      url.startsWith("/api/reviews") ||
+      url.startsWith("/api/dashboard")
+    ) {
+      baseUrl = "http://localhost:8082";
+    }
+    fullUrl = `${baseUrl}${url}`;
+  }
 
   if (!params || Object.keys(params).length === 0) {
     return fullUrl;
@@ -59,7 +72,8 @@ async function request(method, url, { params, body } = {}) {
   try {
     res = await fetch(fullUrl, fetchOptions);
   } catch (networkError) {
-    const err = new Error("Network Error");
+    console.error("API Fetch Error for URL:", fullUrl, networkError);
+    const err = new Error(networkError.message || "Network Error");
     err.response = null;
     throw err;
   }

@@ -70,7 +70,14 @@ export default function CourseDetail() {
                 <div className="enroll-card-body">
                   <button
                     className="btn btn-gradient-primary w-100 py-2 fw-semibold mb-2"
-                    onClick={() => navigate(`/checkout/${course.id}`)}
+                    onClick={() => {
+                      const savedUser = localStorage.getItem("user") || sessionStorage.getItem("user");
+                      if (savedUser) {
+                        navigate("/student-dashboard", { state: { enrollCourseId: course.id } });
+                      } else {
+                        navigate("/login");
+                      }
+                    }}
                   >
                     Enroll now
                   </button>

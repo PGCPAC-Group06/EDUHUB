@@ -416,6 +416,13 @@ const INITIAL_CERTIFICATES = [
   },
 ];
 
+// Helper to get active user ID
+const getUserId = (userId) => {
+  if (userId) return userId;
+  const storedAuth = JSON.parse(localStorage.getItem("user") || sessionStorage.getItem("user") || "{}")?.user;
+  return storedAuth?.user_id || 101;
+};
+
 // Local storage helper
 const getStoredData = (key, fallback) => {
   const item = localStorage.getItem(key);
@@ -425,10 +432,6 @@ const getStoredData = (key, fallback) => {
   }
   try {
     const parsed = JSON.parse(item);
-    if (Array.isArray(fallback) && Array.isArray(parsed) && parsed.length === 0) {
-      localStorage.setItem(key, JSON.stringify(fallback));
-      return fallback;
-    }
     return parsed;
   } catch (e) {
     localStorage.setItem(key, JSON.stringify(fallback));
@@ -527,10 +530,11 @@ export const studentService = {
   // 4. Fetch Enrolled Courses
   async getEnrolledCourses(studentUserId) {
     try {
-      const response = await api.get(`/api/student/enrollments`);
-      return response.data;
+      const response = await api.get("/api/enrollments");
+      return Array.isArray(response.data) ? response.data : [];
     } catch (err) {
-      return getStoredData("eduhub_enrollments", INITIAL_ENROLLMENTS);
+      console.error("Get Enrollments API Error:", err);
+      return [];
     }
   },
 
@@ -577,94 +581,53 @@ export const studentService = {
 
   // 7. Process Course Enrollment & Payment
   async processEnrollmentAndPayment({ studentUserId, course, paymentMethod }) {
-    const payload = {
-      student_user_id: studentUserId || 101,
-      course_id: course.course_id,
-      total_amount: course.price,
-      payment_method: paymentMethod || "Credit Card",
-      payment_status: "success",
-      transaction_id: "TXN_" + Date.now(),
-    };
-
+    const targetCourseId = course.course_id || course.courseId || course.id;
     try {
-      const response = await api.post("/api/student/enroll-and-pay", payload);
-      return response.data;
-    } catch (err) {
-      const currentEnrollments = getStoredData("eduhub_enrollments", INITIAL_ENROLLMENTS);
-      
-      const exists = currentEnrollments.find((e) => e.course_id === course.course_id);
-      if (exists) {
-        throw new Error("You are already enrolled in this course!");
-      }
-
-      const newEnrollment = {
-        enrollment_id: Date.now(),
-        student_user_id: payload.student_user_id,
-        course_id: course.course_id,
-        payment_id: Math.floor(Math.random() * 10000),
-        enrollment_date: new Date().toISOString().split("T")[0],
-        status: "active",
-        progress: 0,
-        course: course,
-      };
-
-      const updatedEnrollments = [newEnrollment, ...currentEnrollments];
-      setStoredData("eduhub_enrollments", updatedEnrollments);
-
-      const activities = getStoredData("eduhub_activities", INITIAL_ACTIVITIES);
-      const newActivity = {
-        id: Date.now(),
-        type: "enrollment",
-        title: `Enrolled in "${course.title}"`,
-        time: "Just now",
-        icon: "check",
-      };
-      setStoredData("eduhub_activities", [newActivity, ...activities]);
-
+      const response = await api.post("/api/enrollments", {
+        courseId: Number(targetCourseId),
+      });
       return {
         success: true,
         message: "Payment & Enrollment successful!",
-        enrollment: newEnrollment,
+        enrollment: response.data,
       };
+    } catch (err) {
+      console.error("Enrollment API Error:", err);
+      const msg = err.response?.data?.message || err.response?.data || err.message || "Failed to process enrollment.";
+      throw new Error(msg);
     }
   },
 
   // 8. Submit Review & Rating
-  async submitReview({ enrollmentId, rating, comment }) {
+  async submitReview({ enrollmentId, rating, comment, studentUserId }) {
     const payload = {
-      enrollment_id: enrollmentId,
+      enrollmentId: Number(enrollmentId),
       rating: Number(rating),
       comment: comment,
-      created_at: new Date().toISOString(),
     };
 
     try {
-      const response = await api.post("/api/student/reviews", payload);
-      return response.data;
+      const response = await api.post("/api/reviews", payload);
+      return { success: true, message: "Thank you! Your review has been submitted.", data: response.data };
     } catch (err) {
-      const activities = getStoredData("eduhub_activities", INITIAL_ACTIVITIES);
-      const newActivity = {
-        id: Date.now(),
-        type: "review",
-        title: `Submitted ${rating}-star review`,
-        time: "Just now",
-        icon: "star",
-      };
-      setStoredData("eduhub_activities", [newActivity, ...activities]);
-
-      return { success: true, message: "Thank you! Your review has been submitted." };
+      console.error("Review API Error:", err);
+      const msg = err.response?.data?.message || err.response?.data || err.message || "Failed to submit review.";
+      throw new Error(msg);
     }
   },
 
   // 9. Fetch Dashboard Summary
-  async getDashboardSummary() {
+  async getDashboardSummary(studentUserId) {
+    const targetUserId = getUserId(studentUserId);
+    const storageKey = `eduhub_enrollments_${targetUserId}`;
+    const defaultData = targetUserId === 101 ? INITIAL_ENROLLMENTS : [];
     try {
       const response = await api.get("/api/student/dashboard-summary");
       return response.data;
     } catch (err) {
-      const enrollments = getStoredData("eduhub_enrollments", INITIAL_ENROLLMENTS);
-      const certificates = getStoredData("eduhub_certificates", INITIAL_CERTIFICATES);
-      const activities = getStoredData("eduhub_activities", INITIAL_ACTIVITIES);
+      const enrollments = getStoredData(storageKey, defaultData);
+      const certificates = getStoredData(`eduhub_certificates_${targetUserId}`, targetUserId === 101 ? INITIAL_CERTIFICATES : []);
+      const activities = getStoredData(`eduhub_activities_${targetUserId}`, targetUserId === 101 ? INITIAL_ACTIVITIES : []);
 
       return {
         coursesInProgress: enrollments.filter((e) => e.progress < 100).length,
@@ -676,12 +639,14 @@ export const studentService = {
   },
 
   // 10. Fetch Certificates
-  async getCertificates() {
+  async getCertificates(studentUserId) {
+    const targetUserId = getUserId(studentUserId);
     try {
       const response = await api.get("/api/student/certificates");
       return response.data;
     } catch (err) {
-      return getStoredData("eduhub_certificates", INITIAL_CERTIFICATES);
+      const defaultCerts = targetUserId === 101 ? INITIAL_CERTIFICATES : [];
+      return getStoredData(`eduhub_certificates_${targetUserId}`, defaultCerts);
     }
   },
 
@@ -689,3 +654,5 @@ export const studentService = {
     return MOCK_CATEGORIES;
   }
 };
+
+export default studentService;
