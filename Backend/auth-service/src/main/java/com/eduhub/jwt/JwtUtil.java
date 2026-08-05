@@ -4,32 +4,31 @@ import java.util.Date;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 
 @Component
 public class JwtUtil {
-    
-	@Value("${jwt.secret}")
-	private String secretKey;
+
+    @Value("${jwt.secret}")
+    private String secretKey;
 
     @Value("${jwt.expiration}")
-	private long expirationTime;
-   
-	
-    private SecretKey getKey() {
+    private long expirationTime;
 
+    private SecretKey getKey() {
         return Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
-
-    // Generate Token with Role
-    public String generateToken(String email, String role) {
+    // Generate Token
+    public String generateToken(Integer userId, String email, String role) {
 
         return Jwts.builder()
+
+                .claim("userId", userId)
 
                 .subject(email)
 
@@ -38,7 +37,7 @@ public class JwtUtil {
                 .issuedAt(new Date())
 
                 .expiration(
-                    new Date(System.currentTimeMillis() + expirationTime)
+                        new Date(System.currentTimeMillis() + expirationTime)
                 )
 
                 .signWith(getKey())
@@ -46,6 +45,21 @@ public class JwtUtil {
                 .compact();
     }
 
+    // Extract UserId
+    public Integer extractUserId(String token) {
+
+        return Jwts.parser()
+
+                .verifyWith(getKey())
+
+                .build()
+
+                .parseSignedClaims(token)
+
+                .getPayload()
+
+                .get("userId", Integer.class);
+    }
 
     // Extract Email
     public String extractEmail(String token) {
@@ -63,7 +77,6 @@ public class JwtUtil {
                 .getSubject();
     }
 
-
     // Extract Role
     public String extractRole(String token) {
 
@@ -80,7 +93,6 @@ public class JwtUtil {
                 .get("role", String.class);
     }
 
-
     // Validate Token
     public boolean validateToken(String token) {
 
@@ -88,16 +100,15 @@ public class JwtUtil {
 
             Jwts.parser()
 
-                .verifyWith(getKey())
+                    .verifyWith(getKey())
 
-                .build()
+                    .build()
 
-                .parseSignedClaims(token);
+                    .parseSignedClaims(token);
 
             return true;
 
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
 
             return false;
         }

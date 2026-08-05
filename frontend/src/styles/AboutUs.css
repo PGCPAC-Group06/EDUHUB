@@ -1,0 +1,199 @@
+/* ---------- SHARED (matches existing theme) ---------- */
+.hero-eyebrow {
+  color: #6d28d9;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.hero-title {
+  color: #111827;
+}
+
+.hero-subtitle {
+  max-width: 520px;
+}
+
+.section-eyebrow {
+  color: #7c3aed;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.btn-gradient-primary {
+  background: linear-gradient(90deg, #7c3aed 0%, #4f46e5 100%);
+  border: none;
+  border-radius: 8px;
+  color: #fff !important;
+  text-decoration: none;
+}
+
+.btn-gradient-primary:hover {
+  color: #fff !important;
+  opacity: 0.9;
+  text-decoration: none;
+}
+
+.btn-white-outline {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  color: #111827 !important;
+  text-decoration: none;
+}
+
+.btn-white-outline:hover {
+  background: #f9fafb;
+  color: #111827 !important;
+}
+
+.feature-card {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #eef0f2;
+}
+
+.feature-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.icon-purple {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+
+.icon-blue {
+  background: #dbeafe;
+  color: #3b82f6;
+}
+
+.icon-orange {
+  background: #ffedd5;
+  color: #f97316;
+}
+
+.icon-green {
+  background: #dcfce7;
+  color: #22c55e;
+}
+
+/* ---------- ABOUT HERO ---------- */
+.about-hero {
+  padding: 3rem 0;
+  background: linear-gradient(135deg, #eef0ff 0%, #f5f3ff 100%);
+}
+
+.about-hero-card-wrapper {
+  max-width: 380px;
+  border-radius: 16px;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+}
+
+.about-hero-card-inner {
+  background: #fff;
+  padding: 1.25rem;
+  border-radius: 12px;
+}
+
+.about-hero-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ede9fe;
+  color: #7c3aed;
+}
+
+/* ---------- STATS ---------- */
+.about-stats-section {
+  background: #fff;
+  border-bottom: 1px solid #eef0f2;
+}
+
+.stat-box {
+  padding: 1.25rem 0.5rem;
+}
+
+.stat-value {
+  background: linear-gradient(90deg, #7c3aed 0%, #4f46e5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ---------- VALUES ---------- */
+.about-values-section {
+  padding: 3rem 0;
+  background: #f3f4f6;
+}
+
+/* ---------- TIMELINE ---------- */
+.about-timeline-section {
+  padding: 3rem 0;
+  background: #fff;
+}
+
+.timeline-wrapper {
+  max-width: 720px;
+  position: relative;
+  padding-left: 1.5rem;
+  border-left: 2px solid #ede9fe;
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 2rem;
+  padding-left: 1.5rem;
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -1.6rem;
+  top: 0.3rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #7c3aed 0%, #4f46e5 100%);
+}
+
+.timeline-year {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #7c3aed;
+  margin-bottom: 0.25rem;
+}
+
+/* ---------- CLOSING CTA ---------- */
+.about-cta-section {
+  padding: 4rem 0;
+  background: linear-gradient(135deg, #f5f3ff 0%, #eef0ff 100%);
+}
+
+.about-cta-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ede9fe;
+  color: #7c3aed;
+}
+
+.about-cta-subtitle {
+  max-width: 560px;
+}

@@ -1,0 +1,72 @@
+.eduhub-navbar {
+  background: #ffffff;
+  border-bottom: 1px solid #eef0f4;
+  padding: 12px 0;
+}
+
+.eduhub-logo-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #6d4cf0, #8b5cf6);
+  color: #fff;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eduhub-brand-text {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #16161f;
+}
+
+.eduhub-nav-link {
+  color: #3a3a45 !important;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.eduhub-nav-link:hover {
+  color: #6d4cf0 !important;
+}
+
+.eduhub-btn-outline,
+.eduhub-btn-solid {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none !important;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.eduhub-btn-outline {
+  background: #ffffff;
+  border: 1px solid #dfe3ea;
+  color: #4b5563;
+  padding: 10px 22px;
+  border-radius: 12px;
+}
+
+.eduhub-btn-outline:hover {
+  text-decoration: none !important;
+  color: #6d4cf0;
+  border-color: #6d4cf0;
+}
+
+.eduhub-btn-solid {
+  background: linear-gradient(135deg, #6d4cf0, #8b5cf6);
+  color: #ffffff;
+  padding: 10px 24px;
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 8px 18px rgba(109, 76, 240, 0.22);
+}
+
+.eduhub-btn-solid:hover {
+  text-decoration: none !important;
+  color: #ffffff;
+}

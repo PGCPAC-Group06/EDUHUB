@@ -1,15 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const savedToken = localStorage.getItem("eduhub_token");
-const savedUser = localStorage.getItem("eduhub_user")
-  ? JSON.parse(localStorage.getItem("eduhub_user"))
-  : null;
+// localStorage se saved user uthao
+const savedUser = JSON.parse(localStorage.getItem("user"));
 
 const initialState = {
-  isLoggedIn: !!savedToken,
-  user: savedUser,
-  role: savedUser?.role || null,
-  token: savedToken || null,
+  isLoggedIn: savedUser ? true : false,
+  user: savedUser ? savedUser.user : null,
+  role: savedUser ? savedUser.user.role : null,
 };
 
 const authSlice = createSlice({
@@ -17,36 +14,17 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginSuccess: (state, action) => {
-      const payload = action.payload;
-      const token = payload.token;
-
-      // Handle both flat LoginResponse ({ userId, name, email, role, token })
-      // and nested ({ user: {...}, token: ... })
-      const user = payload.user || {
-        userId: payload.userId,
-        name: payload.name,
-        email: payload.email,
-        role: payload.role,
-      };
-
       state.isLoggedIn = true;
-      state.user = user;
-      state.role = user.role;
-      state.token = token || null;
-
-      if (token) {
-        localStorage.setItem("eduhub_token", token);   //Token stored in react
-      }
-      localStorage.setItem("eduhub_user", JSON.stringify(user));
+      state.user = action.payload.user;
+      state.role = action.payload.user.role;
     },
 
     logout: (state) => {
+      localStorage.removeItem("user");
+
       state.isLoggedIn = false;
       state.user = null;
       state.role = null;
-      state.token = null;
-      localStorage.removeItem("eduhub_token");
-      localStorage.removeItem("eduhub_user");
     },
   },
 });

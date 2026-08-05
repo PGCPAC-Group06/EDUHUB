@@ -1,34 +1,50 @@
 import axios from "axios";
 
-export const AUTH_BASE_URL = import.meta.env.VITE_AUTH_API_URL || "http://localhost:8080/api";
-export const INSTITUTE_BASE_URL = import.meta.env.VITE_INSTITUTE_API_URL || "http://localhost:8081/api";
-export const COURSE_BASE_URL = import.meta.env.VITE_COURSE_API_URL || "http://localhost:8082/api";
+const API_BASE_URL = "http://localhost:8080";
+const BUSINESS_BASE_URL = "http://localhost:8081";
+const TRANSACTION_BASE_URL = "http://localhost:8082";
 
-const createServiceApi = (baseURL) => {
-  const instance = axios.create({
-    baseURL,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+  withCredentials: true,
+});
 
-  instance.interceptors.request.use(
-    (config) => {
-      const token = localStorage.getItem("eduhub_token") || localStorage.getItem("token");
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+export const businessApi = axios.create({
+  baseURL: BUSINESS_BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+  withCredentials: true,
+});
+
+export const transactionApi = axios.create({
+  baseURL: TRANSACTION_BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+  withCredentials: true,
+});
+
+const attachInterceptors = (instance) => {
+  instance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (error.response && error.response.status === 401) {
+        // Cookie expired or invalid
+        localStorage.removeItem("user");
+        sessionStorage.removeItem("user");
+        window.location.href = "/login";
       }
-      return config;
-    },
-    (error) => Promise.reject(error)
+      return Promise.reject(error);
+    }
   );
-
-  return instance;
 };
 
-export const authApi = createServiceApi(AUTH_BASE_URL);
-export const instituteApi = createServiceApi(INSTITUTE_BASE_URL);
-export const courseApi = createServiceApi(COURSE_BASE_URL);
+attachInterceptors(api);
+attachInterceptors(businessApi);
+attachInterceptors(transactionApi);
 
-// Default fallback export for legacy imports
-export default authApi;
+export default api;
