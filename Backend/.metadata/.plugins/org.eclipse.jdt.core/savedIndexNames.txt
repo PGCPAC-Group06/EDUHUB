@@ -1,0 +1,12 @@
+INDEX VERSION 1.134+D:\Academics\C-DAC\Project Docs\Eduhub\EDUHUB\Backend\.metadata\.plugins\org.eclipse.jdt.core
+3861025518.index
+1865797976.index
+3841731651.index
+2791121579.index
+2696272028.index
+4244398060.index
+2827000130.index
+2862044391.index
+3297714429.index
+681930998.index
+2605710207.index

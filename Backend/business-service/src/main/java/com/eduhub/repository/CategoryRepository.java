@@ -1,6 +1,7 @@
 package com.eduhub.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+<<<<<<< HEAD
 
 
 import java.util.Optional;
@@ -16,4 +17,9 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
     boolean existsByCategoryName(String categoryName);
 
+=======
+import com.eduhub.entity.Category;
+
+public interface CategoryRepository extends JpaRepository<Category, Integer> {
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 }

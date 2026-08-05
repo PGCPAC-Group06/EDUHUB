@@ -21,8 +21,11 @@ public interface ReviewService {
     void deleteReview(
             Integer userId,
             Integer reviewId);
+<<<<<<< HEAD
 
     List<ReviewResponse> getAllReviews();
 
     Double getAverageRating();
+=======
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 }

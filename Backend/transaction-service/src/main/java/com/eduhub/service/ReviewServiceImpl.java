@@ -123,6 +123,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         reviewRepository.delete(review);
     }
+<<<<<<< HEAD
 
     @Override
     public List<ReviewResponse> getAllReviews() {
@@ -146,4 +147,6 @@ public class ReviewServiceImpl implements ReviewService {
         }
         return sum / reviews.size();
     }
+=======
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 }

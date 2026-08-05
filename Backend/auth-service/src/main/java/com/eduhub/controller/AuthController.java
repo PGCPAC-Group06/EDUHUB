@@ -7,8 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+<<<<<<< HEAD
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+=======
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 
 import com.eduhub.dto.LoginRequest;
 import com.eduhub.dto.LoginResponse;
@@ -22,6 +29,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+<<<<<<< HEAD
 
     private final AuthService authService;
 
@@ -102,3 +110,29 @@ public class AuthController {
         return ResponseEntity.notFound().build();
     }
 }
+=======
+    
+    private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
+
+        String message = authService.register(request);
+
+        return new ResponseEntity<>(message, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(
+            @Valid @RequestBody LoginRequest request) {
+
+        LoginResponse response = authService.login(request);
+
+        return ResponseEntity.ok(response);
+    }
+}
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a

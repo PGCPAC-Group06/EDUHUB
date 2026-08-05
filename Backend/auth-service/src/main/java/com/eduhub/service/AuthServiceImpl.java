@@ -10,11 +10,15 @@ import com.eduhub.dto.LoginRequest;
 import com.eduhub.dto.LoginResponse;
 import com.eduhub.dto.RegisterRequest;
 import com.eduhub.entity.ApprovalStatus;
+import com.eduhub.entity.InstituteProfile;
 import com.eduhub.entity.Role;
 import com.eduhub.entity.Status;
+import com.eduhub.entity.StudentProfile;
 import com.eduhub.entity.User;
 import com.eduhub.jwt.JwtUtil;
+import com.eduhub.repository.InstituteProfileRepository;
 import com.eduhub.repository.RoleRepository;
+import com.eduhub.repository.StudentProfileRepository;
 import com.eduhub.repository.UserRepository;
 
 @Service
@@ -26,6 +30,15 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private RoleRepository roleRepository;
 
+<<<<<<< HEAD
+=======
+    @Autowired
+    private InstituteProfileRepository instituteProfileRepository;
+
+    @Autowired
+    private StudentProfileRepository studentProfileRepository;
+
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -35,6 +48,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String register(RegisterRequest registerRequest) {
 
+<<<<<<< HEAD
         // Email already exists
         if (userRepository.existsByEmail(registerRequest.getEmail())) {
             return "Email already exists";
@@ -65,10 +79,61 @@ public class AuthServiceImpl implements AuthService {
         } else {
             user.setApprovalStatus(ApprovalStatus.PENDING);
         }
-        user.setCreatedAt(LocalDateTime.now());
+=======
+        if (userRepository.existsByEmail(registerRequest.getEmail())) {
+            throw new RuntimeException("Email already exists");
+        }
 
+        String reqRole = registerRequest.getRole() != null ? registerRequest.getRole().trim() : "student";
+
+        Role role = roleRepository.findAll()
+                .stream()
+                .filter(r -> r.getRoleName().equalsIgnoreCase(reqRole)
+                        || r.getRoleName().equalsIgnoreCase("ROLE_" + reqRole)
+                        || r.getRoleName().toLowerCase().contains(reqRole.toLowerCase()))
+                .findFirst()
+                .orElseGet(() -> {
+                    Role newRole = new Role();
+                    newRole.setRoleName(reqRole.toLowerCase());
+                    return roleRepository.save(newRole);
+                });
+
+        User user = new User();
+        user.setName(registerRequest.getName());
+        user.setEmail(registerRequest.getEmail());
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        user.setRole(role);
+        user.setStatus(Status.ACTIVE);
+
+        String roleStr = role.getRoleName().toLowerCase();
+
+        if (roleStr.contains("institute")) {
+            user.setApprovalStatus(ApprovalStatus.PENDING);
+        } else {
+            user.setApprovalStatus(ApprovalStatus.APPROVED);
+        }
+
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
+        user.setCreatedAt(LocalDateTime.now());
+        User savedUser = userRepository.save(user);
+
+<<<<<<< HEAD
         // Save User
         userRepository.save(user);
+=======
+        if (roleStr.contains("institute")) {
+            InstituteProfile instituteProfile = new InstituteProfile();
+            instituteProfile.setUser(savedUser);
+            instituteProfile.setAddress(registerRequest.getAddress() != null ? registerRequest.getAddress() : "");
+            instituteProfile.setGstin(registerRequest.getGstin() != null ? registerRequest.getGstin() : "");
+            instituteProfile.setContactNo(registerRequest.getContact() != null ? registerRequest.getContact() : "");
+            instituteProfileRepository.save(instituteProfile);
+        } else if (roleStr.contains("student")) {
+            StudentProfile studentProfile = new StudentProfile();
+            studentProfile.setUser(savedUser);
+            studentProfileRepository.save(studentProfile);
+        }
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 
         return "User Registered Successfully";
     }
@@ -76,6 +141,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
 
+<<<<<<< HEAD
         // Find User
         User user = userRepository
                 .findByEmail(loginRequest.getEmail())
@@ -117,10 +183,42 @@ public class AuthServiceImpl implements AuthService {
         response.setName(user.getName());
         response.setEmail(user.getEmail());
         response.setRole(user.getRole().getRoleName());
+=======
+        User user = userRepository.findByEmail(loginRequest.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid Password");
+        }
+
+        if (user.getStatus() == Status.BLOCKED) {
+            throw new RuntimeException("Account is blocked by admin.");
+        }
+
+        String roleStr = user.getRole() != null ? user.getRole().getRoleName().toLowerCase() : "student";
+
+        if (roleStr.contains("institute")) {
+            if (user.getApprovalStatus() == ApprovalStatus.PENDING) {
+                throw new RuntimeException("Your institute is pending admin approval.");
+            }
+            if (user.getApprovalStatus() == ApprovalStatus.REJECTED) {
+                throw new RuntimeException("Your institute registration has been rejected.");
+            }
+        }
+
+        String token = jwtUtil.generateToken(user);
+
+        LoginResponse response = new LoginResponse();
+        response.setUserId(user.getUserId());
+        response.setName(user.getName());
+        response.setEmail(user.getEmail());
+        response.setRole(roleStr);
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
         response.setToken(token);
 
         return response;
     }
+<<<<<<< HEAD
 
     @Override
     public void changePassword(Integer userId, com.eduhub.dto.ChangePasswordRequest request) {
@@ -134,4 +232,6 @@ public class AuthServiceImpl implements AuthService {
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
     }
+=======
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 }

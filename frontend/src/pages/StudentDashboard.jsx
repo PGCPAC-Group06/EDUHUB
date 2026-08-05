@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../redux/authSlice";
 import { studentService } from "../services/studentService";
+<<<<<<< HEAD
 import api from "../services/api";
+=======
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 import "../styles/StudentDashboard.css";
 
 // Icons from react-icons/fi & fa
@@ -106,7 +109,33 @@ function StudentDashboard() {
 
   // Notification State
   const [showNotifications, setShowNotifications] = useState(false);
+<<<<<<< HEAD
   const [notifications, setNotifications] = useState([]);
+=======
+  const [notifications, setNotifications] = useState([
+    {
+      id: 1,
+      title: "Enrollment Confirmed",
+      message: "Your offline batch enrollment for UX Design Fundamentals is active.",
+      time: "10 mins ago",
+      read: false,
+    },
+    {
+      id: 2,
+      title: "New Syllabus Uploaded",
+      message: "Data Science Hub uploaded new notes for Python Data Analysis.",
+      time: "2 hours ago",
+      read: false,
+    },
+    {
+      id: 3,
+      title: "Offline Batch Reminder",
+      message: "Classroom batch starts tomorrow at 10:00 AM.",
+      time: "1 day ago",
+      read: true,
+    },
+  ]);
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 
   const markAllNotificationsRead = () => {
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
@@ -171,12 +200,16 @@ function StudentDashboard() {
       console.warn("Institutes fetch fallback");
     }
 
+<<<<<<< HEAD
     try {
       const categoriesData = await studentService.getCategories();
       setCategories(categoriesData || []);
     } catch (e) {
       console.warn("Categories fetch fallback");
     }
+=======
+    setCategories(studentService.getCategories());
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
   };
 
   // Filter Courses Handler
@@ -207,12 +240,16 @@ function StudentDashboard() {
   };
 
   // Logout Handler
+<<<<<<< HEAD
   const handleLogout = async () => {
     try {
       await api.post("/api/auth/logout");
     } catch (e) {
       console.error("Logout error", e);
     }
+=======
+  const handleLogout = () => {
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
     dispatch(logout());
     navigate("/login");
   };
@@ -421,7 +458,23 @@ function StudentDashboard() {
         <main className="sd-main">
           {/* Header Bar */}
           <header className="sd-header">
+<<<<<<< HEAD
             <div className="sd-search-box-removed" style={{ flex: 1 }}></div>
+=======
+            <div className="sd-search-box">
+              <FiSearch className="sd-search-icon" />
+              <input
+                type="text"
+                className="sd-search-input"
+                placeholder="Search courses, institutes..."
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  if (activeSection !== "browse") setActiveSection("browse");
+                }}
+              />
+            </div>
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 
             <div className="sd-header-actions">
               {/* Interactive Notifications Dropdown */}
@@ -1081,6 +1134,7 @@ function StudentDashboard() {
               <div className="mb-3">
                 <p className="text-secondary fs-7 mb-3">{selectedCourseDetail.description}</p>
                 <h5 className="fw-bold mb-3 fs-6">Course Modules & Curriculum</h5>
+<<<<<<< HEAD
                 {(selectedCourseDetail.syllabus || []).length > 0 ? (selectedCourseDetail.syllabus || []).map((mod) => (
                   <div key={mod.title} className="id-card" style={{ padding: "1.25rem 1.5rem" }}>
                     <div className="d-flex justify-content-between mb-2">
@@ -1094,6 +1148,25 @@ function StudentDashboard() {
                     </ul>
                   </div>
                 )) : <div className="text-muted fs-8 text-center mt-3">No syllabus available.</div>}
+=======
+                {selectedCourseDetail.syllabus && selectedCourseDetail.syllabus.length > 0 ? (
+                  selectedCourseDetail.syllabus.map((mod) => (
+                    <div key={mod.module_number} className="sd-module-card">
+                      <div className="sd-module-title">
+                        Module {mod.module_number}: {mod.title}
+                      </div>
+                      {mod.topics &&
+                        mod.topics.map((t, idx) => (
+                          <div key={idx} className="sd-topic-item">
+                            <FiCheck className="text-success" /> {t}
+                          </div>
+                        ))}
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-muted fs-7">Syllabus breakdown will be provided upon enrollment.</p>
+                )}
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
               </div>
             )}
 
@@ -1138,6 +1211,7 @@ function StudentDashboard() {
                   </div>
                 </div>
 
+<<<<<<< HEAD
                 <div className="d-flex flex-column gap-3 mt-3">
                 {(selectedCourseDetail.reviews || []).length > 0 ? (selectedCourseDetail.reviews || []).map((rev) => (
                   <div key={rev.id || rev.review_id} className="id-card" style={{ padding: "1.25rem 1.5rem" }}>
@@ -1150,6 +1224,22 @@ function StudentDashboard() {
                   </div>
                 )) : <div className="text-muted fs-8 text-center mt-3">No reviews available.</div>}
               </div>
+=======
+                {selectedCourseDetail.reviews && selectedCourseDetail.reviews.length > 0 ? (
+                  selectedCourseDetail.reviews.map((rev) => (
+                    <div key={rev.review_id} className="p-3 border-bottom">
+                      <div className="d-flex justify-content-between align-items-center mb-1">
+                        <span className="fw-bold fs-7">{rev.student_name}</span>
+                        <span className="text-warning fs-7">⭐ {rev.rating} / 5</span>
+                      </div>
+                      <p className="text-secondary fs-7 mb-1">{rev.comment}</p>
+                      <span className="text-muted fs-8">{rev.created_at}</span>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-muted fs-7 py-3 text-center">No student reviews submitted for this course yet.</p>
+                )}
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
               </div>
             )}
 
@@ -1288,6 +1378,7 @@ function StudentDashboard() {
             <p className="text-muted fs-7 mb-3">
               Download study files for <strong>{selectedCourseForMaterials.title}</strong>
             </p>
+<<<<<<< HEAD
             <div className="d-flex flex-column gap-2 mb-3">
               {(selectedCourseForMaterials.materials || []).length > 0 ? (selectedCourseForMaterials.materials || []).map((mat) => (
                 <div key={mat.id || mat.material_id} className="id-card d-flex justify-content-between align-items-center p-3">
@@ -1306,6 +1397,29 @@ function StudentDashboard() {
                   <button className="id-btn-outline-purple btn-sm" style={{ width: "auto" }}>Download</button>
                 </div>
               )) : (
+=======
+
+            <div className="d-flex flex-column gap-2 mb-3">
+              {selectedCourseForMaterials.materials && selectedCourseForMaterials.materials.length > 0 ? (
+                selectedCourseForMaterials.materials.map((mat) => (
+                  <div
+                    key={mat.id}
+                    className="p-3 border rounded-3 d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <div className="fw-bold fs-7">{mat.title}</div>
+                      <div className="text-muted fs-7">{mat.size}</div>
+                    </div>
+                    <button
+                      className="sd-btn-outline btn-sm py-1 px-3"
+                      onClick={() => showToast(`Downloading ${mat.title}...`)}
+                    >
+                      <FiDownload />
+                    </button>
+                  </div>
+                ))
+              ) : (
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                 <p className="text-muted py-3 text-center">No study materials uploaded for this course yet.</p>
               )}
             </div>
