@@ -3,6 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../redux/authSlice";
 import { instituteService } from "../services/instituteService";
+<<<<<<< HEAD
+import api from "../services/api";
+=======
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 import "../styles/InstituteDashboard.css";
 
 // React Icons
@@ -48,6 +52,102 @@ function InstituteDashboard() {
 
   // Profile & Core States
   const [profile, setProfile] = useState({
+<<<<<<< HEAD
+    name: authUser?.name || "Institute",
+    email: authUser?.email || "",
+    address: "",
+    gstin: "",
+    contact_no: "",
+    description: "",
+    logo: "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=200&q=80",
+    approval_status: "approved",
+  });
+
+  const [summaryData, setSummaryData] = useState(null);
+  const [courses, setCourses] = useState([]);
+  const [students, setStudents] = useState([]);
+  const [instructors, setInstructors] = useState([]);
+  const [documents, setDocuments] = useState([]);
+  const [categories, setCategories] = useState([]);
+
+  // Search Filters & Pagination
+  const [globalSearch, setGlobalSearch] = useState("");
+  const [courseSearch, setCourseSearch] = useState("");
+  const [studentSearch, setStudentSearch] = useState("");
+  const [courseCategoryFilter, setCourseCategoryFilter] = useState("");
+  const [courseStatusFilter, setCourseStatusFilter] = useState("");
+  const [courseCurrentPage, setCourseCurrentPage] = useState(1);
+  const coursesPerPage = 6;
+
+  // Toast Notification
+  const [toastMessage, setToastMessage] = useState(null);
+
+  // Modal States
+  const [showAddCourseModal, setShowAddCourseModal] = useState(false);
+  const [showManageCourseModal, setShowManageCourseModal] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState(null);
+
+  const [showAddInstructorModal, setShowAddInstructorModal] = useState(false);
+  const [showEditInstructorModal, setShowEditInstructorModal] = useState(false);
+  const [selectedInstructor, setSelectedInstructor] = useState(null);
+  const [instructorSearch, setInstructorSearch] = useState("");
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
+  const [showEditProfileModal, setShowEditProfileModal] = useState(false);
+  const [showUploadDocModal, setShowUploadDocModal] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+
+  // Admin Notifications (Empty by default, fetched if API exists)
+  const [notifications, setNotifications] = useState([]);
+
+  // Forms
+  const [newCourseForm, setNewCourseForm] = useState({
+    title: "",
+    description: "",
+    price: "",
+    duration: "",
+    instructorId: "",
+    instructor_name: "",
+    categoryId: "",
+    category: "",
+    status: "pending",
+    thumbnail: "",
+  });
+
+  const [newInstructorForm, setNewInstructorForm] = useState({
+    name: "",
+    specialization: "",
+    experience: 5,
+    bio: "",
+    photo: "",
+  });
+
+  const [editInstructorForm, setEditInstructorForm] = useState({
+    name: "",
+    specialization: "",
+    experience: "",
+    bio: "",
+    photo: "",
+  });
+
+  const [uploadDocForm, setUploadDocForm] = useState({
+    document_type: "Registration Certificate",
+    document_name: "",
+    file_name: "",
+  });
+
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+
+  const [editProfileForm, setEditProfileForm] = useState({
+    name: "",
+    address: "",
+    gstin: "",
+    contact_no: "",
+    description: "",
+=======
     name: authUser?.name || "Nova Institute",
     email: authUser?.email || "contact@novainstitute.com",
     address: "Building B, Tech Park, Sector 62, Noida, UP - 201301",
@@ -56,6 +156,7 @@ function InstituteDashboard() {
     description: "Premier offline and hybrid training institute specializing in Software Engineering, UI/UX Design, and Data Science.",
     logo: "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=200&q=80",
     approval_status: "approved",
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
   });
 
   const [summaryData, setSummaryData] = useState(null);
@@ -159,6 +260,20 @@ function InstituteDashboard() {
     loadDashboardData();
   }, [authUser?.user_id, authUser?.email]);
 
+<<<<<<< HEAD
+  useEffect(() => {
+    if (showAddCourseModal) {
+      instituteService.getCategories().then((cats) => {
+        setCategories(cats || []);
+      }).catch(() => {});
+      instituteService.getInstructors().then((inst) => {
+        setInstructors(inst || []);
+      }).catch(() => {});
+    }
+  }, [showAddCourseModal]);
+
+=======
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
   const loadDashboardData = async () => {
     try {
       const prof = await instituteService.getInstituteProfile(authUser?.user_id, authUser);
@@ -203,6 +318,16 @@ function InstituteDashboard() {
       setDocuments(docs || []);
     } catch (e) {
       console.warn("Documents fetch fallback");
+<<<<<<< HEAD
+    }
+
+    try {
+      const cats = await instituteService.getCategories();
+      setCategories(cats || []);
+    } catch (e) {
+      console.warn("Categories fetch fallback");
+=======
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
     }
   };
 
@@ -211,7 +336,16 @@ function InstituteDashboard() {
     setTimeout(() => setToastMessage(null), 3500);
   };
 
+<<<<<<< HEAD
+  const handleLogout = async () => {
+    try {
+      await api.post("/api/auth/logout");
+    } catch (e) {
+      console.error("Logout error", e);
+    }
+=======
   const handleLogout = () => {
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
     dispatch(logout());
     navigate("/login");
   };
@@ -224,6 +358,127 @@ function InstituteDashboard() {
     return parts[0].substring(0, 2).toUpperCase();
   };
 
+<<<<<<< HEAD
+  const getDefaultThumbnailByCategory = (categoryName) => {
+    const cat = (categoryName || "").toLowerCase();
+    if (cat.includes("web") || cat.includes("program") || cat.includes("develop") || cat.includes("cod") || cat.includes("software")) {
+      return "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80";
+    }
+    if (cat.includes("data") || cat.includes("ai") || cat.includes("machine") || cat.includes("analytic") || cat.includes("science")) {
+      return "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80";
+    }
+    if (cat.includes("cloud") || cat.includes("devops") || cat.includes("network") || cat.includes("security") || cat.includes("cyber")) {
+      return "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=600&q=80";
+    }
+    if (cat.includes("design") || cat.includes("ui") || cat.includes("ux") || cat.includes("graphic") || cat.includes("art")) {
+      return "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=600&q=80";
+    }
+    if (cat.includes("business") || cat.includes("finance") || cat.includes("market") || cat.includes("manage") || cat.includes("seo")) {
+      return "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80";
+    }
+    if (cat.includes("photo") || cat.includes("video") || cat.includes("media") || cat.includes("music")) {
+      return "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=600&q=80";
+    }
+    return "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80";
+  };
+
+  // Handlers for Course Operations
+  const handleCreateCourseSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validation Checks
+    if (!newCourseForm.title || !newCourseForm.title.trim()) {
+      showToast("Validation failure: Course Title is empty!", "error");
+      return;
+    }
+    const parsedPrice = parseFloat(newCourseForm.price);
+    if (!newCourseForm.price || isNaN(parsedPrice) || parsedPrice <= 0) {
+      showToast("Validation failure: Price is invalid!", "error");
+      return;
+    }
+    if (!newCourseForm.categoryId) {
+      showToast("Validation failure: Category not selected!", "error");
+      return;
+    }
+    if (!newCourseForm.duration || !newCourseForm.duration.trim()) {
+      showToast("Validation failure: Duration is missing!", "error");
+      return;
+    }
+
+    let selectedInstructorId = newCourseForm.instructorId;
+    if (selectedInstructorId === "" || selectedInstructorId === null || selectedInstructorId === undefined) {
+      if (instructors.length > 0) {
+        selectedInstructorId = instructors[0].instructorId || instructors[0].instructor_id || instructors[0].id;
+      } else {
+        selectedInstructorId = 0; // Fallback to Default Instructor
+      }
+    }
+    if (selectedInstructorId === "" || selectedInstructorId === null || selectedInstructorId === undefined) {
+      showToast("Validation failure: Please select an Instructor!", "error");
+      return;
+    }
+
+    try {
+      const resolvedThumbnail = (newCourseForm.thumbnail && newCourseForm.thumbnail.trim() !== "")
+        ? newCourseForm.thumbnail.trim()
+        : getDefaultThumbnailByCategory(newCourseForm.category);
+
+      const payload = {
+        title: newCourseForm.title.trim(),
+        description: newCourseForm.description ? newCourseForm.description.trim() : "",
+        price: parsedPrice,
+        duration: newCourseForm.duration.trim(),
+        instructorId: parseInt(selectedInstructorId),
+        categoryId: parseInt(newCourseForm.categoryId),
+        category: newCourseForm.category,
+        categoryName: newCourseForm.category,
+        thumbnail: resolvedThumbnail,
+      };
+
+      // Do not show a success message unless the database transaction completes successfully
+      const created = await instituteService.createCourse(payload);
+
+      const updatedCourses = await instituteService.getCourses();
+      setCourses(updatedCourses && updatedCourses.length > 0 ? updatedCourses : [created, ...courses]);
+      setShowAddCourseModal(false);
+      setNewCourseForm({
+        title: "",
+        description: "",
+        price: "",
+        duration: "",
+        instructorId: "",
+        instructor_name: "",
+        categoryId: "",
+        category: "",
+        status: "pending",
+        thumbnail: "",
+      });
+      // Automatically redirect to Institute Dashboard -> Courses
+      setActiveSection("courses");
+      showToast("Course Created Successfully", "success");
+      loadDashboardData();
+    } catch (err) {
+      console.error("Course creation error:", err);
+      let errorMsg = err.message || "Server error: Failed to process request.";
+      if (typeof err.response?.data === "string" && err.response.data) {
+        errorMsg = err.response.data;
+      } else if (err.response?.data?.message) {
+        errorMsg = err.response.data.message;
+      }
+
+      if (errorMsg.toLowerCase().includes("duplicate")) {
+        showToast("Duplicate course: A course with this title already exists in your institute.", "error");
+      } else if (errorMsg.toLowerCase().includes("validation")) {
+        showToast(`Validation failure: ${errorMsg}`, "error");
+      } else if (errorMsg.toLowerCase().includes("database") || errorMsg.toLowerCase().includes("sql") || errorMsg.toLowerCase().includes("insert")) {
+        showToast("Database insert failure: Could not save course to MySQL database.", "error");
+      } else {
+        showToast(`Server error: ${errorMsg}`, "error");
+      }
+    }
+  };
+
+=======
   // Handlers for Course Operations
   const handleCreateCourseSubmit = async (e) => {
     e.preventDefault();
@@ -251,6 +506,7 @@ function InstituteDashboard() {
     }
   };
 
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
   const handleOpenManageCourse = (course) => {
     setSelectedCourse({ ...course });
     setShowManageCourseModal(true);
@@ -263,6 +519,10 @@ function InstituteDashboard() {
       setCourses(courses.map((c) => (c.course_id === updated.course_id ? updated : c)));
       setShowManageCourseModal(false);
       showToast("Course details updated successfully!", "success");
+<<<<<<< HEAD
+      loadDashboardData();
+=======
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
     } catch (err) {
       showToast("Failed to update course.", "error");
     }
@@ -275,6 +535,10 @@ function InstituteDashboard() {
         setCourses(courses.filter((c) => c.course_id !== courseId));
         setShowManageCourseModal(false);
         showToast("Course deleted successfully!", "success");
+<<<<<<< HEAD
+        loadDashboardData();
+=======
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
       } catch (err) {
         showToast("Failed to delete course.", "error");
       }
@@ -368,6 +632,67 @@ function InstituteDashboard() {
       return;
     }
     try {
+<<<<<<< HEAD
+      await instituteService.addInstructor({
+        ...newInstructorForm,
+        experience: Number(newInstructorForm.experience || 0),
+        photo: (newInstructorForm.photo && newInstructorForm.photo.trim() !== "") ? newInstructorForm.photo.trim() : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+      });
+      showToast("Instructor added successfully!", "success");
+      setShowAddInstructorModal(false);
+      setNewInstructorForm({ name: "", specialization: "", experience: 5, bio: "", photo: "" });
+      loadDashboardData();
+    } catch (err) {
+      console.error("Add instructor failure:", err);
+      const errorMsg = err?.response?.data?.message || (typeof err?.response?.data === 'string' ? err.response.data : null) || err?.message || "Failed to add instructor.";
+      showToast(errorMsg, "error");
+    }
+  };
+
+  const handleEditInstructorClick = (inst) => {
+    setSelectedInstructor(inst);
+    setEditInstructorForm({
+      name: inst.name || "",
+      specialization: inst.specialization || "",
+      experience: inst.experience !== undefined && inst.experience !== null ? inst.experience : 0,
+      bio: inst.bio || "",
+      photo: inst.photo || "",
+    });
+    setShowEditInstructorModal(true);
+  };
+
+  const handleEditInstructorSubmit = async (e) => {
+    e.preventDefault();
+    if (!editInstructorForm.name || !editInstructorForm.specialization) {
+      showToast("Please enter name and specialization!", "error");
+      return;
+    }
+    try {
+      const id = selectedInstructor?.instructorId || selectedInstructor?.instructor_id || selectedInstructor?.id;
+      await instituteService.updateInstructor(id, {
+        ...editInstructorForm,
+        experience: Number(editInstructorForm.experience || 0),
+      });
+      showToast("Instructor updated successfully!", "success");
+      setShowEditInstructorModal(false);
+      setSelectedInstructor(null);
+      loadDashboardData();
+    } catch (err) {
+      showToast("Failed to update instructor.", "error");
+    }
+  };
+
+  const handleDeleteInstructorClick = async (inst) => {
+    if (window.confirm(`Are you sure you want to remove instructor ${inst.name}?`)) {
+      try {
+        const id = inst.instructorId || inst.instructor_id || inst.id;
+        await instituteService.deleteInstructor(id);
+        showToast("Instructor deleted successfully!", "success");
+        loadDashboardData();
+      } catch (err) {
+        showToast("Failed to delete instructor.", "error");
+      }
+=======
       const created = await instituteService.addInstructor(newInstructorForm);
       setInstructors([created, ...instructors]);
       setShowAddInstructorModal(false);
@@ -375,10 +700,43 @@ function InstituteDashboard() {
       showToast("Instructor added successfully!", "success");
     } catch (err) {
       showToast("Failed to add instructor.", "error");
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
     }
   };
 
   // Filtered Courses & Students
+<<<<<<< HEAD
+  const filteredCourses = courses.filter((c) => {
+    const matchesSearch =
+      (c.title || "").toLowerCase().includes((courseSearch || globalSearch).toLowerCase()) ||
+      (c.category || "").toLowerCase().includes((courseSearch || globalSearch).toLowerCase());
+    const matchesCategory = !courseCategoryFilter || (c.category || "").toLowerCase() === courseCategoryFilter.toLowerCase();
+    const matchesStatus = !courseStatusFilter || (c.status || "").toLowerCase() === courseStatusFilter.toLowerCase() || (c.approval_status || "").toLowerCase() === courseStatusFilter.toLowerCase();
+    return matchesSearch && matchesCategory && matchesStatus;
+  });
+
+  const indexOfLastCourse = courseCurrentPage * coursesPerPage;
+  const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
+  const currentCourses = filteredCourses.slice(indexOfFirstCourse, indexOfLastCourse);
+  const totalCoursePages = Math.ceil(filteredCourses.length / coursesPerPage) || 1;
+
+  const filteredStudents = students.filter(
+    (s) =>
+      (s.name || "").toLowerCase().includes((studentSearch || globalSearch).toLowerCase()) ||
+      (s.course || "").toLowerCase().includes((studentSearch || globalSearch).toLowerCase()) ||
+      (s.email || "").toLowerCase().includes((studentSearch || globalSearch).toLowerCase())
+  );
+
+  const filteredInstructors = instructors.filter((inst) => {
+    const query = (instructorSearch || globalSearch).toLowerCase();
+    return (
+      (inst.name || "").toLowerCase().includes(query) ||
+      (inst.specialization || "").toLowerCase().includes(query) ||
+      (inst.bio || "").toLowerCase().includes(query) ||
+      String(inst.experience || "").includes(query)
+    );
+  });
+=======
   const filteredCourses = courses.filter(
     (c) =>
       c.title.toLowerCase().includes((courseSearch || globalSearch).toLowerCase()) ||
@@ -391,6 +749,7 @@ function InstituteDashboard() {
       s.course.toLowerCase().includes((studentSearch || globalSearch).toLowerCase()) ||
       s.email.toLowerCase().includes((studentSearch || globalSearch).toLowerCase())
   );
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 
   return (
     <div className="id-dashboard-container">
@@ -427,6 +786,12 @@ function InstituteDashboard() {
             <li className={`id-nav-item ${activeSection === "students" ? "active" : ""}`} onClick={() => setActiveSection("students")}>
               <FiUsers /> <span className="id-nav-text">Students</span>
             </li>
+<<<<<<< HEAD
+            <li className={`id-nav-item ${activeSection === "instructors" ? "active" : ""}`} onClick={() => setActiveSection("instructors")}>
+              <FiBriefcase /> <span className="id-nav-text">Instructor</span>
+            </li>
+=======
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
             <li className={`id-nav-item ${activeSection === "revenue" ? "active" : ""}`} onClick={() => setActiveSection("revenue")}>
               <FiDollarSign /> <span className="id-nav-text">Revenue</span>
             </li>
@@ -458,6 +823,9 @@ function InstituteDashboard() {
       <main className="id-main-content">
         {/* TOP HEADER */}
         <header className="id-header">
+<<<<<<< HEAD
+          <div className="id-search-box-removed" style={{ flex: 1 }}></div>
+=======
           <div className="id-search-box">
             <FiSearch className="id-search-icon" />
             <input
@@ -469,6 +837,7 @@ function InstituteDashboard() {
             />
           </div>
 
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
           <div className="id-header-actions">
             <button className="id-notif-btn" title="Notifications" onClick={() => setShowNotifications(!showNotifications)}>
               <FiBell />
@@ -513,21 +882,39 @@ function InstituteDashboard() {
             <div>
               <div className="id-page-head">
                 <h2 className="id-page-title">Institute overview</h2>
+<<<<<<< HEAD
+=======
                 <button className="id-btn-primary" onClick={() => setShowAddCourseModal(true)}>
                   <FiPlus /> New course
                 </button>
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
               </div>
 
               {/* 4 Stat Cards */}
               <div className="id-stats-grid">
                 <div className="id-stat-card">
                   <div className="id-stat-label">Total students</div>
+<<<<<<< HEAD
+                  <div className="id-stat-val">{summaryData?.stats?.totalStudents ?? students.length ?? 0}</div>
+                  <div className="id-stat-sub">{summaryData?.stats?.studentsWeeklyGrowth || "Live database metrics"}</div>
+=======
                   <div className="id-stat-val">18,204</div>
                   <div className="id-stat-sub">+320 this week</div>
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                 </div>
 
                 <div className="id-stat-card">
                   <div className="id-stat-label">Active courses</div>
+<<<<<<< HEAD
+                  <div className="id-stat-val">{summaryData?.stats?.activeCourses ?? courses.filter((c) => (c.status || "").toUpperCase() === "ACTIVE").length ?? 0}</div>
+                  <div className="id-stat-sub">Total Courses: {summaryData?.stats?.totalCourses ?? courses.length ?? 0}</div>
+                </div>
+
+                <div className="id-stat-card">
+                  <div className="id-stat-label">Revenue</div>
+                  <div className="id-stat-val">₹{(summaryData?.stats?.revenueMtd ?? 0).toLocaleString()}</div>
+                  <div className="id-stat-sub">Lifetime: ₹{(summaryData?.stats?.lifetimeRevenue ?? 0).toLocaleString()}</div>
+=======
                   <div className="id-stat-val">{courses.filter((c) => c.status === "active").length || 62}</div>
                   <div className="id-stat-sub">+4 this month</div>
                 </div>
@@ -536,12 +923,18 @@ function InstituteDashboard() {
                   <div className="id-stat-label">Revenue (MTD)</div>
                   <div className="id-stat-val">₹48,210</div>
                   <div className="id-stat-sub">+18%</div>
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                 </div>
 
                 <div className="id-stat-card">
                   <div className="id-stat-label">Avg. rating</div>
+<<<<<<< HEAD
+                  <div className="id-stat-val">{Number(summaryData?.stats?.avgRating ?? 0).toFixed(1)}</div>
+                  <div className="id-stat-sub muted">Pending Courses: {summaryData?.stats?.pendingCourses ?? 0}</div>
+=======
                   <div className="id-stat-val">4.8</div>
                   <div className="id-stat-sub muted">stable</div>
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                 </div>
               </div>
 
@@ -551,6 +944,25 @@ function InstituteDashboard() {
                   <div className="id-card h-100">
                     <h3 className="id-card-title">Revenue trend</h3>
                     <div className="id-trend-bars">
+<<<<<<< HEAD
+                      {(summaryData?.revenueTrend && summaryData.revenueTrend.length > 0) ? (
+                        summaryData.revenueTrend.map((t, idx) => {
+                          const maxRev = Math.max(...summaryData.revenueTrend.map(r => Number(r.revenue || 0)), 1);
+                          const heightPct = Math.max(Math.round((Number(t.revenue || 0) / maxRev) * 85), 15);
+                          const isLast = idx === summaryData.revenueTrend.length - 1;
+                          return (
+                            <div className="id-trend-col" key={idx}>
+                              <div className={`id-trend-bar ${isLast ? 'highlight' : ''}`} style={{ height: `${heightPct}%` }}></div>
+                              <span className="id-trend-month">{t.month}</span>
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <div className="text-muted fs-8 m-auto py-4">No revenue recorded yet.</div>
+                      )}
+                    </div>
+                    <div className="mt-3 text-muted fs-8">Recent monthly revenue progression</div>
+=======
                       <div className="id-trend-col">
                         <div className="id-trend-bar" style={{ height: "45%" }}></div>
                         <span className="id-trend-month">Jan</span>
@@ -577,6 +989,7 @@ function InstituteDashboard() {
                       </div>
                     </div>
                     <div className="mt-3 text-muted fs-8">Jan - Jun revenue, in thousands</div>
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                   </div>
                 </div>
 
@@ -584,6 +997,23 @@ function InstituteDashboard() {
                   <div className="id-card h-100">
                     <h3 className="id-card-title">Recent reviews</h3>
                     <div className="id-review-list">
+<<<<<<< HEAD
+                      {(summaryData?.recentReviews || []).length > 0 ? (
+                        (summaryData?.recentReviews || []).map((rev) => (
+                          <div className="id-review-item" key={rev.id || rev.review_id}>
+                            <div className="d-flex justify-content-between align-items-center">
+                              <span className="id-review-author">{rev.student || rev.author}</span>
+                              <span className="id-review-rating">
+                                ★ {Number(rev.rating).toFixed(1)}
+                              </span>
+                            </div>
+                            <p className="id-review-comment">"{rev.comment}"</p>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="text-muted fs-8 text-center py-4">No recent reviews available.</div>
+                      )}
+=======
                       {(summaryData?.recentReviews || []).map((rev) => (
                         <div className="id-review-item" key={rev.id}>
                           <div className="d-flex justify-content-between align-items-center">
@@ -595,6 +1025,7 @@ function InstituteDashboard() {
                           <p className="id-review-comment">"{rev.comment}"</p>
                         </div>
                       ))}
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                     </div>
                   </div>
                 </div>
@@ -614,6 +1045,28 @@ function InstituteDashboard() {
                       </tr>
                     </thead>
                     <tbody>
+<<<<<<< HEAD
+                      {filteredStudents.slice(0, 5).length > 0 ? (
+                        filteredStudents.slice(0, 5).map((std) => (
+                          <tr key={std.enrollment_id}>
+                            <td className="fw-bold">{std.name}</td>
+                            <td>
+                              <span className="id-link-purple cursor-pointer">{std.course}</span>
+                            </td>
+                            <td>{std.enrolled_time}</td>
+                            <td>
+                              <span className={`id-badge ${std.status === "Active" ? "id-badge-active" : std.status === "Completed" ? "id-badge-completed" : "id-badge-pending"}`}>
+                                {std.status}
+                              </span>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="4" className="text-center text-muted py-4">No recent enrollments found.</td>
+                        </tr>
+                      )}
+=======
                       {filteredStudents.slice(0, 5).map((std) => (
                         <tr key={std.enrollment_id}>
                           <td className="fw-bold">{std.name}</td>
@@ -628,6 +1081,7 @@ function InstituteDashboard() {
                           </td>
                         </tr>
                       ))}
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                     </tbody>
                   </table>
                 </div>
@@ -638,19 +1092,58 @@ function InstituteDashboard() {
           {/* 2. COURSES VIEW (Screenshot 3) */}
           {activeSection === "courses" && (
             <div>
+<<<<<<< HEAD
+              <div className="id-page-head flex-wrap gap-2">
+                <h2 className="id-page-title">Courses</h2>
+                <div className="d-flex flex-wrap gap-2 align-items-center">
+                  <div className="id-search-box" style={{ width: 220 }}>
+=======
               <div className="id-page-head">
                 <h2 className="id-page-title">Courses</h2>
                 <div className="d-flex gap-3">
                   <div className="id-search-box" style={{ width: 280 }}>
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                     <FiSearch className="id-search-icon" />
                     <input
                       type="text"
                       className="id-search-input"
+<<<<<<< HEAD
+                      placeholder="Search courses..."
+                      value={courseSearch}
+                      onChange={(e) => { setCourseSearch(e.target.value); setCourseCurrentPage(1); }}
+                    />
+                  </div>
+                  <select
+                    className="form-select form-select-sm"
+                    style={{ width: 150 }}
+                    value={courseCategoryFilter}
+                    onChange={(e) => { setCourseCategoryFilter(e.target.value); setCourseCurrentPage(1); }}
+                  >
+                    <option value="">All Categories</option>
+                    {categories.map((cat, idx) => {
+                      const name = cat.categoryName || cat.category_name || cat.name || cat;
+                      return <option key={idx} value={name}>{name}</option>;
+                    })}
+                  </select>
+                  <select
+                    className="form-select form-select-sm"
+                    style={{ width: 140 }}
+                    value={courseStatusFilter}
+                    onChange={(e) => { setCourseStatusFilter(e.target.value); setCourseCurrentPage(1); }}
+                  >
+                    <option value="">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="draft">Draft</option>
+                    <option value="approved">Approved</option>
+                    <option value="pending">Pending</option>
+                  </select>
+=======
                       placeholder="Search your courses..."
                       value={courseSearch}
                       onChange={(e) => setCourseSearch(e.target.value)}
                     />
                   </div>
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                   <button className="id-btn-primary" onClick={() => setShowAddCourseModal(true)}>
                     <FiPlus /> New course
                   </button>
@@ -658,6 +1151,66 @@ function InstituteDashboard() {
               </div>
 
               <div className="id-courses-grid">
+<<<<<<< HEAD
+                {currentCourses.length > 0 ? (
+                  currentCourses.map((crs) => (
+                    <div className="id-course-card" key={crs.course_id}>
+                      <img src={crs.thumbnail || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=400&q=80"} alt={crs.title} className="id-course-thumb" />
+                      <div className="id-course-body">
+                        <div className="id-course-badges">
+                          <span className={`id-badge id-badge-${(crs.approval_status || 'pending').toLowerCase()}`}>
+                            {crs.approval_status || 'Pending'}
+                          </span>
+                          <span className={`id-badge id-badge-${(crs.status || 'draft').toLowerCase()}`}>
+                            {crs.status || 'Draft'}
+                          </span>
+                        </div>
+                        <h4 className="id-course-title">{crs.title}</h4>
+                        <div className="id-course-meta">
+                          {crs.category || "Uncategorized"} • ₹{crs.price || 0} • {crs.duration || "N/A"}
+                        </div>
+                        <div className="fs-8 text-muted mb-3">{crs.enrolled_count ?? crs.students_count ?? students.filter(s => s.course_id === crs.course_id || s.course === crs.title).length ?? 0} students enrolled</div>
+                        <div className="id-course-footer">
+                          <button className="id-btn-outline-purple" onClick={() => handleOpenManageCourse(crs)}>
+                            <FiEdit3 /> Manage course
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-muted fs-7 py-5 col-12 text-center">No courses found matching your criteria.</div>
+                )}
+              </div>
+
+              {/* Pagination Controls */}
+              {filteredCourses.length > coursesPerPage && (
+                <div className="d-flex justify-content-between align-items-center mt-4 pt-2 border-top">
+                  <span className="fs-8 text-muted">
+                    Showing {indexOfFirstCourse + 1} to {Math.min(indexOfLastCourse, filteredCourses.length)} of {filteredCourses.length} courses
+                  </span>
+                  <div className="d-flex gap-2">
+                    <button
+                      className="id-btn-outline btn-sm"
+                      disabled={courseCurrentPage === 1}
+                      onClick={() => setCourseCurrentPage(p => Math.max(p - 1, 1))}
+                    >
+                      Previous
+                    </button>
+                    <span className="fs-8 fw-semibold px-2 align-self-center">
+                      Page {courseCurrentPage} of {totalCoursePages}
+                    </span>
+                    <button
+                      className="id-btn-outline btn-sm"
+                      disabled={courseCurrentPage === totalCoursePages}
+                      onClick={() => setCourseCurrentPage(p => Math.min(p + 1, totalCoursePages))}
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              )}
+=======
                 {filteredCourses.map((crs) => (
                   <div className="id-course-card" key={crs.course_id}>
                     <img src={crs.thumbnail} alt={crs.title} className="id-course-thumb" />
@@ -684,6 +1237,7 @@ function InstituteDashboard() {
                   </div>
                 ))}
               </div>
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
             </div>
           )}
 
@@ -718,6 +1272,136 @@ function InstituteDashboard() {
                       </tr>
                     </thead>
                     <tbody>
+<<<<<<< HEAD
+                      {filteredStudents.length > 0 ? (
+                        filteredStudents.map((std) => (
+                          <tr key={std.enrollment_id}>
+                            <td className="fw-bold">{std.name}</td>
+                            <td className="text-muted">{std.email}</td>
+                            <td>
+                              <span className="id-link-purple cursor-pointer">{std.course}</span>
+                            </td>
+                            <td>{std.enrolled_time}</td>
+                            <td>
+                              <div className="d-flex align-items-center gap-2" style={{ width: 140 }}>
+                                <div className="progress flex-grow-1" style={{ height: 6, borderRadius: 10 }}>
+                                  <div
+                                    className="progress-bar"
+                                    style={{
+                                      width: `${std.progress}%`,
+                                      backgroundColor: "var(--id-primary)",
+                                      borderRadius: 10,
+                                    }}
+                                  ></div>
+                                </div>
+                                <span className="fs-8 fw-bold text-muted">{std.progress}%</span>
+                              </div>
+                            </td>
+                            <td>
+                              <span className={`id-badge ${std.status === "Active" ? "id-badge-active" : std.status === "Completed" ? "id-badge-completed" : "id-badge-pending"}`}>
+                                {std.status}
+                              </span>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="6" className="text-center text-muted py-4">No enrolled students found matching criteria.</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* INSTRUCTORS VIEW */}
+          {activeSection === "instructors" && (
+            <div>
+              <div className="id-page-head flex-wrap gap-2">
+                <h2 className="id-page-title">Manage Instructors</h2>
+                <div className="d-flex flex-wrap gap-2 align-items-center">
+                  <div className="id-search-box" style={{ width: 280 }}>
+                    <FiSearch className="id-search-icon" />
+                    <input
+                      type="text"
+                      className="id-search-input"
+                      placeholder="Search instructors..."
+                      value={instructorSearch}
+                      onChange={(e) => setInstructorSearch(e.target.value)}
+                    />
+                  </div>
+                  <button className="id-btn-primary" onClick={() => setShowAddInstructorModal(true)}>
+                    <FiPlus /> Add new instructor
+                  </button>
+                </div>
+              </div>
+
+              <div className="id-card">
+                <div className="id-table-container">
+                  <table className="id-table">
+                    <thead>
+                      <tr>
+                        <th>PHOTO</th>
+                        <th>NAME</th>
+                        <th>SPECIALIZATION</th>
+                        <th>EXPERIENCE</th>
+                        <th>BIO</th>
+                        <th>ACTIONS</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredInstructors.length > 0 ? (
+                        filteredInstructors.map((inst) => {
+                          const id = inst.instructorId || inst.instructor_id || inst.id;
+                          return (
+                            <tr key={id || Math.random()}>
+                              <td>
+                                <img
+                                  src={(!inst.photo || inst.photo.includes("unsplash") || inst.photo.trim() === "") ? "https://cdn-icons-png.flaticon.com/512/3135/3135715.png" : inst.photo}
+                                  alt={inst.name}
+                                  style={{ width: "42px", height: "42px", borderRadius: "50%", objectFit: "cover", border: "2px solid #e2e8f0" }}
+                                />
+                              </td>
+                              <td className="fw-bold text-dark">{inst.name}</td>
+                              <td>
+                                <span className="id-badge id-badge-active">{inst.specialization}</span>
+                              </td>
+                              <td className="fw-normal">{inst.experience !== undefined && inst.experience !== null ? `${inst.experience} ${inst.experience === 1 ? "year" : "years"}` : "N/A"}</td>
+                              <td style={{ maxWidth: "300px", color: "#64748b", fontSize: "13px", lineHeight: "1.4" }}>
+                                {inst.bio || <span className="text-muted fst-italic">No bio provided</span>}
+                              </td>
+                              <td>
+                                <div className="d-flex align-items-center gap-2">
+                                  <button
+                                    type="button"
+                                    className="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1 fw-semibold"
+                                    onClick={() => handleEditInstructorClick(inst)}
+                                    style={{ borderRadius: "8px" }}
+                                  >
+                                    <FiEdit3 /> Edit
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="btn btn-sm btn-outline-danger d-inline-flex align-items-center"
+                                    onClick={() => handleDeleteInstructorClick(inst)}
+                                    style={{ borderRadius: "8px" }}
+                                    title="Delete"
+                                  >
+                                    <FiTrash2 />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })
+                      ) : (
+                        <tr>
+                          <td colSpan="6" className="text-center text-muted py-4">No instructors found matching your criteria. Click 'Add new instructor' to create one.</td>
+                        </tr>
+                      )}
+=======
                       {filteredStudents.map((std) => (
                         <tr key={std.enrollment_id}>
                           <td className="fw-bold">{std.name}</td>
@@ -748,6 +1432,7 @@ function InstituteDashboard() {
                           </td>
                         </tr>
                       ))}
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                     </tbody>
                   </table>
                 </div>
@@ -765,6 +1450,16 @@ function InstituteDashboard() {
               <div className="id-stats-grid" style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
                 <div className="id-stat-card">
                   <div className="id-stat-label">This month</div>
+<<<<<<< HEAD
+                  <div className="id-stat-val">₹{(summaryData?.stats?.revenueMtd ?? 0).toLocaleString()}</div>
+                  <div className="id-stat-sub">{summaryData?.stats?.revenueGrowth || "+0% vs last month"}</div>
+                </div>
+
+                <div className="id-stat-card">
+                  <div className="id-stat-label">Payouts</div>
+                  <div className="id-stat-val">₹{(summaryData?.stats?.payouts ?? summaryData?.stats?.pendingPayouts ?? 0).toLocaleString()}</div>
+                  <div className="id-stat-sub muted">Monthly commission to admin</div>
+=======
                   <div className="id-stat-val">₹48,210</div>
                   <div className="id-stat-sub">+18% vs last month</div>
                 </div>
@@ -773,12 +1468,18 @@ function InstituteDashboard() {
                   <div className="id-stat-label">Pending payouts</div>
                   <div className="id-stat-val">₹6,450</div>
                   <div className="id-stat-sub muted">Processed weekly</div>
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                 </div>
 
                 <div className="id-stat-card">
                   <div className="id-stat-label">Lifetime revenue</div>
+<<<<<<< HEAD
+                  <div className="id-stat-val">₹{(summaryData?.stats?.lifetimeRevenue ?? 0).toLocaleString()}</div>
+                  <div className="id-stat-sub muted">Live database metrics</div>
+=======
                   <div className="id-stat-val">₹5,82,940</div>
                   <div className="id-stat-sub muted">Since 2023</div>
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                 </div>
               </div>
 
@@ -796,6 +1497,59 @@ function InstituteDashboard() {
                       </tr>
                     </thead>
                     <tbody>
+<<<<<<< HEAD
+                      {(summaryData?.recentTransactions || []).length > 0 ? (
+                        (summaryData?.recentTransactions || []).map((txn) => (
+                          <tr key={txn.transaction_id}>
+                            <td className="fw-normal">{txn.student}</td>
+                            <td>
+                              <span className="id-link-purple cursor-pointer">{txn.course}</span>
+                            </td>
+                            <td className="fw-normal">₹{txn.amount}</td>
+                            <td>{txn.date}</td>
+                            <td>
+                              <span className={`id-badge ${txn.status === "Paid" ? "id-badge-approved" : "id-badge-refunded"}`}>
+                                {txn.status}
+                              </span>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="5" className="text-center text-muted py-4">No recent transactions.</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div className="id-card mt-4">
+                <h3 className="id-card-title">Revenue by course</h3>
+                <div className="id-table-container">
+                  <table className="id-table">
+                    <thead>
+                      <tr>
+                        <th>COURSE NAME</th>
+                        <th>STUDENTS ENROLLED</th>
+                        <th>TOTAL REVENUE GENERATED</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {(summaryData?.topCourses || []).length > 0 ? (
+                        (summaryData?.topCourses || []).map((crs, idx) => (
+                          <tr key={crs.course_id || idx}>
+                            <td className="fw-semibold">{crs.title}</td>
+                            <td>{crs.students_count || 0}</td>
+                            <td className="fw-normal">₹{(Number(crs.revenue || 0)).toLocaleString()}</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="3" className="text-center text-muted py-4">No course revenue data recorded yet.</td>
+                        </tr>
+                      )}
+=======
                       {(summaryData?.recentTransactions || []).map((txn) => (
                         <tr key={txn.transaction_id}>
                           <td className="fw-normal">{txn.student}</td>
@@ -811,6 +1565,7 @@ function InstituteDashboard() {
                           </td>
                         </tr>
                       ))}
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                     </tbody>
                   </table>
                 </div>
@@ -831,6 +1586,32 @@ function InstituteDashboard() {
                   <div className="id-card h-100">
                     <h3 className="id-card-title">Top performing courses</h3>
                     <div className="d-flex flex-column gap-3">
+<<<<<<< HEAD
+                      {(summaryData?.topCourses || []).length > 0 ? (
+                        (summaryData?.topCourses || []).map((item, idx) => (
+                          <div className="d-flex align-items-center gap-3" key={item.course_id || idx}>
+                            <div
+                              className="d-flex align-items-center justify-content-center fw-normal fs-7"
+                              style={{
+                                width: 32,
+                                height: 32,
+                                borderRadius: "50%",
+                                backgroundColor: "#f1f5f9",
+                                color: "#64748b",
+                              }}
+                            >
+                              {idx + 1}
+                            </div>
+                            <div>
+                              <div className="fw-normal fs-8">{item.title}</div>
+                              <div className="text-muted fs-9">{item.students_count} students</div>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="text-muted fs-8">No data available yet.</div>
+                      )}
+=======
                       {[
                         { rank: 1, title: "Design Thinking", students: "530 students" },
                         { rank: 2, title: "UX Design Fundamentals", students: "412 students" },
@@ -856,6 +1637,7 @@ function InstituteDashboard() {
                           </div>
                         </div>
                       ))}
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                     </div>
                   </div>
                 </div>
@@ -865,6 +1647,30 @@ function InstituteDashboard() {
                   <div className="id-card h-100">
                     <h3 className="id-card-title">Enrollment sources</h3>
                     <div className="d-flex flex-column gap-3">
+<<<<<<< HEAD
+                      {(summaryData?.enrollmentSources || []).length > 0 ? (
+                        (summaryData?.enrollmentSources || []).map((src, idx) => (
+                          <div key={idx}>
+                            <div className="d-flex justify-content-between fs-8 fw-normal mb-1">
+                              <span>{src.source}</span>
+                              <span className="text-muted">{src.percent}%</span>
+                            </div>
+                            <div className="progress" style={{ height: 6, borderRadius: 10 }}>
+                              <div
+                                className="progress-bar"
+                                style={{
+                                  width: `${src.percent}%`,
+                                  backgroundColor: "var(--id-primary)",
+                                  borderRadius: 10,
+                                }}
+                              ></div>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="text-muted fs-8">No data available yet.</div>
+                      )}
+=======
                       {[
                         { source: "Direct search", percent: 42 },
                         { source: "Category browse", percent: 31 },
@@ -888,6 +1694,7 @@ function InstituteDashboard() {
                           </div>
                         </div>
                       ))}
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                     </div>
                   </div>
                 </div>
@@ -903,6 +1710,25 @@ function InstituteDashboard() {
               </div>
 
               <div className="d-flex flex-column gap-3">
+<<<<<<< HEAD
+                {(summaryData?.recentReviews || []).length > 0 ? (
+                  (summaryData?.recentReviews || []).map((rev) => (
+                    <div className="id-card" key={rev.id || rev.review_id} style={{ padding: "1.25rem 1.5rem" }}>
+                      <div className="d-flex justify-content-between align-items-center mb-1">
+                        <div>
+                          <span className="fw-normal fs-7 me-1">{rev.author || rev.student_name}</span>
+                          <span className="text-muted fs-8">on {rev.course || rev.course_name}</span>
+                        </div>
+                        <span className="id-review-rating fs-7">★ {Number(rev.rating).toFixed(1)}</span>
+                      </div>
+                      <p className="id-review-comment fs-7 mb-1">"{rev.comment}"</p>
+                      <div className="text-muted fs-9">{rev.time || rev.created_at}</div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-muted fs-8 text-center mt-4">No reviews available yet.</div>
+                )}
+=======
                 {[
                   {
                     id: 1,
@@ -949,6 +1775,7 @@ function InstituteDashboard() {
                     <div className="text-muted fs-9">{rev.time}</div>
                   </div>
                 ))}
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
               </div>
             </div>
           )}
@@ -1016,6 +1843,26 @@ function InstituteDashboard() {
                 </div>
 
                 <div className="d-flex flex-column gap-2">
+<<<<<<< HEAD
+                  {documents.length > 0 ? (
+                    documents.map((doc, idx) => (
+                      <div className="d-flex justify-content-between align-items-center p-2 rounded-3" key={doc.document_id || idx} style={{ backgroundColor: "#f8fafc" }}>
+                        <div className="d-flex align-items-center gap-2">
+                          <FiFileText className="text-primary fs-5" />
+                          <div>
+                            <div className="fw-normal fs-8">{doc.document_name || doc.name}</div>
+                            <div className="text-muted fs-9">{doc.desc || `${doc.document_type || "Document"} • status ${doc.status}`}</div>
+                          </div>
+                        </div>
+                        <span className={`id-badge ${(doc.status || doc.verification_status) === "verified" ? "id-badge-approved" : "id-badge-pending"}`}>
+                          {doc.status || doc.verification_status || "pending"}
+                        </span>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-muted fs-9 text-center py-3">No documents uploaded.</div>
+                  )}
+=======
                   {(documents.length > 0
                     ? documents
                     : [
@@ -1052,6 +1899,7 @@ function InstituteDashboard() {
                       </span>
                     </div>
                   ))}
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                 </div>
               </div>
 
@@ -1084,7 +1932,10 @@ function InstituteDashboard() {
                   placeholder="e.g. Advanced Figma Mastery"
                   value={newCourseForm.title}
                   onChange={(e) => setNewCourseForm({ ...newCourseForm, title: e.target.value })}
+<<<<<<< HEAD
+=======
                   required
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                 />
               </div>
 
@@ -1096,7 +1947,10 @@ function InstituteDashboard() {
                   placeholder="What will students learn in this course?"
                   value={newCourseForm.description}
                   onChange={(e) => setNewCourseForm({ ...newCourseForm, description: e.target.value })}
+<<<<<<< HEAD
+=======
                   required
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                 ></textarea>
               </div>
 
@@ -1109,7 +1963,10 @@ function InstituteDashboard() {
                     placeholder="1999"
                     value={newCourseForm.price}
                     onChange={(e) => setNewCourseForm({ ...newCourseForm, price: e.target.value })}
+<<<<<<< HEAD
+=======
                     required
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                   />
                 </div>
                 <div className="col-md-6">
@@ -1120,7 +1977,10 @@ function InstituteDashboard() {
                     placeholder="e.g. 6 weeks"
                     value={newCourseForm.duration}
                     onChange={(e) => setNewCourseForm({ ...newCourseForm, duration: e.target.value })}
+<<<<<<< HEAD
+=======
                     required
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                   />
                 </div>
               </div>
@@ -1129,6 +1989,31 @@ function InstituteDashboard() {
                 <label className="form-label fs-7 fw-bold">Instructor</label>
                 <select
                   className="form-select"
+<<<<<<< HEAD
+                  value={(newCourseForm.instructorId !== "" && newCourseForm.instructorId != null) ? newCourseForm.instructorId : ""}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    const inst = instructors.find(i => (i.instructorId || i.instructor_id || i.id) == val);
+                    setNewCourseForm({
+                      ...newCourseForm,
+                      instructorId: val === "" ? "" : parseInt(val, 10),
+                      instructor_name: inst ? inst.name : (val === "0" ? "Default Instructor" : "")
+                    });
+                  }}
+                >
+                  <option value="">Select Instructor</option>
+                  {instructors.length === 0 && (
+                    <option value="0">Default Instructor (General Curriculum)</option>
+                  )}
+                  {instructors.map((inst) => {
+                    const id = inst.instructorId || inst.instructor_id || inst.id;
+                    return (
+                      <option key={id} value={id}>
+                        {inst.name} ({inst.specialization})
+                      </option>
+                    );
+                  })}
+=======
                   value={newCourseForm.instructor_name}
                   onChange={(e) => setNewCourseForm({ ...newCourseForm, instructor_name: e.target.value })}
                 >
@@ -1137,10 +2022,50 @@ function InstituteDashboard() {
                       {inst.name} ({inst.specialization})
                     </option>
                   ))}
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                 </select>
               </div>
 
               <div className="mb-3">
+<<<<<<< HEAD
+                <label className="form-label fs-7 fw-bold">Category</label>
+                <select
+                  className="form-select"
+                  value={newCourseForm.categoryId || ""}
+                  onChange={(e) => {
+                    const selectedCat = categories.find(c => (c.categoryId || c.category_id || c.id) == e.target.value);
+                    setNewCourseForm({
+                      ...newCourseForm,
+                      categoryId: e.target.value ? parseInt(e.target.value) : "",
+                      category: selectedCat ? (selectedCat.categoryName || selectedCat.category_name || selectedCat.name || selectedCat) : ""
+                    });
+                  }}
+                >
+                  <option value="">Select Category</option>
+                  {categories.map((cat) => {
+                    const id = cat.categoryId || cat.category_id || cat.id;
+                    const name = cat.categoryName || cat.category_name || cat.name || cat;
+                    return (
+                      <option key={id} value={id}>
+                        {name}
+                      </option>
+                    );
+                  })}
+                </select>
+                {categories.length === 0 && <span className="text-muted fs-8">No categories available in database.</span>}
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label fs-7 fw-bold">Thumbnail Image URL</label>
+                <input
+                  type="url"
+                  className="form-control"
+                  placeholder="https://images.unsplash.com/..."
+                  value={newCourseForm.thumbnail}
+                  onChange={(e) => setNewCourseForm({ ...newCourseForm, thumbnail: e.target.value })}
+                />
+                <small className="text-muted d-block mt-1">Leave blank to assign a dynamic default image based on course category.</small>
+=======
                 <label className="form-label fs-7 fw-bold d-block">Categories</label>
                 <div className="d-flex flex-wrap gap-2">
                   {instituteService.getCategories().map((cat) => (
@@ -1153,17 +2078,26 @@ function InstituteDashboard() {
                     </span>
                   ))}
                 </div>
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
               </div>
 
               <div className="mb-3">
                 <label className="form-label fs-7 fw-bold">Status</label>
                 <select
                   className="form-select"
+<<<<<<< HEAD
+                  value={newCourseForm.status || "pending"}
+                  onChange={(e) => setNewCourseForm({ ...newCourseForm, status: e.target.value })}
+                >
+                  <option value="pending">Pending — submit for Admin approval</option>
+                  <option value="draft">Draft — not visible to students</option>
+=======
                   value={newCourseForm.status}
                   onChange={(e) => setNewCourseForm({ ...newCourseForm, status: e.target.value })}
                 >
                   <option value="draft">Draft — not visible to students</option>
                   <option value="active">Active — published in catalog</option>
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                 </select>
               </div>
 
@@ -1240,6 +2174,59 @@ function InstituteDashboard() {
                 </div>
               </div>
 
+<<<<<<< HEAD
+              <div className="row g-3 mb-3">
+                <div className="col-md-6">
+                  <label className="form-label fs-7 fw-bold">Instructor</label>
+                  <select
+                    className="form-select"
+                    value={(selectedCourse.instructorId !== "" && selectedCourse.instructorId != null) ? selectedCourse.instructorId : ((selectedCourse.instructor_id !== "" && selectedCourse.instructor_id != null) ? selectedCourse.instructor_id : "")}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      const selInst = instructors.find(i => (i.instructorId || i.instructor_id || i.id) == val);
+                      setSelectedCourse({
+                        ...selectedCourse,
+                        instructorId: val === "" ? "" : parseInt(val, 10),
+                        instructor_name: selInst ? selInst.name : (val === "0" ? "Default Instructor" : "")
+                      });
+                    }}
+                  >
+                    <option value="">Select Instructor</option>
+                    {instructors.length === 0 && (
+                      <option value="0">Default Instructor (General Curriculum)</option>
+                    )}
+                    {instructors.map((inst) => {
+                      const id = inst.instructorId || inst.instructor_id || inst.id;
+                      return <option key={id} value={id}>{inst.name} ({inst.specialization})</option>;
+                    })}
+                  </select>
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label fs-7 fw-bold">Category</label>
+                  <select
+                    className="form-select"
+                    value={selectedCourse.categoryId || selectedCourse.category_id || ""}
+                    onChange={(e) => {
+                      const selCat = categories.find(c => (c.categoryId || c.category_id || c.id) == e.target.value);
+                      setSelectedCourse({
+                        ...selectedCourse,
+                        categoryId: e.target.value ? parseInt(e.target.value) : "",
+                        category: selCat ? (selCat.categoryName || selCat.category_name || selCat.name || selCat) : ""
+                      });
+                    }}
+                  >
+                    <option value="">Select Category</option>
+                    {categories.map((cat) => {
+                      const id = cat.categoryId || cat.category_id || cat.id;
+                      const name = cat.categoryName || cat.category_name || cat.name || cat;
+                      return <option key={id} value={id}>{name}</option>;
+                    })}
+                  </select>
+                </div>
+              </div>
+
+=======
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
               <div className="mb-3">
                 <label className="form-label fs-7 fw-bold">Status</label>
                 <select
@@ -1286,7 +2273,11 @@ function InstituteDashboard() {
       {/* --- MODAL 3: ADD INSTRUCTOR --- */}
       {showAddInstructorModal && (
         <div className="id-modal-backdrop">
+<<<<<<< HEAD
+          <div className="id-modal-content" style={{ maxWidth: 520 }}>
+=======
           <div className="id-modal-content" style={{ maxWidth: 460 }}>
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
             <div className="d-flex justify-content-between align-items-center mb-3">
               <h4 className="fw-bold m-0 fs-5">Add Instructor</h4>
               <button className="btn-close" onClick={() => setShowAddInstructorModal(false)}></button>
@@ -1318,15 +2309,48 @@ function InstituteDashboard() {
               </div>
 
               <div className="mb-3">
+<<<<<<< HEAD
+                <label className="form-label fs-7 fw-bold">Experience (in years)</label>
+                <input
+                  type="number"
+                  min="0"
+=======
                 <label className="form-label fs-7 fw-bold">Experience (Years)</label>
                 <input
                   type="number"
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                   className="form-control"
                   value={newInstructorForm.experience}
                   onChange={(e) => setNewInstructorForm({ ...newInstructorForm, experience: e.target.value })}
                 />
               </div>
 
+<<<<<<< HEAD
+              <div className="mb-3">
+                <label className="form-label fs-7 fw-bold">Bio</label>
+                <textarea
+                  className="form-control"
+                  rows="3"
+                  placeholder="Brief biography and teaching background..."
+                  value={newInstructorForm.bio}
+                  onChange={(e) => setNewInstructorForm({ ...newInstructorForm, bio: e.target.value })}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label fs-7 fw-bold">Photo URL</label>
+                <input
+                  type="url"
+                  className="form-control"
+                  placeholder="https://images.unsplash.com/..."
+                  value={newInstructorForm.photo}
+                  onChange={(e) => setNewInstructorForm({ ...newInstructorForm, photo: e.target.value })}
+                />
+                <small className="text-muted d-block mt-1">Leave blank to use default gender-neutral avatar.</small>
+              </div>
+
+=======
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
               <div className="d-flex justify-content-end gap-2 mt-4">
                 <button type="button" className="id-btn-outline" onClick={() => setShowAddInstructorModal(false)}>
                   Cancel
@@ -1340,6 +2364,85 @@ function InstituteDashboard() {
         </div>
       )}
 
+<<<<<<< HEAD
+      {/* --- MODAL: EDIT INSTRUCTOR --- */}
+      {showEditInstructorModal && selectedInstructor && (
+        <div className="id-modal-backdrop">
+          <div className="id-modal-content" style={{ maxWidth: 520 }}>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <h4 className="fw-bold m-0 fs-5">Edit Instructor</h4>
+              <button className="btn-close" onClick={() => { setShowEditInstructorModal(false); setSelectedInstructor(null); }}></button>
+            </div>
+
+            <form onSubmit={handleEditInstructorSubmit}>
+              <div className="mb-3">
+                <label className="form-label fs-7 fw-bold">Instructor Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={editInstructorForm.name}
+                  onChange={(e) => setEditInstructorForm({ ...editInstructorForm, name: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label fs-7 fw-bold">Specialization</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={editInstructorForm.specialization}
+                  onChange={(e) => setEditInstructorForm({ ...editInstructorForm, specialization: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label fs-7 fw-bold">Experience (in years)</label>
+                <input
+                  type="number"
+                  min="0"
+                  className="form-control"
+                  value={editInstructorForm.experience}
+                  onChange={(e) => setEditInstructorForm({ ...editInstructorForm, experience: e.target.value })}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label fs-7 fw-bold">Bio</label>
+                <textarea
+                  className="form-control"
+                  rows="3"
+                  value={editInstructorForm.bio}
+                  onChange={(e) => setEditInstructorForm({ ...editInstructorForm, bio: e.target.value })}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label fs-7 fw-bold">Photo URL</label>
+                <input
+                  type="url"
+                  className="form-control"
+                  value={editInstructorForm.photo}
+                  onChange={(e) => setEditInstructorForm({ ...editInstructorForm, photo: e.target.value })}
+                />
+              </div>
+
+              <div className="d-flex justify-content-end gap-2 mt-4">
+                <button type="button" className="id-btn-outline" onClick={() => { setShowEditInstructorModal(false); setSelectedInstructor(null); }}>
+                  Cancel
+                </button>
+                <button type="submit" className="id-btn-primary">
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+=======
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
       {/* --- MODAL 4: EDIT PROFILE --- */}
       {showEditProfileModal && (
         <div className="id-modal-backdrop">

@@ -30,6 +30,11 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+<<<<<<< HEAD
+    @Column(name = "status", nullable = false)
+    private Status status;
+
+=======
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
@@ -39,6 +44,7 @@ public class User {
     private Status status;
 
     @Convert(converter = ApprovalStatusConverter.class)
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
     @Column(name = "approval_status", nullable = false)
     private ApprovalStatus approvalStatus;
 

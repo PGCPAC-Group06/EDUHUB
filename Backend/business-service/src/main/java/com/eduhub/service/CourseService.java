@@ -1,14 +1,32 @@
 package com.eduhub.service;
 
+
 import java.util.List;
-import com.eduhub.dto.CourseRequestDTO;
-import com.eduhub.dto.CourseResponseDTO;
+
+import com.eduhub.dto.CourseResponse;
+import com.eduhub.dto.CreateCourseRequest;
+import com.eduhub.dto.UpdateCourseRequest;
+
 
 public interface CourseService {
-    CourseResponseDTO createCourse(CourseRequestDTO dto);
-    CourseResponseDTO updateCourse(Integer courseId, CourseRequestDTO dto);
-    void deleteCourse(Integer courseId);
-    List<CourseResponseDTO> getCoursesByInstituteUserId(Integer instituteUserId);
-    List<CourseResponseDTO> getAllCourses();
-    void updateCourseApprovalStatus(Integer courseId, String status);
+
+    CourseResponse createCourse(
+            Integer userId,
+            CreateCourseRequest request);
+
+    List<CourseResponse> getAllCourses(
+            Integer userId);
+
+    CourseResponse getCourseById(
+            Integer userId,
+            Integer courseId);
+
+    CourseResponse updateCourse(
+            Integer userId,
+            Integer courseId,
+            UpdateCourseRequest request);
+
+    void deleteCourse(
+            Integer userId,
+            Integer courseId);
 }

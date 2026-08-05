@@ -123,4 +123,30 @@ public class ReviewServiceImpl implements ReviewService {
 
         reviewRepository.delete(review);
     }
+<<<<<<< HEAD
+
+    @Override
+    public List<ReviewResponse> getAllReviews() {
+        List<Review> reviews = reviewRepository.findAll();
+        return reviews.stream().map(review -> {
+            ReviewResponse response = new ReviewResponse();
+            BeanUtils.copyProperties(review, response);
+            return response;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public Double getAverageRating() {
+        List<Review> reviews = reviewRepository.findAll();
+        if (reviews.isEmpty()) {
+            return 0.0;
+        }
+        double sum = 0;
+        for(Review r : reviews) {
+            sum += r.getRating() != null ? r.getRating() : 0;
+        }
+        return sum / reviews.size();
+    }
+=======
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 }

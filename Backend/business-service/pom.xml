@@ -5,15 +5,39 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
+<<<<<<< HEAD
+		<version>4.0.7</version>
+		<relativePath/> <!-- lookup parent from repository -->
+=======
 		<version>3.2.0</version>
 		<relativePath/>
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 	</parent>
 	<groupId>com.eduhub</groupId>
 	<artifactId>business-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>business-service</name>
+<<<<<<< HEAD
+	<description/>
+	<url/>
+	<licenses>
+		<license/>
+	</licenses>
+	<developers>
+		<developer/>
+	</developers>
+	<scm>
+		<connection/>
+		<developerConnection/>
+		<tag/>
+		<url/>
+	</scm>
+	<properties>
+		<java.version>21</java.version>
+=======
 	<properties>
 		<java.version>17</java.version>
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 	</properties>
 	<dependencies>
 		<dependency>
@@ -26,7 +50,18 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+<<<<<<< HEAD
+			<artifactId>spring-boot-starter-webmvc</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+=======
 			<artifactId>spring-boot-starter-web</artifactId>
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 		</dependency>
 		<dependency>
 			<groupId>com.mysql</groupId>
@@ -40,6 +75,49 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+<<<<<<< HEAD
+			<artifactId>spring-boot-starter-data-jpa-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webmvc-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- JWT API -->
+<dependency>
+    <groupId>io.jsonwebtoken</groupId>
+    <artifactId>jjwt-api</artifactId>
+    <version>0.12.7</version>
+</dependency>
+
+<!-- JWT Implementation -->
+<dependency>
+    <groupId>io.jsonwebtoken</groupId>
+    <artifactId>jjwt-impl</artifactId>
+    <version>0.12.7</version>
+    <scope>runtime</scope>
+</dependency>
+
+<!-- JWT Jackson -->
+<dependency>
+    <groupId>io.jsonwebtoken</groupId>
+    <artifactId>jjwt-jackson</artifactId>
+    <version>0.12.7</version>
+    <scope>runtime</scope>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+	</dependencies>
+
+=======
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		<dependency>
@@ -60,6 +138,7 @@
 			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 	<build>
 		<plugins>
 			<plugin>
@@ -74,6 +153,48 @@
 					</excludes>
 				</configuration>
 			</plugin>
+<<<<<<< HEAD
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-compile</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+						<configuration>
+							<annotationProcessorPaths>
+								<path>
+									<groupId>org.projectlombok</groupId>
+									<artifactId>lombok</artifactId>
+								</path>
+							</annotationProcessorPaths>
+						</configuration>
+					</execution>
+					<execution>
+						<id>default-testCompile</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>testCompile</goal>
+						</goals>
+						<configuration>
+							<annotationProcessorPaths>
+								<path>
+									<groupId>org.projectlombok</groupId>
+									<artifactId>lombok</artifactId>
+								</path>
+							</annotationProcessorPaths>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
+
+=======
+		</plugins>
+	</build>
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 </project>

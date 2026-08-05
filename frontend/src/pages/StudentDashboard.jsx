@@ -3,6 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../redux/authSlice";
 import { studentService } from "../services/studentService";
+<<<<<<< HEAD
+import api from "../services/api";
+=======
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 import "../styles/StudentDashboard.css";
 
 // Icons from react-icons/fi & fa
@@ -105,6 +109,9 @@ function StudentDashboard() {
 
   // Notification State
   const [showNotifications, setShowNotifications] = useState(false);
+<<<<<<< HEAD
+  const [notifications, setNotifications] = useState([]);
+=======
   const [notifications, setNotifications] = useState([
     {
       id: 1,
@@ -128,6 +135,7 @@ function StudentDashboard() {
       read: true,
     },
   ]);
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 
   const markAllNotificationsRead = () => {
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
@@ -192,7 +200,16 @@ function StudentDashboard() {
       console.warn("Institutes fetch fallback");
     }
 
+<<<<<<< HEAD
+    try {
+      const categoriesData = await studentService.getCategories();
+      setCategories(categoriesData || []);
+    } catch (e) {
+      console.warn("Categories fetch fallback");
+    }
+=======
     setCategories(studentService.getCategories());
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
   };
 
   // Filter Courses Handler
@@ -223,7 +240,16 @@ function StudentDashboard() {
   };
 
   // Logout Handler
+<<<<<<< HEAD
+  const handleLogout = async () => {
+    try {
+      await api.post("/api/auth/logout");
+    } catch (e) {
+      console.error("Logout error", e);
+    }
+=======
   const handleLogout = () => {
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
     dispatch(logout());
     navigate("/login");
   };
@@ -432,6 +458,9 @@ function StudentDashboard() {
         <main className="sd-main">
           {/* Header Bar */}
           <header className="sd-header">
+<<<<<<< HEAD
+            <div className="sd-search-box-removed" style={{ flex: 1 }}></div>
+=======
             <div className="sd-search-box">
               <FiSearch className="sd-search-icon" />
               <input
@@ -445,6 +474,7 @@ function StudentDashboard() {
                 }}
               />
             </div>
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 
             <div className="sd-header-actions">
               {/* Interactive Notifications Dropdown */}
@@ -1104,6 +1134,21 @@ function StudentDashboard() {
               <div className="mb-3">
                 <p className="text-secondary fs-7 mb-3">{selectedCourseDetail.description}</p>
                 <h5 className="fw-bold mb-3 fs-6">Course Modules & Curriculum</h5>
+<<<<<<< HEAD
+                {(selectedCourseDetail.syllabus || []).length > 0 ? (selectedCourseDetail.syllabus || []).map((mod) => (
+                  <div key={mod.title} className="id-card" style={{ padding: "1.25rem 1.5rem" }}>
+                    <div className="d-flex justify-content-between mb-2">
+                      <h5 className="fw-bold m-0 fs-6">{mod.title}</h5>
+                      <span className="text-muted fs-8">{mod.duration}</span>
+                    </div>
+                    <ul className="text-muted fs-8 m-0 ps-3">
+                      {(mod.topics || []).map((t, idx) => (
+                        <li key={idx}>{t}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )) : <div className="text-muted fs-8 text-center mt-3">No syllabus available.</div>}
+=======
                 {selectedCourseDetail.syllabus && selectedCourseDetail.syllabus.length > 0 ? (
                   selectedCourseDetail.syllabus.map((mod) => (
                     <div key={mod.module_number} className="sd-module-card">
@@ -1121,6 +1166,7 @@ function StudentDashboard() {
                 ) : (
                   <p className="text-muted fs-7">Syllabus breakdown will be provided upon enrollment.</p>
                 )}
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
               </div>
             )}
 
@@ -1165,6 +1211,20 @@ function StudentDashboard() {
                   </div>
                 </div>
 
+<<<<<<< HEAD
+                <div className="d-flex flex-column gap-3 mt-3">
+                {(selectedCourseDetail.reviews || []).length > 0 ? (selectedCourseDetail.reviews || []).map((rev) => (
+                  <div key={rev.id || rev.review_id} className="id-card" style={{ padding: "1.25rem 1.5rem" }}>
+                    <div className="d-flex justify-content-between align-items-center mb-1">
+                      <span className="fw-normal fs-7">{rev.author || rev.student_name}</span>
+                      <span className="id-review-rating fs-7">★ {Number(rev.rating).toFixed(1)}</span>
+                    </div>
+                    <p className="id-review-comment fs-7 mb-1">"{rev.comment}"</p>
+                    <div className="text-muted fs-9">{rev.time || rev.created_at}</div>
+                  </div>
+                )) : <div className="text-muted fs-8 text-center mt-3">No reviews available.</div>}
+              </div>
+=======
                 {selectedCourseDetail.reviews && selectedCourseDetail.reviews.length > 0 ? (
                   selectedCourseDetail.reviews.map((rev) => (
                     <div key={rev.review_id} className="p-3 border-bottom">
@@ -1179,6 +1239,7 @@ function StudentDashboard() {
                 ) : (
                   <p className="text-muted fs-7 py-3 text-center">No student reviews submitted for this course yet.</p>
                 )}
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
               </div>
             )}
 
@@ -1317,6 +1378,26 @@ function StudentDashboard() {
             <p className="text-muted fs-7 mb-3">
               Download study files for <strong>{selectedCourseForMaterials.title}</strong>
             </p>
+<<<<<<< HEAD
+            <div className="d-flex flex-column gap-2 mb-3">
+              {(selectedCourseForMaterials.materials || []).length > 0 ? (selectedCourseForMaterials.materials || []).map((mat) => (
+                <div key={mat.id || mat.material_id} className="id-card d-flex justify-content-between align-items-center p-3">
+                  <div className="d-flex align-items-center gap-3">
+                    <div
+                      className="d-flex align-items-center justify-content-center"
+                      style={{ width: 40, height: 40, borderRadius: 8, backgroundColor: "#f1f5f9", color: "#5b46f6" }}
+                    >
+                      <FiDownloadCloud size={20} />
+                    </div>
+                    <div>
+                      <div className="fw-bold fs-7">{mat.title}</div>
+                      <div className="text-muted fs-9">{mat.type || mat.material_type} • {mat.size}</div>
+                    </div>
+                  </div>
+                  <button className="id-btn-outline-purple btn-sm" style={{ width: "auto" }}>Download</button>
+                </div>
+              )) : (
+=======
 
             <div className="d-flex flex-column gap-2 mb-3">
               {selectedCourseForMaterials.materials && selectedCourseForMaterials.materials.length > 0 ? (
@@ -1338,6 +1419,7 @@ function StudentDashboard() {
                   </div>
                 ))
               ) : (
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                 <p className="text-muted py-3 text-center">No study materials uploaded for this course yet.</p>
               )}
             </div>

@@ -30,12 +30,15 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private RoleRepository roleRepository;
 
+<<<<<<< HEAD
+=======
     @Autowired
     private InstituteProfileRepository instituteProfileRepository;
 
     @Autowired
     private StudentProfileRepository studentProfileRepository;
 
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -45,6 +48,38 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String register(RegisterRequest registerRequest) {
 
+<<<<<<< HEAD
+        // Email already exists
+        if (userRepository.existsByEmail(registerRequest.getEmail())) {
+            return "Email already exists";
+        }
+
+        // Fetch Role
+        Role role = roleRepository
+                .findByRoleName(registerRequest.getRole())
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+
+        // Create User
+        User user = new User();
+
+        user.setName(registerRequest.getName());
+        user.setEmail(registerRequest.getEmail());
+
+        // Encrypt Password
+        user.setPassword(
+                passwordEncoder.encode(registerRequest.getPassword())
+        );
+
+        user.setRole(role);
+
+        user.setStatus(Status.ACTIVE);
+
+        if (role.getRoleName().equalsIgnoreCase("ROLE_STUDENT") || role.getRoleName().equalsIgnoreCase("STUDENT")) {
+            user.setApprovalStatus(ApprovalStatus.APPROVED);
+        } else {
+            user.setApprovalStatus(ApprovalStatus.PENDING);
+        }
+=======
         if (userRepository.existsByEmail(registerRequest.getEmail())) {
             throw new RuntimeException("Email already exists");
         }
@@ -78,9 +113,14 @@ public class AuthServiceImpl implements AuthService {
             user.setApprovalStatus(ApprovalStatus.APPROVED);
         }
 
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
         user.setCreatedAt(LocalDateTime.now());
         User savedUser = userRepository.save(user);
 
+<<<<<<< HEAD
+        // Save User
+        userRepository.save(user);
+=======
         if (roleStr.contains("institute")) {
             InstituteProfile instituteProfile = new InstituteProfile();
             instituteProfile.setUser(savedUser);
@@ -93,6 +133,7 @@ public class AuthServiceImpl implements AuthService {
             studentProfile.setUser(savedUser);
             studentProfileRepository.save(studentProfile);
         }
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 
         return "User Registered Successfully";
     }
@@ -100,6 +141,49 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
 
+<<<<<<< HEAD
+        // Find User
+        User user = userRepository
+                .findByEmail(loginRequest.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Password Validation
+        if (!passwordEncoder.matches(
+                loginRequest.getPassword(),
+                user.getPassword())) {
+
+            throw new RuntimeException("Invalid Password");
+        }
+
+        // User Status Check
+        if (user.getStatus() == Status.BLOCKED) {
+            throw new RuntimeException("Your ID is not active/suspended. Please contact the Administrator at admin@eduhub.com");
+        }
+
+        // Approval Check
+        if (user.getApprovalStatus() == ApprovalStatus.PENDING) {
+            throw new RuntimeException("Your account is pending approval");
+        }
+
+        if (user.getApprovalStatus() == ApprovalStatus.REJECTED) {
+            throw new RuntimeException("Your account has been rejected");
+        }
+
+        // Generate JWT Token
+        String token = jwtUtil.generateToken(
+                user.getUserId(),
+                user.getEmail(),
+                user.getRole().getRoleName()
+        );
+
+        // Prepare Response
+        LoginResponse response = new LoginResponse();
+
+        response.setUserId(user.getUserId());
+        response.setName(user.getName());
+        response.setEmail(user.getEmail());
+        response.setRole(user.getRole().getRoleName());
+=======
         User user = userRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -129,8 +213,25 @@ public class AuthServiceImpl implements AuthService {
         response.setName(user.getName());
         response.setEmail(user.getEmail());
         response.setRole(roleStr);
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
         response.setToken(token);
 
         return response;
     }
+<<<<<<< HEAD
+
+    @Override
+    public void changePassword(Integer userId, com.eduhub.dto.ChangePasswordRequest request) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+            throw new RuntimeException("Incorrect current password");
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+    }
+=======
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 }

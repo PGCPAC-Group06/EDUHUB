@@ -1,3 +1,4 @@
+
 package com.eduhub;
 
 import org.springframework.boot.SpringApplication;
@@ -9,4 +10,5 @@ public class BusinessServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BusinessServiceApplication.class, args);
 	}
+
 }

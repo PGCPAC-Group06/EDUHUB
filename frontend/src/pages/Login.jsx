@@ -39,7 +39,10 @@ function Login() {
           email: userData.user?.email || userData.email,
           role: finalRole,
         },
+<<<<<<< HEAD
+=======
         token: userData.token,
+>>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
       };
 
       if (rememberMe) {
