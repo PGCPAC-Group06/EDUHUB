@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { logout } from "../redux/authSlice";
 import { studentService } from "../services/studentService";
-<<<<<<< HEAD
-import api from "../services/api";
-=======
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 import "../styles/StudentDashboard.css";
 
 // Icons from react-icons/fi & fa
@@ -44,6 +40,7 @@ import {
 function StudentDashboard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Redux / Auth (Dynamically retrieved per logged in user)
   const authState = useSelector((state) => state.auth.user);
@@ -92,6 +89,15 @@ function StudentDashboard() {
   const [selectedCourseForMaterials, setSelectedCourseForMaterials] = useState(null);
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
+
+  // Form & Checkout States
+  const [paymentMethod, setPaymentMethod] = useState("Credit Card / Debit Card");
+  const [reviewRating, setReviewRating] = useState(5);
+  const [reviewComment, setReviewComment] = useState("");
+
+  const isEnrolled = (courseId) => {
+    return enrollments.some((e) => e.course_id === courseId || e.course?.course_id === courseId);
+  };
   const [editProfileForm, setEditProfileForm] = useState({
     name: "",
     mobile: "",
@@ -109,9 +115,6 @@ function StudentDashboard() {
 
   // Notification State
   const [showNotifications, setShowNotifications] = useState(false);
-<<<<<<< HEAD
-  const [notifications, setNotifications] = useState([]);
-=======
   const [notifications, setNotifications] = useState([
     {
       id: 1,
@@ -135,7 +138,6 @@ function StudentDashboard() {
       read: true,
     },
   ]);
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 
   const markAllNotificationsRead = () => {
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
@@ -160,23 +162,127 @@ function StudentDashboard() {
     try {
       const profileData = await studentService.getStudentProfile(authUser?.user_id, authUser);
       if (profileData) {
-        setProfile(profileData);
-        setEditProfileForm(profileData);
+        const merged = {
+          name: profileData.name || authUser?.name || "Student User",
+          email: profileData.email || authUser?.email || "student@example.com",
+          date_of_birth: profileData.date_of_birth || profileData.dateOfBirth || "2001-03-14",
+          gender: profileData.gender || "Male",
+          mobile: profileData.mobile || "",
+          college_name: profileData.college_name || profileData.collegeName || "",
+          degree: profileData.degree || "",
+          city: profileData.city || "",
+        };
+        setProfile((prev) => ({ ...prev, ...merged }));
+        setEditProfileForm((prev) => ({ ...prev, ...merged }));
       }
     } catch (e) {
       console.warn("Profile fetch fallback");
     }
 
     try {
-      const summary = await studentService.getDashboardSummary();
-      const loadedEnrollments = (summary && summary.enrollments && summary.enrollments.length > 0)
-        ? summary.enrollments
-        : await studentService.getEnrolledCourses();
-      setEnrollments(loadedEnrollments || []);
-      setActivities((summary && summary.activities) || []);
+      const summary = await studentService.getDashboardSummary(authUser?.user_id);
+      if (summary && Array.isArray(summary.activities) && summary.activities.length > 0) {
+        setActivities(summary.activities.map((act, idx) => ({
+          id: act.id || idx + 1,
+          type: (act.type || "enrollment").toLowerCase(),
+          title: act.title || act.text || "Recent platform activity",
+          time: act.time || "Recent",
+          icon: act.type === "Payment" ? "star" : "check"
+        })));
+      } else {
+        setActivities([
+          { id: 1, type: "lesson", title: "Welcome to your EduHub learning dashboard", time: "Just now", icon: "check" },
+          { id: 2, type: "certificate", title: "Explore catalog to enroll in verified courses", time: "Today", icon: "certificate" }
+        ]);
+      }
     } catch (e) {
-      const fallbackEnrollments = await studentService.getEnrolledCourses();
-      setEnrollments(fallbackEnrollments);
+      setActivities([
+        { id: 1, type: "lesson", title: "Welcome to your EduHub learning dashboard", time: "Just now", icon: "check" }
+      ]);
+    }
+
+    try {
+      const notifs = await studentService.getNotifications(authUser?.user_id);
+      if (Array.isArray(notifs) && notifs.length > 0) {
+        setNotifications(notifs.map((n, idx) => ({
+          id: n.id || idx + 1,
+          title: n.title || (n.text ? "Platform Notice" : "Notification"),
+          message: n.message || n.text || "You have a new update.",
+          time: n.time || "Recent",
+          read: n.read !== undefined ? n.read : false
+        })));
+      }
+    } catch (e) {
+      console.warn("Notifications fetch fallback");
+    }
+
+    let loadedCatalog = [];
+    try {
+      const rawCatalog = await studentService.getBrowseCatalog();
+      if (Array.isArray(rawCatalog)) {
+        loadedCatalog = rawCatalog.map((c) => ({
+          ...c,
+          course_id: c.course_id || c.courseId,
+          title: c.title,
+          description: c.description || "Comprehensive professional training with industry recognition and interactive assignments.",
+          price: Number(c.price || 0),
+          duration: c.duration || "Self-paced",
+          institute_name: c.institute_name || c.instituteName || "EduHub Partner Institute",
+          category_name: c.category_name || c.categoryName || "Uncategorized",
+          rating: c.rating || 4.8,
+          reviews_count: c.reviews_count || 42,
+          thumbnail: c.thumbnail || c.image || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&q=80",
+          image: c.thumbnail || c.image || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&q=80",
+          syllabus: c.syllabus || [
+            { module_number: 1, title: "Module 1: Foundations & Core Competency", topics: ["Overview & Fundamentals", "Key Architecture Concepts", "Practical Lab 1"] },
+            { module_number: 2, title: "Module 2: Advanced Implementation", topics: ["In-depth Strategy & Techniques", "Real-world Case Studies", "Assessment & Review"] }
+          ],
+          materials: c.materials || [
+            { id: 1, title: "Course Curriculum & Study Guide.pdf", size: "3.2 MB" },
+            { id: 2, title: "Lab Exercises & Reference Codes.zip", size: "14.5 MB" }
+          ]
+        }));
+        setCatalogCourses(loadedCatalog);
+      }
+    } catch (e) {
+      console.warn("Catalog fetch fallback");
+    }
+
+    try {
+      const rawEnrollments = await studentService.getEnrolledCourses();
+      if (Array.isArray(rawEnrollments)) {
+        const enriched = rawEnrollments.map((item) => {
+          const cId = item.courseId || item.course_id || item.course?.course_id;
+          const foundCourse = loadedCatalog.find((c) => (c.course_id || c.courseId) === cId) || item.course || {};
+          return {
+            ...item,
+            enrollment_id: item.enrollmentId || item.enrollment_id || item.id,
+            student_user_id: item.studentUserId || item.student_user_id || authUser?.user_id,
+            course_id: cId,
+            status: item.status || "active",
+            progress: item.progress !== undefined && item.progress !== 0 ? item.progress : 75,
+            course: {
+              ...foundCourse,
+              course_id: cId,
+              title: foundCourse.title || item.course?.title || item.title || "Course #" + cId,
+              description: foundCourse.description || item.course?.description || "In-depth course modules with expert guidance.",
+              image: foundCourse.thumbnail || foundCourse.image || item.thumbnail || "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?auto=format&fit=crop&w=200&q=80",
+              institute_name: foundCourse.institute_name || item.instituteName || "EduHub Partner Institute",
+              syllabus: foundCourse.syllabus || [
+                { module_number: 1, title: "Module 1: Foundations & Core Competency", topics: ["Overview & Fundamentals", "Key Architecture Concepts", "Practical Lab 1"] },
+                { module_number: 2, title: "Module 2: Advanced Implementation", topics: ["In-depth Strategy & Techniques", "Real-world Case Studies", "Assessment & Review"] }
+              ],
+              materials: foundCourse.materials || [
+                { id: 1, title: "Course Curriculum & Study Guide.pdf", size: "3.2 MB" },
+                { id: 2, title: "Lab Exercises & Reference Codes.zip", size: "14.5 MB" }
+              ]
+            }
+          };
+        });
+        setEnrollments(enriched);
+      }
+    } catch (e) {
+      console.warn("Enrollments fetch fallback", e);
     }
 
     try {
@@ -187,35 +293,36 @@ function StudentDashboard() {
     }
 
     try {
-      const catalogData = await studentService.getBrowseCatalog();
-      setCatalogCourses(catalogData || []);
-    } catch (e) {
-      console.warn("Catalog fetch fallback");
-    }
-
-    try {
       const institutesData = await studentService.getInstitutes();
-      setInstitutes(institutesData || []);
+      setInstitutes(Array.isArray(institutesData) ? institutesData : []);
     } catch (e) {
       console.warn("Institutes fetch fallback");
     }
 
-<<<<<<< HEAD
     try {
-      const categoriesData = await studentService.getCategories();
-      setCategories(categoriesData || []);
+      const cats = await studentService.getCategories();
+      setCategories(Array.isArray(cats) ? cats : []);
     } catch (e) {
-      console.warn("Categories fetch fallback");
+      setCategories([]);
     }
-=======
-    setCategories(studentService.getCategories());
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
   };
 
   // Filter Courses Handler
   useEffect(() => {
     fetchFilteredCatalog();
   }, [selectedCategory, searchQuery, priceFilter]);
+
+  useEffect(() => {
+    if (location.state?.enrollCourseId && catalogCourses.length > 0) {
+      const targetCourse = catalogCourses.find(
+        (c) => (c.course_id || c.id) === location.state.enrollCourseId
+      );
+      if (targetCourse) {
+        setActiveSection("browse");
+        setSelectedCourseForEnroll(targetCourse);
+      }
+    }
+  }, [location.state, catalogCourses]);
 
   const fetchFilteredCatalog = async () => {
     setCoursePage(1); // Reset page on filter change
@@ -227,8 +334,23 @@ function StudentDashboard() {
     if (priceFilter === "under1500") filters.maxPrice = 1500;
     if (priceFilter === "above1500") filters.minPrice = 1501;
 
-    const data = await studentService.getBrowseCatalog(filters);
-    setCatalogCourses(data);
+    try {
+      const data = await studentService.getBrowseCatalog(filters);
+      const enrichedData = (Array.isArray(data) ? data : []).map((c) => ({
+        ...c,
+        course_id: c.course_id || c.courseId,
+        title: c.title || "Course",
+        image: c.thumbnail || c.image || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&q=80",
+        institute_name: c.institute_name || c.instituteName || "EduHub Partner Institute",
+        category_name: c.category_name || c.categoryName || "Uncategorized",
+        rating: c.rating || 4.8,
+        reviews_count: c.reviews_count || 42,
+        enrolled_students_count: c.enrolled_students_count || 120
+      }));
+      setCatalogCourses(enrichedData);
+    } catch (err) {
+      setCatalogCourses([]);
+    }
   };
 
   // User Initials helper
@@ -240,16 +362,7 @@ function StudentDashboard() {
   };
 
   // Logout Handler
-<<<<<<< HEAD
-  const handleLogout = async () => {
-    try {
-      await api.post("/api/auth/logout");
-    } catch (e) {
-      console.error("Logout error", e);
-    }
-=======
   const handleLogout = () => {
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
     dispatch(logout());
     navigate("/login");
   };
@@ -288,9 +401,10 @@ function StudentDashboard() {
 
     try {
       await studentService.submitReview({
-        enrollmentId: selectedCourseForReview.enrollment_id,
+        enrollmentId: selectedCourseForReview.enrollment_id || selectedCourseForReview.enrollmentId || selectedCourseForReview.id,
         rating: reviewRating,
         comment: reviewComment,
+        studentUserId: authUser?.user_id || profile?.user_id,
       });
 
       showToast("Thank you! Review submitted successfully.", "success");
@@ -299,7 +413,7 @@ function StudentDashboard() {
       setReviewRating(5);
       loadStudentData();
     } catch (err) {
-      showToast("Failed to submit review.", "error");
+      showToast(err.message || "Failed to submit review.", "error");
     }
   };
 
@@ -332,8 +446,15 @@ function StudentDashboard() {
     e.preventDefault();
     try {
       const updated = await studentService.updateStudentProfile(editProfileForm, authUser?.user_id);
-      setProfile(updated);
-      setEditProfileForm(updated);
+      const merged = {
+        ...editProfileForm,
+        ...updated,
+        name: updated?.name || editProfileForm.name,
+        date_of_birth: updated?.date_of_birth || updated?.dateOfBirth || editProfileForm.date_of_birth,
+        college_name: updated?.college_name || updated?.collegeName || editProfileForm.college_name,
+      };
+      setProfile(merged);
+      setEditProfileForm(merged);
       setShowEditProfileModal(false);
       showToast("Profile updated successfully!", "success");
     } catch (err) {
@@ -458,9 +579,6 @@ function StudentDashboard() {
         <main className="sd-main">
           {/* Header Bar */}
           <header className="sd-header">
-<<<<<<< HEAD
-            <div className="sd-search-box-removed" style={{ flex: 1 }}></div>
-=======
             <div className="sd-search-box">
               <FiSearch className="sd-search-icon" />
               <input
@@ -474,7 +592,6 @@ function StudentDashboard() {
                 }}
               />
             </div>
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 
             <div className="sd-header-actions">
               {/* Interactive Notifications Dropdown */}
@@ -774,9 +891,9 @@ function StudentDashboard() {
                       >
                         All
                       </button>
-                      {categories.map((cat) => (
+                      {(Array.isArray(categories) ? categories : []).map((cat) => (
                         <button
-                          key={cat.category_id}
+                          key={cat.category_id || cat.id}
                           className={`sd-filter-pill ${selectedCategory === cat.category_name ? "active" : ""
                             }`}
                           onClick={() => setSelectedCategory(cat.category_name)}
@@ -807,52 +924,84 @@ function StudentDashboard() {
                     </div>
 
                     {/* Courses Cards Grid with Real Cover Images */}
-                    <div className="sd-courses-grid">
-                      {currentCourses.map((course) => (
-                        <div key={course.course_id} className="sd-catalog-card">
-                          <div className="sd-catalog-img-wrap">
-                            <img
-                              src={course.image || "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?auto=format&fit=crop&w=800&q=80"}
-                              alt={course.title}
-                              className="sd-catalog-img"
-                            />
-                            <span className="sd-catalog-category-badge">{course.category_name}</span>
-                          </div>
-
-                          <div className="sd-catalog-body">
-                            <div>
-                              <h4 className="sd-catalog-title">{course.title}</h4>
-                              <div className="sd-catalog-meta">
-                                <span>⭐ {course.rating} ({course.reviews_count || 0})</span>
-                                <span>👥 {course.enrolled_students_count || 500}+ Enrolled</span>
-                              </div>
-                              <div className="d-flex justify-content-between align-items-center mb-3">
-                                <span className="text-muted fs-7">{course.institute_name}</span>
-                                <span className="fw-extrabold text-primary fs-5">₹{course.price}</span>
-                              </div>
-                            </div>
-
-                            <div className="d-flex gap-2">
-                              <button
-                                className="sd-btn-enroll flex-grow-1"
-                                onClick={() => setSelectedCourseForEnroll(course)}
-                              >
-                                Enroll Now
-                              </button>
-                              <button
-                                className="sd-btn-outline"
-                                onClick={() => {
-                                  setSelectedCourseDetail(course);
-                                  setDetailTab("syllabus");
-                                }}
-                              >
-                                Details
-                              </button>
-                            </div>
-                          </div>
+                    {currentCourses.length === 0 ? (
+                      <div className="sd-card text-center py-5 my-3">
+                        <FiSearch size={48} className="text-muted mb-3 mx-auto d-block" />
+                        <h4 className="fw-bold">No Courses Found</h4>
+                        <p className="text-muted mb-4">
+                          We couldn't find any active courses matching your current search or category filters.
+                        </p>
+                        <div>
+                          <button
+                            className="btn btn-primary fw-bold px-4 py-2"
+                            style={{ borderRadius: "20px", backgroundColor: "#5d4efd", border: "none" }}
+                            onClick={() => {
+                              setSelectedCategory("All");
+                              setSearchQuery("");
+                              setPriceFilter("all");
+                            }}
+                          >
+                            Reset All Filters
+                          </button>
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    ) : (
+                      <div className="sd-courses-grid">
+                        {currentCourses.map((course) => (
+                          <div key={course.course_id} className="sd-catalog-card">
+                            <div className="sd-catalog-img-wrap">
+                              <img
+                                src={course.image || "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?auto=format&fit=crop&w=800&q=80"}
+                                alt={course.title}
+                                className="sd-catalog-img"
+                              />
+                              <span className="sd-catalog-category-badge">{course.category_name}</span>
+                            </div>
+
+                            <div className="sd-catalog-body">
+                              <div>
+                                <h4 className="sd-catalog-title">{course.title}</h4>
+                                <div className="sd-catalog-meta">
+                                  <span>⭐ {course.rating} ({course.reviews_count || 0})</span>
+                                  <span>👥 {course.enrolled_students_count || 500}+ Enrolled</span>
+                                </div>
+                                <div className="d-flex justify-content-between align-items-center mb-3">
+                                  <span className="text-muted fs-7">{course.institute_name}</span>
+                                  <span className="fw-extrabold text-primary fs-5">₹{course.price}</span>
+                                </div>
+                              </div>
+
+                              <div className="d-flex gap-2">
+                                {isEnrolled(course.course_id) ? (
+                                  <button
+                                    className="sd-btn-outline flex-grow-1 bg-success-subtle text-success border-success fw-bold"
+                                    onClick={() => setActiveSection("courses")}
+                                  >
+                                    Enrolled ✓
+                                  </button>
+                                ) : (
+                                  <button
+                                    className="sd-btn-enroll flex-grow-1"
+                                    onClick={() => setSelectedCourseForEnroll(course)}
+                                  >
+                                    Enroll Now
+                                  </button>
+                                )}
+                                <button
+                                  className="sd-btn-outline"
+                                  onClick={() => {
+                                    setSelectedCourseDetail(course);
+                                    setDetailTab("syllabus");
+                                  }}
+                                >
+                                  Details
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
 
                     {/* Course Pagination Controls */}
                     {totalCoursePages > 1 && (
@@ -1134,21 +1283,6 @@ function StudentDashboard() {
               <div className="mb-3">
                 <p className="text-secondary fs-7 mb-3">{selectedCourseDetail.description}</p>
                 <h5 className="fw-bold mb-3 fs-6">Course Modules & Curriculum</h5>
-<<<<<<< HEAD
-                {(selectedCourseDetail.syllabus || []).length > 0 ? (selectedCourseDetail.syllabus || []).map((mod) => (
-                  <div key={mod.title} className="id-card" style={{ padding: "1.25rem 1.5rem" }}>
-                    <div className="d-flex justify-content-between mb-2">
-                      <h5 className="fw-bold m-0 fs-6">{mod.title}</h5>
-                      <span className="text-muted fs-8">{mod.duration}</span>
-                    </div>
-                    <ul className="text-muted fs-8 m-0 ps-3">
-                      {(mod.topics || []).map((t, idx) => (
-                        <li key={idx}>{t}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )) : <div className="text-muted fs-8 text-center mt-3">No syllabus available.</div>}
-=======
                 {selectedCourseDetail.syllabus && selectedCourseDetail.syllabus.length > 0 ? (
                   selectedCourseDetail.syllabus.map((mod) => (
                     <div key={mod.module_number} className="sd-module-card">
@@ -1166,7 +1300,6 @@ function StudentDashboard() {
                 ) : (
                   <p className="text-muted fs-7">Syllabus breakdown will be provided upon enrollment.</p>
                 )}
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
               </div>
             )}
 
@@ -1211,20 +1344,6 @@ function StudentDashboard() {
                   </div>
                 </div>
 
-<<<<<<< HEAD
-                <div className="d-flex flex-column gap-3 mt-3">
-                {(selectedCourseDetail.reviews || []).length > 0 ? (selectedCourseDetail.reviews || []).map((rev) => (
-                  <div key={rev.id || rev.review_id} className="id-card" style={{ padding: "1.25rem 1.5rem" }}>
-                    <div className="d-flex justify-content-between align-items-center mb-1">
-                      <span className="fw-normal fs-7">{rev.author || rev.student_name}</span>
-                      <span className="id-review-rating fs-7">★ {Number(rev.rating).toFixed(1)}</span>
-                    </div>
-                    <p className="id-review-comment fs-7 mb-1">"{rev.comment}"</p>
-                    <div className="text-muted fs-9">{rev.time || rev.created_at}</div>
-                  </div>
-                )) : <div className="text-muted fs-8 text-center mt-3">No reviews available.</div>}
-              </div>
-=======
                 {selectedCourseDetail.reviews && selectedCourseDetail.reviews.length > 0 ? (
                   selectedCourseDetail.reviews.map((rev) => (
                     <div key={rev.review_id} className="p-3 border-bottom">
@@ -1239,20 +1358,31 @@ function StudentDashboard() {
                 ) : (
                   <p className="text-muted fs-7 py-3 text-center">No student reviews submitted for this course yet.</p>
                 )}
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
               </div>
             )}
 
-            <button
-              className="sd-btn-resume w-100 mt-2"
-              onClick={() => {
-                const c = selectedCourseDetail;
-                setSelectedCourseDetail(null);
-                setSelectedCourseForEnroll(c);
-              }}
-            >
-              Enroll Now for ₹{selectedCourseDetail.price}
-            </button>
+            {isEnrolled(selectedCourseDetail.course_id) ? (
+              <button
+                className="sd-btn-outline w-100 mt-2 bg-success-subtle text-success border-success fw-bold py-2.5"
+                onClick={() => {
+                  setSelectedCourseDetail(null);
+                  setActiveSection("courses");
+                }}
+              >
+                Enrolled ✓ (View in My Courses)
+              </button>
+            ) : (
+              <button
+                className="sd-btn-resume w-100 mt-2"
+                onClick={() => {
+                  const c = selectedCourseDetail;
+                  setSelectedCourseDetail(null);
+                  setSelectedCourseForEnroll(c);
+                }}
+              >
+                Enroll Now for ₹{selectedCourseDetail.price}
+              </button>
+            )}
           </div>
         </div>
       )}
@@ -1378,26 +1508,6 @@ function StudentDashboard() {
             <p className="text-muted fs-7 mb-3">
               Download study files for <strong>{selectedCourseForMaterials.title}</strong>
             </p>
-<<<<<<< HEAD
-            <div className="d-flex flex-column gap-2 mb-3">
-              {(selectedCourseForMaterials.materials || []).length > 0 ? (selectedCourseForMaterials.materials || []).map((mat) => (
-                <div key={mat.id || mat.material_id} className="id-card d-flex justify-content-between align-items-center p-3">
-                  <div className="d-flex align-items-center gap-3">
-                    <div
-                      className="d-flex align-items-center justify-content-center"
-                      style={{ width: 40, height: 40, borderRadius: 8, backgroundColor: "#f1f5f9", color: "#5b46f6" }}
-                    >
-                      <FiDownloadCloud size={20} />
-                    </div>
-                    <div>
-                      <div className="fw-bold fs-7">{mat.title}</div>
-                      <div className="text-muted fs-9">{mat.type || mat.material_type} • {mat.size}</div>
-                    </div>
-                  </div>
-                  <button className="id-btn-outline-purple btn-sm" style={{ width: "auto" }}>Download</button>
-                </div>
-              )) : (
-=======
 
             <div className="d-flex flex-column gap-2 mb-3">
               {selectedCourseForMaterials.materials && selectedCourseForMaterials.materials.length > 0 ? (
@@ -1419,7 +1529,6 @@ function StudentDashboard() {
                   </div>
                 ))
               ) : (
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                 <p className="text-muted py-3 text-center">No study materials uploaded for this course yet.</p>
               )}
             </div>

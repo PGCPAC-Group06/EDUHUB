@@ -44,6 +44,22 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     private CourseCategoryRepository courseCategoryRepository;
 
+    @Autowired
+    private com.eduhub.repository.UserRepository userRepository;
+
+    @Autowired(required = false)
+    private org.springframework.jdbc.core.JdbcTemplate jdbcTemplate;
+
+    @jakarta.annotation.PostConstruct
+    public void initSchema() {
+        if (jdbcTemplate != null) {
+            try {
+                jdbcTemplate.execute("ALTER TABLE course MODIFY COLUMN thumbnail LONGTEXT NULL DEFAULT NULL");
+            } catch (Exception ignored) {
+            }
+        }
+    }
+
     private void populateCategoryAndInstructor(Course course, CourseResponse response) {
         if (response.getApprovalStatus() == null) {
             response.setApprovalStatus("pending");
@@ -61,6 +77,18 @@ public class CourseServiceImpl implements CourseService {
         }
         if (course.getInstructorId() != null) {
             instructorRepository.findById(course.getInstructorId()).ifPresent(inst -> response.setInstructorName(inst.getName()));
+        }
+        if (course.getInstituteProfileId() != null) {
+            instituteProfileRepository.findById(course.getInstituteProfileId()).ifPresent(instProfile -> {
+                if (instProfile.getUserId() != null) {
+                    userRepository.findById(instProfile.getUserId()).ifPresent(user -> {
+                        response.setInstituteName(user.getName());
+                    });
+                }
+            });
+            if (response.getInstituteName() == null || response.getInstituteName().trim().isEmpty()) {
+                response.setInstituteName("EduHub Partner Institute");
+            }
         }
     }
 
@@ -213,9 +241,10 @@ public class CourseServiceImpl implements CourseService {
         if (profileOpt.isPresent()) {
             courses = courseRepository.findByInstituteProfileId(profileOpt.get().getInstituteProfileId());
         } else {
-            // Student or public user browsing catalog: only approved courses should be visible
+            // Student or public user browsing catalog: show active & approved courses dynamically from DB
             courses = courseRepository.findAll().stream()
-                    .filter(c -> c.getApprovalStatus() == null || c.getApprovalStatus().equalsIgnoreCase("approved") || c.getApprovalStatus().equalsIgnoreCase("ACTIVE"))
+                    .filter(c -> (c.getStatus() == null || c.getStatus().equalsIgnoreCase("active")) &&
+                                 (c.getApprovalStatus() == null || c.getApprovalStatus().equalsIgnoreCase("approved") || c.getApprovalStatus().equalsIgnoreCase("ACTIVE") || c.getApprovalStatus().equalsIgnoreCase("active")))
                     .collect(Collectors.toList());
         }
 
@@ -229,14 +258,15 @@ public class CourseServiceImpl implements CourseService {
     
     @Override
     public CourseResponse getCourseById(Integer userId, Integer courseId) {
-        InstituteProfile profile = getOrAutoCreateProfile(userId);
-
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() ->
                         new RuntimeException("Course not found"));
 
-        if (!course.getInstituteProfileId().equals(profile.getInstituteProfileId())) {
-            throw new RuntimeException("You are not authorized to access this course.");
+        Optional<InstituteProfile> profileOpt = (userId != null) ? instituteProfileRepository.findByUserId(userId) : Optional.empty();
+        boolean isOwnerInstitute = profileOpt.isPresent() && course.getInstituteProfileId().equals(profileOpt.get().getInstituteProfileId());
+
+        if (!isOwnerInstitute && course.getApprovalStatus() != null && course.getApprovalStatus().equalsIgnoreCase("rejected")) {
+            throw new RuntimeException("This course is currently unavailable.");
         }
 
         CourseResponse response = new CourseResponse();

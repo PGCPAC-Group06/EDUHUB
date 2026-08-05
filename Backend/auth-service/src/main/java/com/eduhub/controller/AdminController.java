@@ -1,14 +1,7 @@
 package com.eduhub.controller;
 
-<<<<<<< HEAD
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-=======
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -41,22 +34,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.eduhub.dto.PendingInstituteResponse;
-import com.eduhub.service.AdminService;
-
 @RestController
 @RequestMapping("/api/admin")
 public class AdminController {
-
-    @Autowired
-    private AdminService adminService;
-
-    @GetMapping({"/institutes/pending", "/pending-institutes"})
-    public List<PendingInstituteResponse> getPendingInstitutes() {
-        return adminService.getPendingInstitutes();
-    }
     
-<<<<<<< HEAD
     @Autowired
     private UserRepository userRepository;
 
@@ -513,20 +494,3 @@ public class AdminController {
         }
     }
 }
-=======
-    @PutMapping({"/institutes/{id}/approve", "/approve/{id}"})
-    public String approveInstitute(@PathVariable Integer id) {
-        return adminService.approveInstitute(id);
-    }
-    
-    @PutMapping({"/institutes/{id}/reject", "/reject/{id}"})
-    public String rejectInstitutePut(@PathVariable Integer id) {
-        return adminService.rejectInstitute(id);
-    }
-
-    @DeleteMapping({"/institutes/{id}/reject", "/reject/{id}"})
-    public String rejectInstituteDelete(@PathVariable Integer id) {
-        return adminService.rejectInstitute(id);
-    }
-}
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a

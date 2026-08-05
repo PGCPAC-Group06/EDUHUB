@@ -1,14 +1,41 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { BsSearch, BsStarFill } from "react-icons/bs";
-import { getAllCourses } from "../data/coursesData";
+import { studentService } from "../services/studentService";
 import "../styles/ExploreCourses.css";
 
 const PAGE_SIZE = 6;
 
 export default function ExploreCourses() {
   const navigate = useNavigate();
-  const allCourses = getAllCourses();
+  const [allCourses, setAllCourses] = useState([]);
+
+  useEffect(() => {
+    async function loadCourses() {
+      try {
+        const data = await studentService.getBrowseCatalog();
+        if (Array.isArray(data)) {
+          setAllCourses(data.map((c) => ({
+            id: c.course_id || c.courseId || c.id,
+            title: c.title,
+            description: c.description,
+            price: Number(c.price || 0),
+            isFree: Number(c.price || 0) === 0,
+            category: c.category_name || c.category || "Technology",
+            institute: c.institute_name || "EduHub Partner",
+            rating: c.rating || 4.8,
+            students: c.enrolled_count || 120,
+            duration: c.duration || "Self-paced",
+            level: c.level || "Beginner",
+            image: c.thumbnail || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&q=80",
+          })));
+        }
+      } catch (err) {
+        console.error("Failed to load courses", err);
+      }
+    }
+    loadCourses();
+  }, []);
 
   const [search, setSearch] = useState("");
   const [categories, setCategories] = useState([]);

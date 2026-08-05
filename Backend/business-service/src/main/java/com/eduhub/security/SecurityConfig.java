@@ -52,10 +52,12 @@ public class SecurityConfig {
 
             .authorizeHttpRequests(auth -> auth
 
-
+                .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers("/error").permitAll()
 
                 // Public course listing
                 .requestMatchers(
+                    "/api/courses",
                     "/api/courses/**"
                 )
                 .hasAnyRole(

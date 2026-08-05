@@ -1,6 +1,42 @@
-2026-07-30 10:11:12.199: [INFO] OnDoneLoading sync enabled: 0
-2026-07-30 10:11:47.641: [INFO] OnDoneLoading sync enabled: 0
-2026-07-31 05:04:03.076: [INFO] OnDoneLoading sync enabled: 0
-2026-07-31 05:06:53.996: [INFO] OnDoneLoading sync enabled: 0
-2026-07-31 09:37:50.550: [INFO] OnDoneLoading sync enabled: 0
-2026-08-02 07:18:43.389: [INFO] OnDoneLoading sync enabled: 0
+2026-08-04 09:24:17.715: [INFO] OnDoneLoading sync enabled: 0
+2026-08-04 09:24:36.719: [INFO] OnDoneLoading sync enabled: 0
+2026-08-05 06:45:51.589: [INFO] CurrentProfilePath: F:\Cdac\EDUHUBCODE\Eduhub\EDUHUB\Backend\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-08-05 06:45:51.589: [INFO] Profiles total count: 1
+2026-08-05 06:45:51.590: [INFO] Profile: name=Profile 1 path=F:\Cdac\EDUHUBCODE\Eduhub\EDUHUB\Backend\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-08-04T09:24:58.023Z
+2026-08-05 06:45:51.590: [INFO] LastUsedProfileDir: F:\Cdac\EDUHUBCODE\Eduhub\EDUHUB\Backend\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-08-05 06:45:51.590: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=F:\Cdac\EDUHUBCODE\Eduhub\EDUHUB\Backend\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-08-04T09:24:58.023Z
+2026-08-05 06:45:51.590: [INFO] OnDoneLoading sync enabled: 0
+2026-08-05 06:45:51.590: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-08-05 06:45:51.590: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-08-05 06:45:51.591: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-05 08:16:37.757: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-05 09:20:08.312: [INFO] CurrentProfilePath: F:\Cdac\EDUHUBCODE\Eduhub\EDUHUB\Backend\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-08-05 09:20:08.312: [INFO] Profiles total count: 1
+2026-08-05 09:20:08.313: [INFO] Profile: name=Profile 1 path=F:\Cdac\EDUHUBCODE\Eduhub\EDUHUB\Backend\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-08-05T06:49:00.012Z
+2026-08-05 09:20:08.313: [INFO] LastUsedProfileDir: F:\Cdac\EDUHUBCODE\Eduhub\EDUHUB\Backend\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-08-05 09:20:08.313: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=F:\Cdac\EDUHUBCODE\Eduhub\EDUHUB\Backend\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-08-05T06:49:00.012Z
+2026-08-05 09:20:08.313: [INFO] OnDoneLoading sync enabled: 0
+2026-08-05 09:20:08.313: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-08-05 09:20:08.313: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-08-05 09:20:08.313: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-05 10:26:02.302: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-05 12:10:02.363: [INFO] CurrentProfilePath: F:\Cdac\EDUHUBCODE\Eduhub\EDUHUB\Backend\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-08-05 12:10:02.363: [INFO] Profiles total count: 1
+2026-08-05 12:10:02.363: [INFO] Profile: name=Profile 1 path=F:\Cdac\EDUHUBCODE\Eduhub\EDUHUB\Backend\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-08-05T06:49:00.012Z
+2026-08-05 12:10:02.363: [INFO] LastUsedProfileDir: F:\Cdac\EDUHUBCODE\Eduhub\EDUHUB\Backend\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-08-05 12:10:02.363: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=F:\Cdac\EDUHUBCODE\Eduhub\EDUHUB\Backend\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-08-05T06:49:00.012Z
+2026-08-05 12:10:02.363: [INFO] OnDoneLoading sync enabled: 0
+2026-08-05 12:10:02.363: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-08-05 12:10:02.363: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-08-05 12:10:02.363: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-05 18:03:57.245: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-05 18:05:13.725: [INFO] CurrentProfilePath: F:\Cdac\EDUHUBCODE\Eduhub\EDUHUB\Backend\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-08-05 18:05:13.725: [INFO] Profiles total count: 1
+2026-08-05 18:05:13.726: [INFO] Profile: name=Profile 1 path=F:\Cdac\EDUHUBCODE\Eduhub\EDUHUB\Backend\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-08-05T06:49:00.012Z
+2026-08-05 18:05:13.726: [INFO] LastUsedProfileDir: F:\Cdac\EDUHUBCODE\Eduhub\EDUHUB\Backend\.metadata\.plugins\org.eclipse.swt\EBWebView\Default
+2026-08-05 18:05:13.726: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=F:\Cdac\EDUHUBCODE\Eduhub\EDUHUB\Backend\.metadata\.plugins\org.eclipse.swt\EBWebView\Default lastActive=2026-08-05T06:49:00.012Z
+2026-08-05 18:05:13.726: [INFO] OnDoneLoading sync enabled: 0
+2026-08-05 18:05:13.726: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-08-05 18:05:13.726: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-08-05 18:05:13.726: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-05 18:40:42.051: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1

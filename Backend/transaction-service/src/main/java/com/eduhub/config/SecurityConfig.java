@@ -10,7 +10,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-<<<<<<< HEAD
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -52,19 +51,24 @@ public class SecurityConfig {
 
         .authorizeHttpRequests(auth -> auth
 
-
                 .requestMatchers(
-                        "/api/reviews/**"
+                        org.springframework.http.HttpMethod.OPTIONS,
+                        "/**"
                 )
-                .hasRole("STUDENT")
-
+                .permitAll()
+                .requestMatchers("/error").permitAll()
 
                 .requestMatchers(
+                        "/api/reviews",
+                        "/api/reviews/**",
+                        "/api/enrollments",
                         "/api/enrollments/**",
-                        "/api/payments/**"
+                        "/api/payments",
+                        "/api/payments/**",
+                        "/api/student",
+                        "/api/student/**"
                 )
-                .hasRole("STUDENT")
-
+                .hasAnyRole("STUDENT", "INSTITUTE", "ADMIN")
 
                 .anyRequest()
                 .authenticated()
@@ -95,44 +99,4 @@ public class SecurityConfig {
         return source;
     }
 
-=======
-import com.eduhub.jwt.JwtAuthenticationFilter;
-
-@Configuration
-public class SecurityConfig {
-
-    @Autowired
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http)
-            throws Exception {
-
-        http
-            .csrf(csrf -> csrf.disable())
-
-            .cors(Customizer.withDefaults())
-
-            .sessionManagement(session ->
-                    session.sessionCreationPolicy(
-                            SessionCreationPolicy.STATELESS))
-
-            .authorizeHttpRequests(auth -> auth
-
-                    .requestMatchers("/api/enrollments/**")
-                    .hasRole("STUDENT")
-
-                    .requestMatchers("/api/payments/**")
-                    .hasRole("STUDENT")
-
-                    .anyRequest()
-                    .authenticated());
-
-        http.addFilterBefore(
-                jwtAuthenticationFilter,
-                UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
-    }
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 }

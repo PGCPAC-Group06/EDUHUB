@@ -1,6 +1,5 @@
 package com.eduhub.controller;
 
-<<<<<<< HEAD
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,19 +14,11 @@ import com.eduhub.service.CategoryService;
 import jakarta.validation.Valid;
 
 
-=======
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import com.eduhub.dto.CategoryDTO;
-import com.eduhub.service.CategoryService;
-import java.util.List;
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryController {
 
-<<<<<<< HEAD
 
     @Autowired
     private CategoryService categoryService;
@@ -221,13 +212,3 @@ public class CategoryController {
     }
 
 }
-=======
-    @Autowired
-    private CategoryService categoryService;
-
-    @GetMapping
-    public List<CategoryDTO> getAllCategories() {
-        return categoryService.getAllCategories();
-    }
-}
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
