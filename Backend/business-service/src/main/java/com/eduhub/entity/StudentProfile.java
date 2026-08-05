@@ -1,6 +1,5 @@
 package com.eduhub.entity;
 
-<<<<<<< HEAD
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
@@ -19,19 +18,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentProfile {
-=======
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import java.time.LocalDate;
-
-@Entity
-@Table(name = "STUDENT_PROFILE")
-@Getter
-@Setter
-public class StudentProfile {
-
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "student_profile_id")

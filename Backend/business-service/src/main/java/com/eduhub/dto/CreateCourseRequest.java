@@ -31,7 +31,6 @@ public class CreateCourseRequest {
     @NotBlank
     private String duration;
 
-    @NotBlank(message = "Thumbnail is required")
     private String thumbnail;
 
     private Integer categoryId;

@@ -1,6 +1,5 @@
 package com.eduhub.dto;
 
-
 import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -40,6 +39,8 @@ public class CourseResponse {
 
     private String instructorName;
 
+    private String instituteName;
+
     @JsonProperty("course_id")
     public Integer getCourse_id() { return courseId; }
 
@@ -48,4 +49,10 @@ public class CourseResponse {
 
     @JsonProperty("instructor_id")
     public Integer getInstructor_id() { return instructorId; }
+
+    @JsonProperty("institute_name")
+    public String getInstitute_name() { return instituteName; }
+
+    @JsonProperty("category_name")
+    public String getCategory_name() { return category; }
 }

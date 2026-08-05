@@ -2,10 +2,7 @@
 <section name="Workbench">
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
-			<item value="D:\Academics\C-DAC\Project Docs\Eduhub\EDUHUB\Backend"/>
-			<item value="D:\Academics\C-DAC\Project Docs\Eduhub\EDUHUB\Backend\transaction-service"/>
-			<item value="D:\Academics\C-DAC\Project Docs\Eduhub\EDUHUB\Backend\business-service"/>
-			<item value="D:\Academics\C-DAC\Project Docs\Eduhub\EDUHUB\Backend\auth-service"/>
+			<item value="F:\Cdac\EDUHUBCODE\Eduhub\EDUHUB\Backend"/>
 		</list>
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>
@@ -15,9 +12,5 @@
 			<item value="[groupId].[artifactId]-[version]"/>
 			<item value="[name]"/>
 		</list>
-	</section>
-	<section name="org.eclipse.m2e.core.pom.overview">
-	</section>
-	<section name="org.eclipse.m2e.core.pom.dependencies">
 	</section>
 </section>

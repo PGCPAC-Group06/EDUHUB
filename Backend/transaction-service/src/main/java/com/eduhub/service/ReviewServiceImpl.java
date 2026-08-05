@@ -34,33 +34,22 @@ public class ReviewServiceImpl implements ReviewService {
                 .orElseThrow(() ->
                         new RuntimeException("Enrollment not found."));
 
-        if (!enrollment.getStudentUserId().equals(userId)) {
-
-            throw new RuntimeException(
-                    "You are not authorized.");
+        if (userId != null && !enrollment.getStudentUserId().equals(userId)) {
+            throw new RuntimeException("You are not authorized.");
         }
 
-        if (reviewRepository.findByEnrollmentId(
-                request.getEnrollmentId()).isPresent()) {
-
-            throw new RuntimeException(
-                    "Review already submitted.");
+        Review review = reviewRepository.findByEnrollmentId(request.getEnrollmentId()).orElse(null);
+        if (review == null) {
+            review = new Review();
+            review.setEnrollmentId(request.getEnrollmentId());
         }
-
-        Review review = new Review();
-
-        review.setEnrollmentId(request.getEnrollmentId());
         review.setRating(request.getRating());
         review.setComment(request.getComment());
 
-        Review savedReview =
-                reviewRepository.save(review);
+        Review savedReview = reviewRepository.save(review);
 
-        ReviewResponse response =
-                new ReviewResponse();
-
+        ReviewResponse response = new ReviewResponse();
         BeanUtils.copyProperties(savedReview, response);
-
         return response;
     }
     @Override
@@ -123,7 +112,6 @@ public class ReviewServiceImpl implements ReviewService {
 
         reviewRepository.delete(review);
     }
-<<<<<<< HEAD
 
     @Override
     public List<ReviewResponse> getAllReviews() {
@@ -147,6 +135,4 @@ public class ReviewServiceImpl implements ReviewService {
         }
         return sum / reviews.size();
     }
-=======
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 }

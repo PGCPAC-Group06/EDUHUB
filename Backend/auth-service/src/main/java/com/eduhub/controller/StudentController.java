@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-<<<<<<< HEAD
 import com.eduhub.repository.UserRepository;
 
 import java.util.HashMap;
@@ -15,13 +14,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/student")
-=======
-import org.springframework.web.bind.annotation.CrossOrigin;
-
-@RestController
-@RequestMapping("api/student")
-@CrossOrigin(origins = "*")
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 public class StudentController {
    
     @Autowired

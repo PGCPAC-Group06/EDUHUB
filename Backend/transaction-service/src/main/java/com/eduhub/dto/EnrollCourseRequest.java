@@ -14,4 +14,9 @@ public class EnrollCourseRequest {
     @NotNull
     private Integer courseId;
 
+    private String paymentMethod;
+
+    private String transactionId;
+
+    private java.math.BigDecimal amount;
 }

@@ -49,30 +49,17 @@ public class JwtAuthenticationFilter
 
 
 
-<<<<<<< HEAD
         Cookie[] cookies =
                 request.getCookies();
 
-=======
-        // Check Bearer Token
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 
 
         if(cookies != null){
 
-            if (jwtUtil.validateToken(token)) {
 
-<<<<<<< HEAD
             for(Cookie cookie : cookies){
-=======
-                email = jwtUtil.extractEmail(token);
-                role = jwtUtil.extractRole(token);
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 
-            } else {
 
-<<<<<<< HEAD
                 if("jwt".equals(cookie.getName())){
 
 
@@ -80,9 +67,6 @@ public class JwtAuthenticationFilter
 
                     break;
                 }
-=======
-                System.out.println("Invalid or Expired JWT Token");
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
             }
         }
 

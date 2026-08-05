@@ -3,10 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../redux/authSlice";
 import { instituteService } from "../services/instituteService";
-<<<<<<< HEAD
 import api from "../services/api";
-=======
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 import "../styles/InstituteDashboard.css";
 
 // React Icons
@@ -52,7 +49,6 @@ function InstituteDashboard() {
 
   // Profile & Core States
   const [profile, setProfile] = useState({
-<<<<<<< HEAD
     name: authUser?.name || "Institute",
     email: authUser?.email || "",
     address: "",
@@ -147,120 +143,12 @@ function InstituteDashboard() {
     gstin: "",
     contact_no: "",
     description: "",
-=======
-    name: authUser?.name || "Nova Institute",
-    email: authUser?.email || "contact@novainstitute.com",
-    address: "Building B, Tech Park, Sector 62, Noida, UP - 201301",
-    gstin: "07AAAAA0000A1Z5",
-    contact_no: "+91 98112 34567",
-    description: "Premier offline and hybrid training institute specializing in Software Engineering, UI/UX Design, and Data Science.",
-    logo: "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=200&q=80",
-    approval_status: "approved",
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
   });
 
-  const [summaryData, setSummaryData] = useState(null);
-  const [courses, setCourses] = useState([]);
-  const [students, setStudents] = useState([]);
-  const [instructors, setInstructors] = useState([]);
-  const [documents, setDocuments] = useState([]);
-
-  // Search Filters
-  const [globalSearch, setGlobalSearch] = useState("");
-  const [courseSearch, setCourseSearch] = useState("");
-  const [studentSearch, setStudentSearch] = useState("");
-
-  // Toast Notification
-  const [toastMessage, setToastMessage] = useState(null);
-
-  // Modal States
-  const [showAddCourseModal, setShowAddCourseModal] = useState(false);
-  const [showManageCourseModal, setShowManageCourseModal] = useState(false);
-  const [selectedCourse, setSelectedCourse] = useState(null);
-
-  const [showAddInstructorModal, setShowAddInstructorModal] = useState(false);
-  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
-  const [showEditProfileModal, setShowEditProfileModal] = useState(false);
-  const [showUploadDocModal, setShowUploadDocModal] = useState(false);
-  const [showNotifications, setShowNotifications] = useState(false);
-
-  // Admin Notifications
-  const [notifications, setNotifications] = useState([
-    {
-      id: 1,
-      title: "Course Approval Granted",
-      message: "Admin approved your course 'UX Design Fundamentals'. It is now live in catalog.",
-      time: "10 mins ago",
-      unread: true,
-    },
-    {
-      id: 2,
-      title: "Document Verified",
-      message: "Admin verified 'gst_certificate.pdf'. Status updated to Verified.",
-      time: "2 hours ago",
-      unread: true,
-    },
-    {
-      id: 3,
-      title: "New Student Enrollment",
-      message: "Maria Lopez enrolled in 'UX Design Fundamentals'.",
-      time: "1 day ago",
-      unread: false,
-    },
-    {
-      id: 4,
-      title: "Revenue Payout Processed",
-      message: "Admin processed June batch revenue payout of ₹48,210.",
-      time: "3 days ago",
-      unread: false,
-    },
-  ]);
-
-  // Forms
-  const [newCourseForm, setNewCourseForm] = useState({
-    title: "",
-    description: "",
-    price: 1999,
-    duration: "6 weeks",
-    instructor_name: "Aisha Kapoor",
-    category: "Design",
-    status: "draft",
-    thumbnail: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80",
-  });
-
-  const [newInstructorForm, setNewInstructorForm] = useState({
-    name: "",
-    specialization: "",
-    experience: 5,
-    bio: "",
-  });
-
-  const [uploadDocForm, setUploadDocForm] = useState({
-    document_type: "Registration Certificate",
-    document_name: "",
-    file_name: "",
-  });
-
-  const [passwordForm, setPasswordForm] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-  });
-
-  const [editProfileForm, setEditProfileForm] = useState({
-    name: "",
-    address: "",
-    gstin: "",
-    contact_no: "",
-    description: "",
-  });
-
-  // Init Data Load
   useEffect(() => {
     loadDashboardData();
   }, [authUser?.user_id, authUser?.email]);
 
-<<<<<<< HEAD
   useEffect(() => {
     if (showAddCourseModal) {
       instituteService.getCategories().then((cats) => {
@@ -272,8 +160,6 @@ function InstituteDashboard() {
     }
   }, [showAddCourseModal]);
 
-=======
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
   const loadDashboardData = async () => {
     try {
       const prof = await instituteService.getInstituteProfile(authUser?.user_id, authUser);
@@ -318,7 +204,6 @@ function InstituteDashboard() {
       setDocuments(docs || []);
     } catch (e) {
       console.warn("Documents fetch fallback");
-<<<<<<< HEAD
     }
 
     try {
@@ -326,8 +211,6 @@ function InstituteDashboard() {
       setCategories(cats || []);
     } catch (e) {
       console.warn("Categories fetch fallback");
-=======
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
     }
   };
 
@@ -336,16 +219,12 @@ function InstituteDashboard() {
     setTimeout(() => setToastMessage(null), 3500);
   };
 
-<<<<<<< HEAD
   const handleLogout = async () => {
     try {
       await api.post("/api/auth/logout");
     } catch (e) {
       console.error("Logout error", e);
     }
-=======
-  const handleLogout = () => {
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
     dispatch(logout());
     navigate("/login");
   };
@@ -358,7 +237,6 @@ function InstituteDashboard() {
     return parts[0].substring(0, 2).toUpperCase();
   };
 
-<<<<<<< HEAD
   const getDefaultThumbnailByCategory = (categoryName) => {
     const cat = (categoryName || "").toLowerCase();
     if (cat.includes("web") || cat.includes("program") || cat.includes("develop") || cat.includes("cod") || cat.includes("software")) {
@@ -478,35 +356,6 @@ function InstituteDashboard() {
     }
   };
 
-=======
-  // Handlers for Course Operations
-  const handleCreateCourseSubmit = async (e) => {
-    e.preventDefault();
-    if (!newCourseForm.title || !newCourseForm.description) {
-      showToast("Please fill in course title and description!", "error");
-      return;
-    }
-    try {
-      const created = await instituteService.createCourse(newCourseForm);
-      setCourses([created, ...courses]);
-      setShowAddCourseModal(false);
-      setNewCourseForm({
-        title: "",
-        description: "",
-        price: 1999,
-        duration: "6 weeks",
-        instructor_name: instructors[0]?.name || "Aisha Kapoor",
-        category: "Design",
-        status: "draft",
-        thumbnail: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80",
-      });
-      showToast("New course created & sent for admin approval!", "success");
-    } catch (err) {
-      showToast("Failed to create course.", "error");
-    }
-  };
-
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
   const handleOpenManageCourse = (course) => {
     setSelectedCourse({ ...course });
     setShowManageCourseModal(true);
@@ -519,10 +368,7 @@ function InstituteDashboard() {
       setCourses(courses.map((c) => (c.course_id === updated.course_id ? updated : c)));
       setShowManageCourseModal(false);
       showToast("Course details updated successfully!", "success");
-<<<<<<< HEAD
       loadDashboardData();
-=======
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
     } catch (err) {
       showToast("Failed to update course.", "error");
     }
@@ -535,10 +381,7 @@ function InstituteDashboard() {
         setCourses(courses.filter((c) => c.course_id !== courseId));
         setShowManageCourseModal(false);
         showToast("Course deleted successfully!", "success");
-<<<<<<< HEAD
         loadDashboardData();
-=======
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
       } catch (err) {
         showToast("Failed to delete course.", "error");
       }
@@ -632,7 +475,6 @@ function InstituteDashboard() {
       return;
     }
     try {
-<<<<<<< HEAD
       await instituteService.addInstructor({
         ...newInstructorForm,
         experience: Number(newInstructorForm.experience || 0),
@@ -692,20 +534,10 @@ function InstituteDashboard() {
       } catch (err) {
         showToast("Failed to delete instructor.", "error");
       }
-=======
-      const created = await instituteService.addInstructor(newInstructorForm);
-      setInstructors([created, ...instructors]);
-      setShowAddInstructorModal(false);
-      setNewInstructorForm({ name: "", specialization: "", experience: 5, bio: "" });
-      showToast("Instructor added successfully!", "success");
-    } catch (err) {
-      showToast("Failed to add instructor.", "error");
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
     }
   };
 
   // Filtered Courses & Students
-<<<<<<< HEAD
   const filteredCourses = courses.filter((c) => {
     const matchesSearch =
       (c.title || "").toLowerCase().includes((courseSearch || globalSearch).toLowerCase()) ||
@@ -736,20 +568,6 @@ function InstituteDashboard() {
       String(inst.experience || "").includes(query)
     );
   });
-=======
-  const filteredCourses = courses.filter(
-    (c) =>
-      c.title.toLowerCase().includes((courseSearch || globalSearch).toLowerCase()) ||
-      c.category.toLowerCase().includes((courseSearch || globalSearch).toLowerCase())
-  );
-
-  const filteredStudents = students.filter(
-    (s) =>
-      s.name.toLowerCase().includes((studentSearch || globalSearch).toLowerCase()) ||
-      s.course.toLowerCase().includes((studentSearch || globalSearch).toLowerCase()) ||
-      s.email.toLowerCase().includes((studentSearch || globalSearch).toLowerCase())
-  );
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
 
   return (
     <div className="id-dashboard-container">
@@ -786,12 +604,9 @@ function InstituteDashboard() {
             <li className={`id-nav-item ${activeSection === "students" ? "active" : ""}`} onClick={() => setActiveSection("students")}>
               <FiUsers /> <span className="id-nav-text">Students</span>
             </li>
-<<<<<<< HEAD
             <li className={`id-nav-item ${activeSection === "instructors" ? "active" : ""}`} onClick={() => setActiveSection("instructors")}>
               <FiBriefcase /> <span className="id-nav-text">Instructor</span>
             </li>
-=======
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
             <li className={`id-nav-item ${activeSection === "revenue" ? "active" : ""}`} onClick={() => setActiveSection("revenue")}>
               <FiDollarSign /> <span className="id-nav-text">Revenue</span>
             </li>
@@ -823,21 +638,7 @@ function InstituteDashboard() {
       <main className="id-main-content">
         {/* TOP HEADER */}
         <header className="id-header">
-<<<<<<< HEAD
           <div className="id-search-box-removed" style={{ flex: 1 }}></div>
-=======
-          <div className="id-search-box">
-            <FiSearch className="id-search-icon" />
-            <input
-              type="text"
-              className="id-search-input"
-              placeholder="Search students, courses..."
-              value={globalSearch}
-              onChange={(e) => setGlobalSearch(e.target.value)}
-            />
-          </div>
-
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
           <div className="id-header-actions">
             <button className="id-notif-btn" title="Notifications" onClick={() => setShowNotifications(!showNotifications)}>
               <FiBell />
@@ -882,30 +683,18 @@ function InstituteDashboard() {
             <div>
               <div className="id-page-head">
                 <h2 className="id-page-title">Institute overview</h2>
-<<<<<<< HEAD
-=======
-                <button className="id-btn-primary" onClick={() => setShowAddCourseModal(true)}>
-                  <FiPlus /> New course
-                </button>
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
               </div>
 
               {/* 4 Stat Cards */}
               <div className="id-stats-grid">
                 <div className="id-stat-card">
                   <div className="id-stat-label">Total students</div>
-<<<<<<< HEAD
                   <div className="id-stat-val">{summaryData?.stats?.totalStudents ?? students.length ?? 0}</div>
                   <div className="id-stat-sub">{summaryData?.stats?.studentsWeeklyGrowth || "Live database metrics"}</div>
-=======
-                  <div className="id-stat-val">18,204</div>
-                  <div className="id-stat-sub">+320 this week</div>
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                 </div>
 
                 <div className="id-stat-card">
                   <div className="id-stat-label">Active courses</div>
-<<<<<<< HEAD
                   <div className="id-stat-val">{summaryData?.stats?.activeCourses ?? courses.filter((c) => (c.status || "").toUpperCase() === "ACTIVE").length ?? 0}</div>
                   <div className="id-stat-sub">Total Courses: {summaryData?.stats?.totalCourses ?? courses.length ?? 0}</div>
                 </div>
@@ -914,27 +703,12 @@ function InstituteDashboard() {
                   <div className="id-stat-label">Revenue</div>
                   <div className="id-stat-val">₹{(summaryData?.stats?.revenueMtd ?? 0).toLocaleString()}</div>
                   <div className="id-stat-sub">Lifetime: ₹{(summaryData?.stats?.lifetimeRevenue ?? 0).toLocaleString()}</div>
-=======
-                  <div className="id-stat-val">{courses.filter((c) => c.status === "active").length || 62}</div>
-                  <div className="id-stat-sub">+4 this month</div>
-                </div>
-
-                <div className="id-stat-card">
-                  <div className="id-stat-label">Revenue (MTD)</div>
-                  <div className="id-stat-val">₹48,210</div>
-                  <div className="id-stat-sub">+18%</div>
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                 </div>
 
                 <div className="id-stat-card">
                   <div className="id-stat-label">Avg. rating</div>
-<<<<<<< HEAD
                   <div className="id-stat-val">{Number(summaryData?.stats?.avgRating ?? 0).toFixed(1)}</div>
                   <div className="id-stat-sub muted">Pending Courses: {summaryData?.stats?.pendingCourses ?? 0}</div>
-=======
-                  <div className="id-stat-val">4.8</div>
-                  <div className="id-stat-sub muted">stable</div>
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                 </div>
               </div>
 
@@ -944,7 +718,6 @@ function InstituteDashboard() {
                   <div className="id-card h-100">
                     <h3 className="id-card-title">Revenue trend</h3>
                     <div className="id-trend-bars">
-<<<<<<< HEAD
                       {(summaryData?.revenueTrend && summaryData.revenueTrend.length > 0) ? (
                         summaryData.revenueTrend.map((t, idx) => {
                           const maxRev = Math.max(...summaryData.revenueTrend.map(r => Number(r.revenue || 0)), 1);
@@ -962,34 +735,6 @@ function InstituteDashboard() {
                       )}
                     </div>
                     <div className="mt-3 text-muted fs-8">Recent monthly revenue progression</div>
-=======
-                      <div className="id-trend-col">
-                        <div className="id-trend-bar" style={{ height: "45%" }}></div>
-                        <span className="id-trend-month">Jan</span>
-                      </div>
-                      <div className="id-trend-col">
-                        <div className="id-trend-bar" style={{ height: "55%" }}></div>
-                        <span className="id-trend-month">Feb</span>
-                      </div>
-                      <div className="id-trend-col">
-                        <div className="id-trend-bar" style={{ height: "35%" }}></div>
-                        <span className="id-trend-month">Mar</span>
-                      </div>
-                      <div className="id-trend-col">
-                        <div className="id-trend-bar" style={{ height: "70%" }}></div>
-                        <span className="id-trend-month">Apr</span>
-                      </div>
-                      <div className="id-trend-col">
-                        <div className="id-trend-bar" style={{ height: "60%" }}></div>
-                        <span className="id-trend-month">May</span>
-                      </div>
-                      <div className="id-trend-col">
-                        <div className="id-trend-bar highlight" style={{ height: "95%" }}></div>
-                        <span className="id-trend-month">Jun</span>
-                      </div>
-                    </div>
-                    <div className="mt-3 text-muted fs-8">Jan - Jun revenue, in thousands</div>
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                   </div>
                 </div>
 
@@ -997,7 +742,6 @@ function InstituteDashboard() {
                   <div className="id-card h-100">
                     <h3 className="id-card-title">Recent reviews</h3>
                     <div className="id-review-list">
-<<<<<<< HEAD
                       {(summaryData?.recentReviews || []).length > 0 ? (
                         (summaryData?.recentReviews || []).map((rev) => (
                           <div className="id-review-item" key={rev.id || rev.review_id}>
@@ -1013,19 +757,6 @@ function InstituteDashboard() {
                       ) : (
                         <div className="text-muted fs-8 text-center py-4">No recent reviews available.</div>
                       )}
-=======
-                      {(summaryData?.recentReviews || []).map((rev) => (
-                        <div className="id-review-item" key={rev.id}>
-                          <div className="d-flex justify-content-between align-items-center">
-                            <span className="id-review-author">{rev.student}</span>
-                            <span className="id-review-rating">
-                              ★ {rev.rating.toFixed(1)}
-                            </span>
-                          </div>
-                          <p className="id-review-comment">"{rev.comment}"</p>
-                        </div>
-                      ))}
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                     </div>
                   </div>
                 </div>
@@ -1045,7 +776,6 @@ function InstituteDashboard() {
                       </tr>
                     </thead>
                     <tbody>
-<<<<<<< HEAD
                       {filteredStudents.slice(0, 5).length > 0 ? (
                         filteredStudents.slice(0, 5).map((std) => (
                           <tr key={std.enrollment_id}>
@@ -1066,22 +796,6 @@ function InstituteDashboard() {
                           <td colSpan="4" className="text-center text-muted py-4">No recent enrollments found.</td>
                         </tr>
                       )}
-=======
-                      {filteredStudents.slice(0, 5).map((std) => (
-                        <tr key={std.enrollment_id}>
-                          <td className="fw-bold">{std.name}</td>
-                          <td>
-                            <span className="id-link-purple cursor-pointer">{std.course}</span>
-                          </td>
-                          <td>{std.enrolled_time}</td>
-                          <td>
-                            <span className={`id-badge ${std.status === "Active" ? "id-badge-active" : std.status === "Completed" ? "id-badge-completed" : "id-badge-pending"}`}>
-                              {std.status}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                     </tbody>
                   </table>
                 </div>
@@ -1092,22 +806,14 @@ function InstituteDashboard() {
           {/* 2. COURSES VIEW (Screenshot 3) */}
           {activeSection === "courses" && (
             <div>
-<<<<<<< HEAD
               <div className="id-page-head flex-wrap gap-2">
                 <h2 className="id-page-title">Courses</h2>
                 <div className="d-flex flex-wrap gap-2 align-items-center">
                   <div className="id-search-box" style={{ width: 220 }}>
-=======
-              <div className="id-page-head">
-                <h2 className="id-page-title">Courses</h2>
-                <div className="d-flex gap-3">
-                  <div className="id-search-box" style={{ width: 280 }}>
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                     <FiSearch className="id-search-icon" />
                     <input
                       type="text"
                       className="id-search-input"
-<<<<<<< HEAD
                       placeholder="Search courses..."
                       value={courseSearch}
                       onChange={(e) => { setCourseSearch(e.target.value); setCourseCurrentPage(1); }}
@@ -1137,13 +843,6 @@ function InstituteDashboard() {
                     <option value="approved">Approved</option>
                     <option value="pending">Pending</option>
                   </select>
-=======
-                      placeholder="Search your courses..."
-                      value={courseSearch}
-                      onChange={(e) => setCourseSearch(e.target.value)}
-                    />
-                  </div>
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                   <button className="id-btn-primary" onClick={() => setShowAddCourseModal(true)}>
                     <FiPlus /> New course
                   </button>
@@ -1151,7 +850,6 @@ function InstituteDashboard() {
               </div>
 
               <div className="id-courses-grid">
-<<<<<<< HEAD
                 {currentCourses.length > 0 ? (
                   currentCourses.map((crs) => (
                     <div className="id-course-card" key={crs.course_id}>
@@ -1210,34 +908,6 @@ function InstituteDashboard() {
                   </div>
                 </div>
               )}
-=======
-                {filteredCourses.map((crs) => (
-                  <div className="id-course-card" key={crs.course_id}>
-                    <img src={crs.thumbnail} alt={crs.title} className="id-course-thumb" />
-                    <div className="id-course-body">
-                      <div className="id-course-badges">
-                        <span className={`id-badge id-badge-${crs.approval_status}`}>
-                          {crs.approval_status}
-                        </span>
-                        <span className={`id-badge id-badge-${crs.status}`}>
-                          {crs.status}
-                        </span>
-                      </div>
-                      <h4 className="id-course-title">{crs.title}</h4>
-                      <div className="id-course-meta">
-                        {crs.category} • ₹{crs.price} • {crs.duration}
-                      </div>
-                      <div className="fs-8 text-muted mb-3">{crs.enrolled_count} students enrolled</div>
-                      <div className="id-course-footer">
-                        <button className="id-btn-outline-purple" onClick={() => handleOpenManageCourse(crs)}>
-                          <FiEdit3 /> Manage course
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
             </div>
           )}
 
@@ -1272,7 +942,6 @@ function InstituteDashboard() {
                       </tr>
                     </thead>
                     <tbody>
-<<<<<<< HEAD
                       {filteredStudents.length > 0 ? (
                         filteredStudents.map((std) => (
                           <tr key={std.enrollment_id}>
@@ -1401,38 +1070,6 @@ function InstituteDashboard() {
                           <td colSpan="6" className="text-center text-muted py-4">No instructors found matching your criteria. Click 'Add new instructor' to create one.</td>
                         </tr>
                       )}
-=======
-                      {filteredStudents.map((std) => (
-                        <tr key={std.enrollment_id}>
-                          <td className="fw-bold">{std.name}</td>
-                          <td className="text-muted">{std.email}</td>
-                          <td>
-                            <span className="id-link-purple cursor-pointer">{std.course}</span>
-                          </td>
-                          <td>{std.enrolled_time}</td>
-                          <td>
-                            <div className="d-flex align-items-center gap-2" style={{ width: 140 }}>
-                              <div className="progress flex-grow-1" style={{ height: 6, borderRadius: 10 }}>
-                                <div
-                                  className="progress-bar"
-                                  style={{
-                                    width: `${std.progress}%`,
-                                    backgroundColor: "var(--id-primary)",
-                                    borderRadius: 10,
-                                  }}
-                                ></div>
-                              </div>
-                              <span className="fs-8 fw-bold text-muted">{std.progress}%</span>
-                            </div>
-                          </td>
-                          <td>
-                            <span className={`id-badge ${std.status === "Active" ? "id-badge-active" : std.status === "Completed" ? "id-badge-completed" : "id-badge-pending"}`}>
-                              {std.status}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                     </tbody>
                   </table>
                 </div>
@@ -1450,7 +1087,6 @@ function InstituteDashboard() {
               <div className="id-stats-grid" style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
                 <div className="id-stat-card">
                   <div className="id-stat-label">This month</div>
-<<<<<<< HEAD
                   <div className="id-stat-val">₹{(summaryData?.stats?.revenueMtd ?? 0).toLocaleString()}</div>
                   <div className="id-stat-sub">{summaryData?.stats?.revenueGrowth || "+0% vs last month"}</div>
                 </div>
@@ -1459,27 +1095,12 @@ function InstituteDashboard() {
                   <div className="id-stat-label">Payouts</div>
                   <div className="id-stat-val">₹{(summaryData?.stats?.payouts ?? summaryData?.stats?.pendingPayouts ?? 0).toLocaleString()}</div>
                   <div className="id-stat-sub muted">Monthly commission to admin</div>
-=======
-                  <div className="id-stat-val">₹48,210</div>
-                  <div className="id-stat-sub">+18% vs last month</div>
-                </div>
-
-                <div className="id-stat-card">
-                  <div className="id-stat-label">Pending payouts</div>
-                  <div className="id-stat-val">₹6,450</div>
-                  <div className="id-stat-sub muted">Processed weekly</div>
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                 </div>
 
                 <div className="id-stat-card">
                   <div className="id-stat-label">Lifetime revenue</div>
-<<<<<<< HEAD
                   <div className="id-stat-val">₹{(summaryData?.stats?.lifetimeRevenue ?? 0).toLocaleString()}</div>
                   <div className="id-stat-sub muted">Live database metrics</div>
-=======
-                  <div className="id-stat-val">₹5,82,940</div>
-                  <div className="id-stat-sub muted">Since 2023</div>
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                 </div>
               </div>
 
@@ -1497,7 +1118,6 @@ function InstituteDashboard() {
                       </tr>
                     </thead>
                     <tbody>
-<<<<<<< HEAD
                       {(summaryData?.recentTransactions || []).length > 0 ? (
                         (summaryData?.recentTransactions || []).map((txn) => (
                           <tr key={txn.transaction_id}>
@@ -1549,23 +1169,6 @@ function InstituteDashboard() {
                           <td colSpan="3" className="text-center text-muted py-4">No course revenue data recorded yet.</td>
                         </tr>
                       )}
-=======
-                      {(summaryData?.recentTransactions || []).map((txn) => (
-                        <tr key={txn.transaction_id}>
-                          <td className="fw-normal">{txn.student}</td>
-                          <td>
-                            <span className="id-link-purple cursor-pointer">{txn.course}</span>
-                          </td>
-                          <td className="fw-normal">₹{txn.amount}</td>
-                          <td>{txn.date}</td>
-                          <td>
-                            <span className={`id-badge ${txn.status === "Paid" ? "id-badge-approved" : "id-badge-refunded"}`}>
-                              {txn.status}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                     </tbody>
                   </table>
                 </div>
@@ -1586,7 +1189,6 @@ function InstituteDashboard() {
                   <div className="id-card h-100">
                     <h3 className="id-card-title">Top performing courses</h3>
                     <div className="d-flex flex-column gap-3">
-<<<<<<< HEAD
                       {(summaryData?.topCourses || []).length > 0 ? (
                         (summaryData?.topCourses || []).map((item, idx) => (
                           <div className="d-flex align-items-center gap-3" key={item.course_id || idx}>
@@ -1611,33 +1213,6 @@ function InstituteDashboard() {
                       ) : (
                         <div className="text-muted fs-8">No data available yet.</div>
                       )}
-=======
-                      {[
-                        { rank: 1, title: "Design Thinking", students: "530 students" },
-                        { rank: 2, title: "UX Design Fundamentals", students: "412 students" },
-                        { rank: 3, title: "Advanced Figma Mastery", students: "268 students" },
-                        { rank: 4, title: "Full-Stack Web Development", students: "189 students" },
-                      ].map((item) => (
-                        <div className="d-flex align-items-center gap-3" key={item.rank}>
-                          <div
-                            className="d-flex align-items-center justify-content-center fw-normal fs-7"
-                            style={{
-                              width: 32,
-                              height: 32,
-                              borderRadius: "50%",
-                              backgroundColor: "#f1f5f9",
-                              color: "#64748b",
-                            }}
-                          >
-                            {item.rank}
-                          </div>
-                          <div>
-                            <div className="fw-normal fs-8">{item.title}</div>
-                            <div className="text-muted fs-9">{item.students}</div>
-                          </div>
-                        </div>
-                      ))}
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                     </div>
                   </div>
                 </div>
@@ -1647,7 +1222,6 @@ function InstituteDashboard() {
                   <div className="id-card h-100">
                     <h3 className="id-card-title">Enrollment sources</h3>
                     <div className="d-flex flex-column gap-3">
-<<<<<<< HEAD
                       {(summaryData?.enrollmentSources || []).length > 0 ? (
                         (summaryData?.enrollmentSources || []).map((src, idx) => (
                           <div key={idx}>
@@ -1670,31 +1244,6 @@ function InstituteDashboard() {
                       ) : (
                         <div className="text-muted fs-8">No data available yet.</div>
                       )}
-=======
-                      {[
-                        { source: "Direct search", percent: 42 },
-                        { source: "Category browse", percent: 31 },
-                        { source: "Referral", percent: 18 },
-                        { source: "Social", percent: 9 },
-                      ].map((src) => (
-                        <div key={src.source}>
-                          <div className="d-flex justify-content-between fs-8 fw-normal mb-1">
-                            <span>{src.source}</span>
-                            <span className="text-muted">{src.percent}%</span>
-                          </div>
-                          <div className="progress" style={{ height: 6, borderRadius: 10 }}>
-                            <div
-                              className="progress-bar"
-                              style={{
-                                width: `${src.percent}%`,
-                                backgroundColor: "var(--id-primary)",
-                                borderRadius: 10,
-                              }}
-                            ></div>
-                          </div>
-                        </div>
-                      ))}
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                     </div>
                   </div>
                 </div>
@@ -1710,7 +1259,6 @@ function InstituteDashboard() {
               </div>
 
               <div className="d-flex flex-column gap-3">
-<<<<<<< HEAD
                 {(summaryData?.recentReviews || []).length > 0 ? (
                   (summaryData?.recentReviews || []).map((rev) => (
                     <div className="id-card" key={rev.id || rev.review_id} style={{ padding: "1.25rem 1.5rem" }}>
@@ -1728,54 +1276,6 @@ function InstituteDashboard() {
                 ) : (
                   <div className="text-muted fs-8 text-center mt-4">No reviews available yet.</div>
                 )}
-=======
-                {[
-                  {
-                    id: 1,
-                    author: "Aisha K.",
-                    course: "UX Design Fundamentals",
-                    rating: 5.0,
-                    comment: "Loved the pacing of module 3, very clear explanations throughout.",
-                    time: "2 days ago",
-                  },
-                  {
-                    id: 2,
-                    author: "Raj N.",
-                    course: "Full-Stack Web Development",
-                    rating: 4.5,
-                    comment: "Great instructor, audio quality could improve in a couple of lectures.",
-                    time: "4 days ago",
-                  },
-                  {
-                    id: 3,
-                    author: "Priya Shah",
-                    course: "Design Thinking",
-                    rating: 4.8,
-                    comment: "Practical exercises made the concepts stick immediately.",
-                    time: "1 week ago",
-                  },
-                  {
-                    id: 4,
-                    author: "Karan Mehta",
-                    course: "Advanced Figma Mastery",
-                    rating: 4.2,
-                    comment: "Solid course, wish there were more real-world project files.",
-                    time: "1 week ago",
-                  },
-                ].map((rev) => (
-                  <div className="id-card" key={rev.id} style={{ padding: "1.25rem 1.5rem" }}>
-                    <div className="d-flex justify-content-between align-items-center mb-1">
-                      <div>
-                        <span className="fw-normal fs-7 me-1">{rev.author}</span>
-                        <span className="text-muted fs-8">on {rev.course}</span>
-                      </div>
-                      <span className="id-review-rating fs-7">★ {rev.rating.toFixed(1)}</span>
-                    </div>
-                    <p className="id-review-comment fs-7 mb-1">"{rev.comment}"</p>
-                    <div className="text-muted fs-9">{rev.time}</div>
-                  </div>
-                ))}
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
               </div>
             </div>
           )}
@@ -1843,7 +1343,6 @@ function InstituteDashboard() {
                 </div>
 
                 <div className="d-flex flex-column gap-2">
-<<<<<<< HEAD
                   {documents.length > 0 ? (
                     documents.map((doc, idx) => (
                       <div className="d-flex justify-content-between align-items-center p-2 rounded-3" key={doc.document_id || idx} style={{ backgroundColor: "#f8fafc" }}>
@@ -1862,44 +1361,6 @@ function InstituteDashboard() {
                   ) : (
                     <div className="text-muted fs-9 text-center py-3">No documents uploaded.</div>
                   )}
-=======
-                  {(documents.length > 0
-                    ? documents
-                    : [
-                        {
-                          document_id: 1,
-                          document_name: "institute_registration.pdf",
-                          desc: "Registration Certificate • uploaded 10 Jan 2026 • verified 15 Jan 2026",
-                          status: "verified",
-                        },
-                        {
-                          document_id: 2,
-                          document_name: "gst_certificate.pdf",
-                          desc: "GST Certificate • uploaded 12 Jan 2026 • verified 15 Jan 2026",
-                          status: "verified",
-                        },
-                        {
-                          document_id: 3,
-                          document_name: "institute_pan.pdf",
-                          desc: "PAN Card • uploaded 20 Jul 2026",
-                          status: "pending",
-                        },
-                      ]
-                  ).map((doc, idx) => (
-                    <div className="d-flex justify-content-between align-items-center p-2 rounded-3" key={doc.document_id || idx} style={{ backgroundColor: "#f8fafc" }}>
-                      <div className="d-flex align-items-center gap-2">
-                        <FiFileText className="text-primary fs-5" />
-                        <div>
-                          <div className="fw-normal fs-8">{doc.document_name || doc.name}</div>
-                          <div className="text-muted fs-9">{doc.desc || `${doc.document_type || "Document"} • status ${doc.status}`}</div>
-                        </div>
-                      </div>
-                      <span className={`id-badge ${(doc.status || doc.verification_status) === "verified" ? "id-badge-approved" : "id-badge-pending"}`}>
-                        {doc.status || doc.verification_status || "pending"}
-                      </span>
-                    </div>
-                  ))}
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                 </div>
               </div>
 
@@ -1932,10 +1393,6 @@ function InstituteDashboard() {
                   placeholder="e.g. Advanced Figma Mastery"
                   value={newCourseForm.title}
                   onChange={(e) => setNewCourseForm({ ...newCourseForm, title: e.target.value })}
-<<<<<<< HEAD
-=======
-                  required
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                 />
               </div>
 
@@ -1947,10 +1404,6 @@ function InstituteDashboard() {
                   placeholder="What will students learn in this course?"
                   value={newCourseForm.description}
                   onChange={(e) => setNewCourseForm({ ...newCourseForm, description: e.target.value })}
-<<<<<<< HEAD
-=======
-                  required
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                 ></textarea>
               </div>
 
@@ -1963,10 +1416,6 @@ function InstituteDashboard() {
                     placeholder="1999"
                     value={newCourseForm.price}
                     onChange={(e) => setNewCourseForm({ ...newCourseForm, price: e.target.value })}
-<<<<<<< HEAD
-=======
-                    required
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                   />
                 </div>
                 <div className="col-md-6">
@@ -1977,10 +1426,6 @@ function InstituteDashboard() {
                     placeholder="e.g. 6 weeks"
                     value={newCourseForm.duration}
                     onChange={(e) => setNewCourseForm({ ...newCourseForm, duration: e.target.value })}
-<<<<<<< HEAD
-=======
-                    required
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                   />
                 </div>
               </div>
@@ -1989,7 +1434,6 @@ function InstituteDashboard() {
                 <label className="form-label fs-7 fw-bold">Instructor</label>
                 <select
                   className="form-select"
-<<<<<<< HEAD
                   value={(newCourseForm.instructorId !== "" && newCourseForm.instructorId != null) ? newCourseForm.instructorId : ""}
                   onChange={(e) => {
                     const val = e.target.value;
@@ -2013,21 +1457,10 @@ function InstituteDashboard() {
                       </option>
                     );
                   })}
-=======
-                  value={newCourseForm.instructor_name}
-                  onChange={(e) => setNewCourseForm({ ...newCourseForm, instructor_name: e.target.value })}
-                >
-                  {instructors.map((inst) => (
-                    <option key={inst.instructor_id} value={inst.name}>
-                      {inst.name} ({inst.specialization})
-                    </option>
-                  ))}
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                 </select>
               </div>
 
               <div className="mb-3">
-<<<<<<< HEAD
                 <label className="form-label fs-7 fw-bold">Category</label>
                 <select
                   className="form-select"
@@ -2056,48 +1489,48 @@ function InstituteDashboard() {
               </div>
 
               <div className="mb-3">
-                <label className="form-label fs-7 fw-bold">Thumbnail Image URL</label>
+                <label className="form-label fs-7 fw-bold">Thumbnail Image (Choose from Device)</label>
                 <input
-                  type="url"
+                  type="file"
+                  accept="image/*"
                   className="form-control"
-                  placeholder="https://images.unsplash.com/..."
-                  value={newCourseForm.thumbnail}
-                  onChange={(e) => setNewCourseForm({ ...newCourseForm, thumbnail: e.target.value })}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        setNewCourseForm({ ...newCourseForm, thumbnail: reader.result });
+                      };
+                      reader.readAsDataURL(file);
+                    } else {
+                      setNewCourseForm({ ...newCourseForm, thumbnail: "" });
+                    }
+                  }}
                 />
-                <small className="text-muted d-block mt-1">Leave blank to assign a dynamic default image based on course category.</small>
-=======
-                <label className="form-label fs-7 fw-bold d-block">Categories</label>
-                <div className="d-flex flex-wrap gap-2">
-                  {instituteService.getCategories().map((cat) => (
-                    <span
-                      key={cat}
-                      className={`id-cat-pill ${newCourseForm.category === cat ? "active" : ""}`}
-                      onClick={() => setNewCourseForm({ ...newCourseForm, category: cat })}
+                {newCourseForm.thumbnail && (
+                  <div className="mt-2 text-center p-2 border rounded" style={{ backgroundColor: "#f8fafc", maxHeight: "180px", overflow: "hidden" }}>
+                    <img src={newCourseForm.thumbnail} alt="Thumbnail Preview" style={{ maxHeight: "150px", maxWidth: "100%", objectFit: "cover", borderRadius: "8px" }} />
+                    <button
+                      type="button"
+                      className="btn btn-link text-danger d-block mx-auto mt-1 p-0 fs-9"
+                      onClick={() => setNewCourseForm({ ...newCourseForm, thumbnail: "" })}
                     >
-                      {cat}
-                    </span>
-                  ))}
-                </div>
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
+                      Remove selected image
+                    </button>
+                  </div>
+                )}
+                <small className="text-muted d-block mt-1">Choose an image from your device. Leave blank to assign a default image.</small>
               </div>
 
               <div className="mb-3">
                 <label className="form-label fs-7 fw-bold">Status</label>
                 <select
                   className="form-select"
-<<<<<<< HEAD
                   value={newCourseForm.status || "pending"}
                   onChange={(e) => setNewCourseForm({ ...newCourseForm, status: e.target.value })}
                 >
                   <option value="pending">Pending — submit for Admin approval</option>
                   <option value="draft">Draft — not visible to students</option>
-=======
-                  value={newCourseForm.status}
-                  onChange={(e) => setNewCourseForm({ ...newCourseForm, status: e.target.value })}
-                >
-                  <option value="draft">Draft — not visible to students</option>
-                  <option value="active">Active — published in catalog</option>
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                 </select>
               </div>
 
@@ -2174,7 +1607,6 @@ function InstituteDashboard() {
                 </div>
               </div>
 
-<<<<<<< HEAD
               <div className="row g-3 mb-3">
                 <div className="col-md-6">
                   <label className="form-label fs-7 fw-bold">Instructor</label>
@@ -2225,8 +1657,38 @@ function InstituteDashboard() {
                 </div>
               </div>
 
-=======
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
+              <div className="mb-3">
+                <label className="form-label fs-7 fw-bold">Thumbnail Image (Choose from Device)</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="form-control"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        setSelectedCourse({ ...selectedCourse, thumbnail: reader.result });
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }}
+                />
+                {selectedCourse.thumbnail && (
+                  <div className="mt-2 text-center p-2 border rounded" style={{ backgroundColor: "#f8fafc", maxHeight: "180px", overflow: "hidden" }}>
+                    <img src={selectedCourse.thumbnail} alt="Thumbnail Preview" style={{ maxHeight: "150px", maxWidth: "100%", objectFit: "cover", borderRadius: "8px" }} />
+                    <button
+                      type="button"
+                      className="btn btn-link text-danger d-block mx-auto mt-1 p-0 fs-9"
+                      onClick={() => setSelectedCourse({ ...selectedCourse, thumbnail: "" })}
+                    >
+                      Remove image
+                    </button>
+                  </div>
+                )}
+                <small className="text-muted d-block mt-1">Choose an image from your device to update the thumbnail.</small>
+              </div>
+
               <div className="mb-3">
                 <label className="form-label fs-7 fw-bold">Status</label>
                 <select
@@ -2273,11 +1735,7 @@ function InstituteDashboard() {
       {/* --- MODAL 3: ADD INSTRUCTOR --- */}
       {showAddInstructorModal && (
         <div className="id-modal-backdrop">
-<<<<<<< HEAD
           <div className="id-modal-content" style={{ maxWidth: 520 }}>
-=======
-          <div className="id-modal-content" style={{ maxWidth: 460 }}>
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
             <div className="d-flex justify-content-between align-items-center mb-3">
               <h4 className="fw-bold m-0 fs-5">Add Instructor</h4>
               <button className="btn-close" onClick={() => setShowAddInstructorModal(false)}></button>
@@ -2309,23 +1767,16 @@ function InstituteDashboard() {
               </div>
 
               <div className="mb-3">
-<<<<<<< HEAD
                 <label className="form-label fs-7 fw-bold">Experience (in years)</label>
                 <input
                   type="number"
                   min="0"
-=======
-                <label className="form-label fs-7 fw-bold">Experience (Years)</label>
-                <input
-                  type="number"
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
                   className="form-control"
                   value={newInstructorForm.experience}
                   onChange={(e) => setNewInstructorForm({ ...newInstructorForm, experience: e.target.value })}
                 />
               </div>
 
-<<<<<<< HEAD
               <div className="mb-3">
                 <label className="form-label fs-7 fw-bold">Bio</label>
                 <textarea
@@ -2349,8 +1800,6 @@ function InstituteDashboard() {
                 <small className="text-muted d-block mt-1">Leave blank to use default gender-neutral avatar.</small>
               </div>
 
-=======
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
               <div className="d-flex justify-content-end gap-2 mt-4">
                 <button type="button" className="id-btn-outline" onClick={() => setShowAddInstructorModal(false)}>
                   Cancel
@@ -2364,7 +1813,6 @@ function InstituteDashboard() {
         </div>
       )}
 
-<<<<<<< HEAD
       {/* --- MODAL: EDIT INSTRUCTOR --- */}
       {showEditInstructorModal && selectedInstructor && (
         <div className="id-modal-backdrop">
@@ -2441,8 +1889,6 @@ function InstituteDashboard() {
         </div>
       )}
 
-=======
->>>>>>> 539bd96fd1185a2797a6384936b888cd0cc1336a
       {/* --- MODAL 4: EDIT PROFILE --- */}
       {showEditProfileModal && (
         <div className="id-modal-backdrop">
